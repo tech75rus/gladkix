@@ -5,7 +5,7 @@ services:
     build:
       context: ./
       dockerfile: ./docker/api/dev/Dockerfile
-    image: fullstack_template_api_dev
+    image: image_gladkix_api_dev
     volumes:
       - ./api:/var/www/api
       - ./docker/api/dev/install.sh:/var/www/install.sh
@@ -16,14 +16,14 @@ services:
     depends_on:
       - db
     working_dir: /var/www/api
-    container_name: dev_fullstack_api
+    container_name: gladkix_api_dev
     entrypoint: ["/bin/sh", "/var/www/install.sh"]
 
   db:
     build:
       context: ./
       dockerfile: ./docker/db/dev/Dockerfile
-    image: fullstack_template_mysql_dev
+    image: image_gladkix_db_dev
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     ports:
@@ -35,13 +35,13 @@ services:
       MYSQL_DATABASE: gladkix
       MYSQL_USER: gladkix
       MYSQL_PASSWORD: 123456
-    container_name: dev_fullstack_db
+    container_name: gladkix_db_dev
 
   app:
     build:
       context: ./
       dockerfile: ./docker/app/dev/Dockerfile
-    image: fullstack_template_app_dev
+    image: image_gladkix_app_dev
     volumes:
       - ./app:/var/www/app
       - ./docker/app/dev/install.sh:/var/www/install.sh
@@ -51,14 +51,14 @@ services:
     depends_on:
       - nginx
     working_dir: /var/www/app
-    container_name: dev_fullstack_app
+    container_name: gladkix_app_dev
     entrypoint: ["/bin/sh", "/var/www/install.sh"]
 
   admin:
     build:
       context: ./
       dockerfile: ./docker/admin/dev/Dockerfile
-    image: fullstack_template_admin_dev
+    image: image_gladkix_admin_dev
     volumes:
       - ./admin:/var/www/admin
       - ./docker/admin/dev/install.sh:/var/www/install.sh:ro
@@ -68,7 +68,7 @@ services:
     depends_on:
       - nginx
     working_dir: /var/www/admin
-    container_name: dev_fullstack_admin
+    container_name: gladkix_admin_dev
     entrypoint: ["/bin/sh", "/var/www/install.sh"]
 
 volumes:

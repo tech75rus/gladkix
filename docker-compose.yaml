@@ -5,7 +5,7 @@ services:
     build:
       context: ./
       dockerfile: ./docker/nginx/prod/Dockerfile
-    image: fullstack_template_nginx_prod
+    image: image_gladkix_nginx_prod
     ports:
       - 80:80
       - 443:443
@@ -17,19 +17,19 @@ services:
     depends_on:
       - api
     restart: always
-    container_name: fullstack_template_nginx_prod
+    container_name: gladkix_nginx_prod
   
   api:
     build:
       context: ./
       dockerfile: ./docker/api/prod/Dockerfile
-    image: fullstack_template_api_prod
+    image: image_gladkix_api_prod
     volumes:
       - ./api:/var/www/api
     restart: always
     depends_on:
       - db
-    container_name: fullstack_template_api_prod
+    container_name: gladkix_api_prod
     working_dir: /var/www/api
     user: "1000:1000"
 
@@ -37,7 +37,7 @@ services:
     build:
       context: ./
       dockerfile: ./docker/db/prod/Dockerfile
-    image: fullstack_template_db_prod
+    image: image_gladkix_db_prod
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     volumes:
@@ -47,19 +47,19 @@ services:
       MYSQL_DATABASE: gladkix
       MYSQL_USER: gladkix
       MYSQL_PASSWORD: 123456
-    container_name: fullstack_template_db_prod
+    container_name: gladkix_db_prod
 
   app:
     build:
       context: ./
       dockerfile: ./docker/app/prod/Dockerfile
-    image: fullstack_template_app_prod
+    image: image_gladkix_app_prod
     volumes:
       - ./app:/var/www/app
       - ./docker/app/prod/install.sh:/var/www/install.sh
     depends_on:
       - nginx
-    container_name: fullstack_template_app_prod
+    container_name: gladkix_app_prod
     working_dir: /var/www/app
     entrypoint: ["/bin/sh", "/var/www/install.sh"]
     user: "1000:1000"
@@ -68,13 +68,13 @@ services:
     build:
       context: ./
       dockerfile: ./docker/admin/prod/Dockerfile
-    image: fullstack_template_admin_prod
+    image: image_gladkix_admin_prod
     volumes:
       - ./admin:/var/www/admin
       - ./docker/admin/prod/install.sh:/var/www/install.sh
     depends_on:
       - nginx
-    container_name: fullstack_template_admin_prod
+    container_name: gladkix_admin_prod
     working_dir: /var/www/admin
     entrypoint: ["/bin/sh", "/var/www/install.sh"]
     user: "1000:1000"
