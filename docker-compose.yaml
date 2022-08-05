@@ -1,0 +1,80 @@
+version: '3.9'
+
+services:
+  nginx:
+    build:
+      context: ./
+      dockerfile: ./docker/nginx/prod/Dockerfile
+    image: fullstack_template_nginx_prod
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt
+      - ./api:/var/www/api
+      - ./app:/var/www/app
+      - ./admin:/var/www/admin
+    depends_on:
+      - api
+    restart: always
+    container_name: fullstack_template_nginx_prod
+  
+  api:
+    build:
+      context: ./
+      dockerfile: ./docker/api/prod/Dockerfile
+    image: fullstack_template_api_prod
+    volumes:
+      - ./api:/var/www/api
+    restart: always
+    depends_on:
+      - db
+    container_name: fullstack_template_api_prod
+    working_dir: /var/www/api
+    user: "1000:1000"
+
+  db:
+    build:
+      context: ./
+      dockerfile: ./docker/db/prod/Dockerfile
+    image: fullstack_template_db_prod
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    volumes:
+      - /var/www/db:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: gladkix
+      MYSQL_USER: gladkix
+      MYSQL_PASSWORD: 123456
+    container_name: fullstack_template_db_prod
+
+  app:
+    build:
+      context: ./
+      dockerfile: ./docker/app/prod/Dockerfile
+    image: fullstack_template_app_prod
+    volumes:
+      - ./app:/var/www/app
+      - ./docker/app/prod/install.sh:/var/www/install.sh
+    depends_on:
+      - nginx
+    container_name: fullstack_template_app_prod
+    working_dir: /var/www/app
+    entrypoint: ["/bin/sh", "/var/www/install.sh"]
+    user: "1000:1000"
+
+  admin:
+    build:
+      context: ./
+      dockerfile: ./docker/admin/prod/Dockerfile
+    image: fullstack_template_admin_prod
+    volumes:
+      - ./admin:/var/www/admin
+      - ./docker/admin/prod/install.sh:/var/www/install.sh
+    depends_on:
+      - nginx
+    container_name: fullstack_template_admin_prod
+    working_dir: /var/www/admin
+    entrypoint: ["/bin/sh", "/var/www/install.sh"]
+    user: "1000:1000"
