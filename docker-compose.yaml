@@ -1,80 +1,76 @@
 version: '3.9'
 
 services:
-  nginx:
-    build:
-      context: ./
-      dockerfile: ./docker/nginx/prod/Dockerfile
-    image: image_gladkix_nginx_prod
-    ports:
-      - 80:80
-      - 443:443
-    volumes:
-      - /etc/letsencrypt:/etc/letsencrypt
-      - ./api:/var/www/api
-      - ./app:/var/www/app
-      - ./admin:/var/www/admin
-    depends_on:
-      - api
-    restart: always
-    container_name: gladkix_nginx_prod
-  
   api:
     build:
       context: ./
-      dockerfile: ./docker/api/prod/Dockerfile
-    image: image_gladkix_api_prod
+      dockerfile: ./docker/api/dev/Dockerfile
+    image: image_gladkix_api_dev
     volumes:
       - ./api:/var/www/api
+      - ./docker/api/dev/install.sh:/var/www/install.sh
+    ports:
+      - 80:8000
+      - 443:8000
     restart: always
     depends_on:
       - db
-    container_name: gladkix_api_prod
     working_dir: /var/www/api
-    user: "1000:1000"
+    container_name: gladkix_api_dev
+    entrypoint: ["/bin/sh", "/var/www/install.sh"]
 
   db:
     build:
       context: ./
-      dockerfile: ./docker/db/prod/Dockerfile
-    image: image_gladkix_db_prod
+      dockerfile: ./docker/db/dev/Dockerfile
+    image: image_gladkix_db_dev
     command: --default-authentication-plugin=mysql_native_password
     restart: always
+    ports:
+      - 1117:3306
     volumes:
-      - /var/www/db:/var/lib/mysql
+      - mysql:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: 123456
       MYSQL_DATABASE: gladkix
       MYSQL_USER: gladkix
       MYSQL_PASSWORD: 123456
-    container_name: gladkix_db_prod
+    container_name: gladkix_db_dev
 
   app:
     build:
       context: ./
-      dockerfile: ./docker/app/prod/Dockerfile
-    image: image_gladkix_app_prod
+      dockerfile: ./docker/app/dev/Dockerfile
+    image: image_gladkix_app_dev
     volumes:
       - ./app:/var/www/app
-      - ./docker/app/prod/install.sh:/var/www/install.sh
+      - ./docker/app/dev/install.sh:/var/www/install.sh
+    ports:
+      - 7777:8080
+    restart: always
     depends_on:
       - nginx
-    container_name: gladkix_app_prod
     working_dir: /var/www/app
+    container_name: gladkix_app_dev
     entrypoint: ["/bin/sh", "/var/www/install.sh"]
-    user: "1000:1000"
 
   admin:
     build:
       context: ./
-      dockerfile: ./docker/admin/prod/Dockerfile
-    image: image_gladkix_admin_prod
+      dockerfile: ./docker/admin/dev/Dockerfile
+    image: image_gladkix_admin_dev
     volumes:
       - ./admin:/var/www/admin
-      - ./docker/admin/prod/install.sh:/var/www/install.sh
+      - ./docker/admin/dev/install.sh:/var/www/install.sh:ro
+    ports:
+      - 7778:8080
+    restart: always
     depends_on:
       - nginx
-    container_name: gladkix_admin_prod
     working_dir: /var/www/admin
+    container_name: gladkix_admin_dev
     entrypoint: ["/bin/sh", "/var/www/install.sh"]
-    user: "1000:1000"
+
+volumes:
+  mysql:
+
