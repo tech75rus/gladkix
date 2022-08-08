@@ -78,3 +78,18 @@ services:
     working_dir: /var/www/admin
     entrypoint: ["/bin/sh", "/var/www/install.sh"]
     user: "1000:1000"
+
+#  projects:
+#    build:
+#      context: ./
+#      dockerfile: ./docker/projects/prod/Dockerfile
+#    image: image_gladkix_projects_prod
+#    volumes:
+#      - ./projects:/var/www/projects
+#      - ./docker/projects/prod/install.sh:/var/www/install.sh
+#    depends_on:
+#      - app
+#    container_name: gladkix_projects_prod
+#    working_dir: /var/www/projects
+#    entrypoint: ["/bin/sh", "/var/www/install.sh"]
+#    user: "1000:1000"
