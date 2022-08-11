@@ -1,13 +1,16 @@
 <template>
-  <Menu msg="Menu"></Menu>
+  <Menu></Menu>
+  <MenuMobile></MenuMobile>
   <router-view/>
 </template>
 
 <script>
 import Menu from "@/components/Menu";
+import MenuMobile from "@/components/Menu/MenuMobile";
 export default {
   name: 'App',
   components: {
+    MenuMobile,
     Menu
   }
 }

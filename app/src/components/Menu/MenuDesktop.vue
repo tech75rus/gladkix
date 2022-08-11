@@ -9,10 +9,7 @@
 
 <script>
 export default {
-  name: 'Menu',
-  props: {
-    msg: String
-  }
+  name: 'Menu'
 }
 </script>
 
@@ -37,6 +34,11 @@ a {
   z-index: 4;
   a {
     margin: 0 5px;
+  }
+}
+@media all and (max-width: 600px) {
+  .menu-desktop {
+    display: none;
   }
 }
 </style>
