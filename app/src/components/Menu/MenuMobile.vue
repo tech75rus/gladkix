@@ -1,10 +1,15 @@
 <template>
-  <div class="menu-mobile">
+  <div class="menu-mobile shadow">
     <router-link to="/" class="menu-text menu-text-hidden">Статьи</router-link>
     <router-link to="/works" class="menu-text menu-text-hidden">Работы</router-link>
     <router-link to="/technologies" class="menu-text menu-text-hidden">Технологии</router-link>
     <router-link to="/contact" class="menu-text menu-text-hidden">Контакты</router-link>
-    <button class="menu-click" @click="change">x</button>
+    <div class="menu-button" @click="change">
+      <span class="line-1"></span>
+      <span class="line-2"></span>
+      <span class="line-3"></span>
+    </div>
+    <span class="menu-button-text">menu</span>
   </div>
 </template>
 
@@ -19,8 +24,11 @@ export default {
   methods: {
     change() {
       let menu = document.querySelector('.menu-mobile');
+      let menuButton = document.querySelector('.menu-button');
       let menuText = document.querySelectorAll('.menu-text');
+
       menu.classList.toggle('menu-mobile-show');
+      menuButton.classList.toggle('menu-button-hidden');
       this.showMenu = !this.showMenu;
       for (let text of menuText) {
         if (this.showMenu) {
@@ -35,6 +43,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import "src/assets/scss/shadow";
+@import "src/assets/scss/menu-button-mobile";
+
 a {
   color: #000;
   text-decoration: none;
@@ -53,12 +64,13 @@ a {
     width: 50px;
     height: 50px;
     padding: 10px;
-    border: 1px solid #222;
     position: fixed;
     left: 10px;
     bottom: 2vh;
     border-radius: 5px;
     transition: width .3s, height .3s;
+    z-index: 5555;
+    background-color: #fff;
     .menu-text {
       margin: 10px 0;
       display: none;

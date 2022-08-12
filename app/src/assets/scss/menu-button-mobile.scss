@@ -1,0 +1,46 @@
+.menu-button {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  bottom: 15px;
+  left: 10px;
+  width: 30px;
+  height: 30px;
+
+  span {
+    width: 100%;
+    height: 4px;
+    background-color: #000;
+    border-radius: 10px;
+    transition: all .2s;
+  }
+  .line-1 {
+    transform-origin: 0 0;
+  }
+  .line-2 {
+  }
+  .line-3 {
+    transform-origin: 0 100%;
+  }
+
+}
+.menu-button-hidden {
+  .line-1 {
+    transform: rotate(45deg);
+  }
+  .line-2 {
+    transform: scale(0);
+  }
+  .line-3 {
+    transform: rotate(-45deg);
+  }
+}
+.menu-button-hidden ~ .menu-button-text {
+  display: none;
+}
+.menu-button-text {
+  position: fixed;
+  bottom: 8px;
+  font-size: .75rem;
+}
