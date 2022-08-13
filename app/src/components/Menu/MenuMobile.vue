@@ -66,7 +66,7 @@ a {
     padding: 10px;
     position: fixed;
     left: 10px;
-    bottom: 2vh;
+    bottom: 2%;
     border-radius: 5px;
     transition: width .3s, height .3s;
     z-index: 5555;
@@ -77,7 +77,7 @@ a {
     }
   }
   .menu-mobile-show {
-    height: 96vh;
+    height: 96%;
     width: 200px;
   }
   .menu-click {

@@ -46,7 +46,7 @@ services:
       - ./app:/var/www/app
       - ./docker/app/dev/install.sh:/var/www/install.sh
     ports:
-      - 7777:8080
+      - "7777:8080"
     restart: always
     depends_on:
       - nginx
@@ -63,7 +63,7 @@ services:
       - ./admin:/var/www/admin
       - ./docker/admin/dev/install.sh:/var/www/install.sh:ro
     ports:
-      - 7778:8080
+      - "7778:8080"
     restart: always
     depends_on:
       - nginx
