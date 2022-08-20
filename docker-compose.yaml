@@ -53,6 +53,7 @@ services:
     working_dir: /var/www/app
     container_name: gladkix_app_dev
     entrypoint: ["/bin/sh", "/var/www/install.sh"]
+    user: "1000:1000"
 
   admin:
     build:
@@ -70,6 +71,7 @@ services:
     working_dir: /var/www/admin
     container_name: gladkix_admin_dev
     entrypoint: ["/bin/sh", "/var/www/install.sh"]
+    user: "1000:1000"
 
 volumes:
   mysql:

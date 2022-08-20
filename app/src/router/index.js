@@ -30,6 +30,13 @@ const routes = [
     component: function () {
       return import('../views/WorkView')
     }
+  },
+  {
+    path: '/article',
+    name: 'article',
+    component: function () {
+      return import('../views/ArticleView')
+    }
   }
 ]
 
