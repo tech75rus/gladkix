@@ -54,6 +54,7 @@ class AdminController extends AbstractController
     }
 
     #[Route('/admin/update-article/{id}')]
+    #[IsGranted('ROLE_ADMIN')]
     public function updateArticle(int $id): ?Response
     {
         $article = $this->articleRepository->find($id);
