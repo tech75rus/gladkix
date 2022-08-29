@@ -61,8 +61,4 @@ nav {
   font-family: "Nunito";
   src: local("Nunito"), url("./assets/fonts/Nunito/static/Nunito-Regular.ttf") format("truetype");
 }
-@font-face {
-  font-family: "Raleway";
-  src: local("Raleway"), url("./assets/fonts/Raleway/static/Raleway-Regular.ttf") format("truetype");
-}
 </style>
