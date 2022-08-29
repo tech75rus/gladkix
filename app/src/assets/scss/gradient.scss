@@ -1,0 +1,51 @@
+//$gradient-green: 90deg, rgb(187 255 135), rgb(146 255 214);
+//$gradient-purple: 45deg, rgb(198 139 255), rgb(229 194 255);
+$gradient-green: 90deg, rgb(121 255 166), rgb(158 255 191);
+$gradient-pink: 45deg,  rgb(255 125 185), rgb(255 166 166);
+$gradient-purple: 45deg, rgb(200 161 252), rgb(236 183 255);
+$gradient-yellow: 45deg, rgb(224 255 97), rgb(236 255 145);
+$gradient-orange: 45deg, rgb(253 217 59), rgb(255 243 115);
+$gradient-blue: 45deg, rgb(138 215 255), rgb(156 225 255);
+$gradient-ocean: 45deg, rgb(74 238 249), rgb(137 251 206);
+$gradient-red: 45deg, rgb(255 136 135), rgb(255 179 178);
+
+.gradient-green {
+  background: -webkit-linear-gradient($gradient-green);
+  background: -moz-linear-gradient($gradient-green);
+  background: linear-gradient($gradient-green);
+}
+.gradient-pink {
+  background: -webkit-linear-gradient($gradient-pink);
+  background: -moz-linear-gradient($gradient-pink);
+  background: linear-gradient($gradient-pink);
+}
+.gradient-purple {
+  background: -webkit-linear-gradient($gradient-purple);
+  background: -moz-linear-gradient($gradient-purple);
+  background: linear-gradient($gradient-purple);
+}
+.gradient-yellow {
+  background: -webkit-linear-gradient($gradient-yellow);
+  background: -moz-linear-gradient($gradient-yellow);
+  background: linear-gradient($gradient-yellow);
+}
+.gradient-orange {
+  background: -webkit-linear-gradient($gradient-orange);
+  background: -moz-linear-gradient($gradient-orange);
+  background: linear-gradient($gradient-orange);
+}
+.gradient-blue {
+  background: -webkit-linear-gradient($gradient-blue);
+  background: -moz-linear-gradient($gradient-blue);
+  background: linear-gradient($gradient-blue);
+}
+.gradient-ocean {
+  background: -webkit-linear-gradient($gradient-ocean);
+  background: -moz-linear-gradient($gradient-ocean);
+  background: linear-gradient($gradient-ocean);
+}
+.gradient-red {
+  background: -webkit-linear-gradient($gradient-red);
+  background: -moz-linear-gradient($gradient-red);
+  background: linear-gradient($gradient-red);
+}

@@ -1,7 +1,7 @@
 <template>
   <Menu></Menu>
   <MenuMobile></MenuMobile>
-  <router-view/>
+  <router-view class="wrapper"/>
 </template>
 
 <script>
@@ -21,6 +21,15 @@ export default {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: Nunito,serif;
+  font-weight: 400;
+}
+h2 {
+  font-weight: 600;
+}
+a {
+  color: #2a2a2a;
+  text-decoration: none;
 }
 #app {
   font-family: Inter, Helvetica, Arial, sans-serif;
@@ -41,5 +50,19 @@ nav {
       color: #42b983;
     }
   }
+}
+.wrapper {
+  margin: 0 auto;
+  max-width: 1198px;
+  min-width: 320px;
+  padding: 0 15px;
+}
+@font-face {
+  font-family: "Nunito";
+  src: local("Nunito"), url("./assets/fonts/Nunito/static/Nunito-Regular.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Raleway";
+  src: local("Raleway"), url("./assets/fonts/Raleway/static/Raleway-Regular.ttf") format("truetype");
 }
 </style>

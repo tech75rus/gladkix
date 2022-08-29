@@ -3,12 +3,12 @@
     <h1>Article page</h1>
     <pre>
       <code class="php">
-        echo 'hello';
+echo 'hello';
       </code>
     </pre>
     <pre>
       <code class="javascript">
-        let one = 'asdasd';
+let one = 'asdasd';
       </code>
     </pre>
   </div>
