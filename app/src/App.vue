@@ -1,17 +1,18 @@
 <template>
-  <Menu></Menu>
+  <MenuDesktop></MenuDesktop>
   <MenuMobile></MenuMobile>
-  <router-view/>
+  <router-view class="wrapper"/>
 </template>
 
 <script>
-import Menu from "@/components/Menu";
+import MenuDesktop from "@/components/Menu/MenuDesktop";
 import MenuMobile from "@/components/Menu/MenuMobile";
+
 export default {
   name: 'App',
   components: {
     MenuMobile,
-    Menu
+    MenuDesktop,
   }
 }
 </script>
@@ -21,6 +22,15 @@ export default {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: Nunito,serif;
+  font-weight: 400;
+}
+h2 {
+  font-weight: 600;
+}
+a {
+  color: #2a2a2a;
+  text-decoration: none;
 }
 #app {
   font-family: Inter, Helvetica, Arial, sans-serif;
@@ -40,6 +50,22 @@ nav {
     &.router-link-exact-active {
       color: #42b983;
     }
+  }
+}
+.wrapper {
+  margin: 90px auto 30px auto;
+  max-width: 1198px;
+  min-width: 320px;
+  padding: 0 15px;
+}
+@font-face {
+  font-family: "Nunito";
+  src: local("Nunito"), url("./assets/fonts/Nunito/static/Nunito-Regular.ttf") format("truetype");
+}
+
+@media (max-width: 600px) {
+  .wrapper {
+    margin: 20px auto 30px auto;
   }
 }
 </style>

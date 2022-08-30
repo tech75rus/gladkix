@@ -6,7 +6,7 @@ module.exports = {
             skipWaiting: true
         }
     },
-    devServer: {
-        proxy: 'https://127.0.0.1:8000/',
-    }
+    // devServer: {
+    //     proxy: 'https://127.0.0.1:8000/',
+    // }
 }
