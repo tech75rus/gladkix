@@ -52,7 +52,6 @@ export default {
 @import "src/assets/scss/shadow";
 
 .home {
-  margin-top: 10px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-gap: 15px;

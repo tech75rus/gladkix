@@ -2,7 +2,7 @@
   <div class="about">
     <h1>This is an Technologies page</h1>
     <div class="block">
-      <canvas id="myChart" width="400" height="400"></canvas>
+      <canvas id="myChart"></canvas>
     </div>
   </div>
 </template>
@@ -53,7 +53,7 @@ export default {
 
 <style lang="scss" scoped>
 .block {
-  width: 400px;
-  height: 400px;
+//  width: 400px;
+//  height: 400px;
 }
 </style>

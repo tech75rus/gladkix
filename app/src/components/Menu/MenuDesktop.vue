@@ -1,5 +1,5 @@
 <template>
-  <div class="menu-desktop">
+  <div class="menu-desktop show-menu-desktop">
     <router-link to="/">Статьи</router-link>
     <router-link to="/works" class="">Работы</router-link>
     <router-link to="/technologies" class="">Технологии</router-link>
@@ -14,6 +14,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import "src/assets/scss/shadow";
+
 a {
   color: #000;
   text-decoration: none;
@@ -22,18 +24,18 @@ a {
   color: red;
 }
 .menu-desktop {
-  //position: fixed;
   display: flex;
   justify-content: center;
   align-items: center;
+  position: fixed;
   top: 0;
   left: 0;
+  background-color: #fff;
   width: 100%;
-  height: 40px;
-  border: #000 solid 1px;
+  height: 70px;
   z-index: 4;
   a {
-    margin: 0 5px;
+    margin: 0 15px;
   }
 }
 @media all and (max-width: 600px) {
