@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ArticleRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
 class Article
@@ -15,11 +16,14 @@ class Article
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups('app')]
     private ?string $header = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Groups('app')]
     private ?string $article = null;
 
+    #[Groups('app')]
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $at_create = null;
 

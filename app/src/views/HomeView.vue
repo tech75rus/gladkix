@@ -1,36 +1,8 @@
 <template>
   <div class="home">
-    <router-link to="/article" class="article gradient-green shadow">
-      <h2 class="header">Как подключить NGINX к PHP-FPM</h2>
-      <p>Веб-сервер NGINX (в качестве обратного прокси-сервера) обслуживает приложения PHP через протокол FastCGI (в качестве внутреннего сервера приложений). NGINX использует PHP-FPM (FastCGI Process Manager), альтернативную реализацию PHP FastCGI, которая работает в фоновом режиме в качестве демона, слушая запросы CGI. Он поставляется с дополнительными функциями, предназначенными для работы с загруженными веб-сайтами или веб-приложениями, но его можно использовать для сайтов любого размера.</p>
-    </router-link>
-    <router-link to="/article" class="article gradient-pink shadow">
-      <h2 class="header">Генератор цветовых тем</h2>
-      <p>Инструмент расширяет палитры из CSS/SCSS/Less-переменных и может быть полезен для карманных проектов без фиксированного дизайна. Я немного расскажу про историю появления и покажу как его можно использовать.</p>
-    </router-link>
-    <router-link to="/article" class="article gradient-purple shadow">
-      <h2 class="header">Как подключить NGINX к PHP-FPM</h2>
-      <p>Веб-сервер NGINX (в качестве обратного прокси-сервера) обслуживает приложения PHP через протокол FastCGI (в качестве внутреннего сервера приложений). NGINX использует PHP-FPM (FastCGI Process Manager), альтернативную реализацию PHP FastCGI, которая работает в фоновом режиме в качестве демона, слушая запросы CGI. Он поставляется с дополнительными функциями, предназначенными для работы с загруженными веб-сайтами или веб-приложениями, но его можно использовать для сайтов любого размера.</p>
-    </router-link>
-    <router-link to="/article" class="article gradient-yellow shadow">
-      <h2 class="header">Генератор цветовых тем</h2>
-      <p>Инструмент расширяет палитры из CSS/SCSS/Less-переменных и может быть полезен для карманных проектов без фиксированного дизайна. Я немного расскажу про историю появления и покажу как его можно использовать.</p>
-    </router-link>
-    <router-link to="/article" class="article gradient-orange shadow">
-      <h2 class="header">Как подключить NGINX к PHP-FPM</h2>
-      <p>Веб-сервер NGINX (в качестве обратного прокси-сервера) обслуживает приложения PHP через протокол FastCGI (в качестве внутреннего сервера приложений). NGINX использует PHP-FPM (FastCGI Process Manager), альтернативную реализацию PHP FastCGI, которая работает в фоновом режиме в качестве демона, слушая запросы CGI. Он поставляется с дополнительными функциями, предназначенными для работы с загруженными веб-сайтами или веб-приложениями, но его можно использовать для сайтов любого размера.</p>
-    </router-link>
-    <router-link to="/article" class="article gradient-blue shadow">
-      <h2 class="header">Генератор цветовых тем</h2>
-      <p>Инструмент расширяет палитры из CSS/SCSS/Less-переменных и может быть полезен для карманных проектов без фиксированного дизайна. Я немного расскажу про историю появления и покажу как его можно использовать.</p>
-    </router-link>
-    <router-link to="/article" class="article gradient-ocean shadow">
-      <h2 class="header">Как подключить NGINX к PHP-FPM</h2>
-      <p>Веб-сервер NGINX (в качестве обратного прокси-сервера) обслуживает приложения PHP через протокол FastCGI (в качестве внутреннего сервера приложений). NGINX использует PHP-FPM (FastCGI Process Manager), альтернативную реализацию PHP FastCGI, которая работает в фоновом режиме в качестве демона, слушая запросы CGI. Он поставляется с дополнительными функциями, предназначенными для работы с загруженными веб-сайтами или веб-приложениями, но его можно использовать для сайтов любого размера.</p>
-    </router-link>
-    <router-link to="/article" class="article gradient-red shadow">
-      <h2 class="header">Генератор цветовых тем</h2>
-      <p>Инструмент расширяет палитры из CSS/SCSS/Less-переменных и может быть полезен для карманных проектов без фиксированного дизайна. Я немного расскажу про историю появления и покажу как его можно использовать.</p>
+    <router-link to="/article" v-for="item in articles" class="article gradient-red shadow">
+      <h2 class="header">{{ item.header }}</h2>
+      <p v-html="item.article"></p>
     </router-link>
   </div>
 </template>
@@ -38,11 +10,23 @@
 <script>
 // @ is an alias to /src
 import HelloWorld from '@/components/HelloWorld.vue'
+import axios from 'axios';
 
 export default {
   name: 'HomeView',
+  data() {
+    return {
+      articles: ''
+    }
+  },
   components: {
     HelloWorld
+  },
+  mounted() {
+    axios.get('https://localhost/articles').then(response => {
+      this.articles = response.data;
+      console.log(response);
+    })
   }
 }
 </script>

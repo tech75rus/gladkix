@@ -3,17 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\Article;
-use App\Repository\AdminRepository;
 use App\Repository\ArticleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class AdminController extends AbstractController
+class ArticleController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
     private ArticleRepository $articleRepository;
@@ -24,11 +22,22 @@ class AdminController extends AbstractController
         $this->articleRepository = $articleRepository;
     }
 
-    #[Route('/admin/article/{id}', name: 'app_admin', methods: ["POST"])]
-    #[IsGranted('ROLE_ADMIN')]
+    #[Route('/articles', methods: ["GET"])]
+    public function getArticles(): ?Response
+    {
+        $articles = $this->articleRepository->findAll();
+        return $this->json($articles, 200, [], [
+            'groups' => 'app'
+        ]);
+    }
+
+    #[Route('/article/{id}', name: 'app_admin', methods: ["GET"])]
     public function articleRead(int $id): Response
     {
         $article = $this->articleRepository->find($id);
+        return $this->json($article, 200, [], [
+            'groups' => 'app'
+        ]);
         return new Response($article->getHeader());
     }
 
@@ -52,7 +61,7 @@ class AdminController extends AbstractController
     }
 
     #[Route('/admin/article-update/{id}', name: 'article-update', methods: ["POST"])]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted(['ROLE_ADMIN'])]
     public function articleUpdate(Request $request, int $id): ?Response
     {
         $article = $this->articleRepository->find($id);

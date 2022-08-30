@@ -13,11 +13,14 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        main:
+        admin:
             pattern: /admin
             lazy: true
             provider: admin_user_provider
             custom_authenticator: App\Security\AdminAuthenticator
+        app:
+            pattern: /
+            security: false
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
