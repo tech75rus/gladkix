@@ -45,7 +45,6 @@ services:
     volumes:
       - ./app:/var/www/app
       - ./docker/app/dev/install.sh:/var/www/install.sh
-      - ./docker/app/dev/host.js:/var/www/app/src/service/host.js
     ports:
       - "7777:8080"
     restart: always
