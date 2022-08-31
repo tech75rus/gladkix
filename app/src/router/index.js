@@ -32,7 +32,7 @@ const routes = [
     }
   },
   {
-    path: '/article',
+    path: '/article/:id',
     name: 'article',
     component: function () {
       return import('../views/ArticleView')

@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <router-link to="/article" v-for="item in articles" class="article gradient-red shadow">
+    <router-link :to="'/article/' + item.id" v-for="item in articles" class="article gradient-red shadow">
       <h2 class="header">{{ item.header }}</h2>
       <p v-html="item.article"></p>
     </router-link>

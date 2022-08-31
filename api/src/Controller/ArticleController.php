@@ -38,7 +38,6 @@ class ArticleController extends AbstractController
         return $this->json($article, 200, [], [
             'groups' => 'app'
         ]);
-        return new Response($article->getHeader());
     }
 
     #[Route('/admin/article-create', name: 'add-article', methods: ["POST"])]

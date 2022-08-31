@@ -1,26 +1,26 @@
 <template>
   <div class="home">
-    <h1>Article page</h1>
-    <pre>
-      <code class="php">
-echo 'hello';
-      </code>
-    </pre>
-    <pre>
-      <code class="javascript">
-let one = 'asdasd';
-      </code>
-    </pre>
+    <h1>{{ article.header }}</h1>
+    <div v-html="article.article" class="block"></div>
   </div>
 </template>
 
 <script>
 import hljs from "highlight.js";
+import axios from "axios";
 
 export default {
   name: 'ArticleView',
+  data() {
+    return {
+      article: ''
+    }
+  },
   mounted() {
-    hljs.highlightAll()
+    hljs.highlightAll();
+    axios.get('https://localhost/article/' + this.$route.params.id).then(response => {
+      this.article = response.data;
+    })
   }
 }
 </script>
