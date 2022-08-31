@@ -8,6 +8,7 @@
 <script>
 import hljs from "highlight.js";
 import axios from "axios";
+import {host} from "@/service/host";
 
 export default {
   name: 'ArticleView',
@@ -18,7 +19,7 @@ export default {
   },
   mounted() {
     hljs.highlightAll();
-    axios.get('https://localhost/article/' + this.$route.params.id).then(response => {
+    axios.get( host +'/article/' + this.$route.params.id).then(response => {
       this.article = response.data;
     })
   }

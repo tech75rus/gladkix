@@ -57,6 +57,7 @@ services:
     volumes:
       - ./app:/var/www/app
       - ./docker/app/prod/install.sh:/var/www/install.sh
+      - ./docker/app/prod/host.js:/var/www/app/src/service/host.js
     depends_on:
       - nginx
     container_name: gladkix_app_prod

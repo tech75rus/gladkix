@@ -11,6 +11,7 @@
 // @ is an alias to /src
 import HelloWorld from '@/components/HelloWorld.vue'
 import axios from 'axios';
+import {host} from "@/service/host";
 
 export default {
   name: 'HomeView',
@@ -23,7 +24,7 @@ export default {
     HelloWorld
   },
   mounted() {
-    axios.get('https://localhost/articles').then(response => {
+    axios.get(host + '/articles').then(response => {
       this.articles = response.data;
       console.log(response);
     })
