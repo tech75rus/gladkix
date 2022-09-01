@@ -44,7 +44,7 @@ class ArticleController extends AbstractController
     #[IsGranted('ROLE_ADMIN')]
     public function articleCreate(Request $request): ?Response
     {
-        if (!$request->request->all()) {
+        if ($request->request->all()) {
             $header = $request->request->get('header');
             $text = $request->request->get('text');
             $article = new Article();
@@ -56,7 +56,7 @@ class ArticleController extends AbstractController
             return new Response('Статья добавлена', 201);
         }
 
-        return new Response('Нет данных', 404);
+        return new Response('Нет данных bla bla', 404);
     }
 
     #[Route('/admin/article-update/{id}', name: 'article-update', methods: ["POST"])]
