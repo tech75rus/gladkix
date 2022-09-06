@@ -17,11 +17,11 @@ export default {
       article: ''
     }
   },
-  mounted() {
-    hljs.highlightAll();
-    axios.get( host +'/article/' + this.$route.params.id).then(response => {
+  async mounted() {
+    await axios.get( host +'/article/' + this.$route.params.id).then(response => {
       this.article = response.data;
-    })
+    });
+    hljs.highlightAll();
   }
 }
 </script>

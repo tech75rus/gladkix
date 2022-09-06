@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <router-link :to="'/article/' + item.id" v-for="item in articles" class="article gradient-red shadow">
+    <router-link :to="'/article/' + item.id" v-for="item in articles" class="article shadow">
       <h2 class="header">{{ item.header }}</h2>
       <p v-html="item.article"></p>
     </router-link>
@@ -17,18 +17,35 @@ export default {
   name: 'HomeView',
   data() {
     return {
-      articles: ''
+      articles: '',
+      gradient: [
+          'gradient-green',
+          'gradient-pink',
+          'gradient-purple',
+          'gradient-yellow',
+          'gradient-orange',
+          'gradient-blue',
+          'gradient-ocean',
+          'gradient-red',
+      ],
     }
   },
   components: {
     HelloWorld
   },
-  mounted() {
-    axios.get(host + '/articles').then(response => {
+  async mounted() {
+    await axios.get(host + '/articles').then(response => {
       this.articles = response.data;
-      console.log(response);
     })
-  }
+    let i = 0;
+    for (let article of document.querySelectorAll('.article')) {
+      if (i > this.gradient.length) {
+        i = 0;
+      }
+      article.classList.add(this.gradient[i]);
+      i++;
+    }
+  },
 }
 </script>
 

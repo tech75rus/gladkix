@@ -1,33 +1,42 @@
 <template>
   <div v-if="true">
-    <p>Hello World!</p>
-    <p>Some initial <strong>bold</strong> text</p>
-    <p><br></p>
-    <textarea cols="130" rows="30" v-model="message"></textarea>
-    <br>
-    <button @click="clickMessage">Click</button>
-    <br>
-    <span v-html="message"></span>
+    <form @submit.prevent="clickMessage">
+      <input type="text" v-model.lazy="header">
+      <textarea cols="130" rows="30" v-model="text"></textarea>
+      <button>Send</button>
+    </form>
+    <span v-html="text"></span>
   </div>
 </template>
 
 <script>
-//import 'quill/quill';
-//import Quill from "quill/quill";
-
+import axios from 'axios';
+import {host} from "@/service/host";
 
 export default {
   name: 'AboutView',
   data() {
     return {
-      message: '<p>Hello World!</p>\n' +
+      header: '',
+      text: '<p>Hello World!</p>\n' +
           '<p>Some initial <strong>bold</strong> text</p>\n' +
-          '<p>Bla bla bla</p>\n'
+          '<p>Bla bla bla</p>\n',
     }
   },
   methods: {
     clickMessage() {
-      console.log(this.message);
+      let data = new FormData();
+      data.append('header', this.header);
+      data.append('text', this.text);
+      axios.post(host + '/admin/article-create', data, {
+        headers: {
+          "Content-Type": 'application/x-www-form-urlencoded'
+        }
+      }).then(response => {
+        console.log(response);
+      }).catch(error => {
+        console.log(error);
+      })
     },
     loadMessage() {
 
@@ -36,5 +45,9 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+form {
+  display: flex;
+  flex-direction: column;
+}
 </style>
