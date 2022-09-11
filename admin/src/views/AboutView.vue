@@ -1,10 +1,5 @@
 <template>
   <div v-if="true">
-    <form @submit.prevent="clickMessage">
-      <input type="text" v-model.lazy="header">
-      <textarea cols="130" rows="30" v-model="text"></textarea>
-      <button>Send</button>
-    </form>
     <span v-html="text"></span>
     <div id="editor"></div>
     <button @click="loadMessage">Save</button>
@@ -24,27 +19,10 @@ export default {
   data() {
     return {
       header: '',
-      text: '<p>Hello World!</p>\n' +
-          '<p>Some initial <strong>bold</strong> text</p>\n' +
-          '<p>Bla bla bla</p>\n',
       editor: '',
     }
   },
   methods: {
-    clickMessage() {
-      let data = new FormData();
-      data.append('header', this.header);
-      data.append('text', this.text);
-      axios.post(host + '/admin/article-create', data, {
-        headers: {
-          "Content-Type": 'application/x-www-form-urlencoded'
-        }
-      }).then(response => {
-        console.log(response);
-      }).catch(error => {
-        console.log(error);
-      })
-    },
     loadMessage() {
       this.editor.save().then(result => {
         console.log(result);
@@ -60,16 +38,16 @@ export default {
           class: Header,
           inlineToolbar : false
         },
-        image: Image,
-        // image: {
-        //   class: Image,
-        //   config: {
-        //     endpoints: {
-        //       byFile: 'https://localhost:8000/uploadFile', // Your backend file uploader endpoint
-        //       byUrl: 'https://localhost:8000/fetchUrl', // Your endpoint that provides uploading by Url
-        //     }
-        //   }
-        // },
+//        image: Image,
+        image: {
+          class: Image,
+          config: {
+            endpoints: {
+              byFile: 'https://localhost/image-file', // Your backend file uploader endpoint
+//              byUrl: 'https://localhost/image-url', // Your endpoint that provides uploading by Url
+            }
+          }
+        },
       },
       data: {
         "time": 1662637183472,
