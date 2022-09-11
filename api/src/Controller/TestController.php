@@ -37,11 +37,11 @@ class TestController extends AbstractController
         if (!is_dir($this->dir_image)) {
             mkdir($this->dir_image);
         }
-        $image->move($this->dir_image, 'test.jpg');
+        $image->move($this->dir_image, $image->getClientOriginalName());
         $data = [
             'success' => 1,
             'file' => [
-                'url' => $this->host . '/test.jpg'
+                'url' => $this->host . '/' . $image->getClientOriginalName()
             ]
         ];
         return new JsonResponse($data, 201);

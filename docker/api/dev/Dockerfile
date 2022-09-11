@@ -20,3 +20,5 @@ RUN curl -1sLf 'https://dl.cloudsmith.io/public/symfony/stable/setup.deb.sh' | b
 
 WORKDIR /var/www/api
 
+RUN mkdir -p /var/www/api/public/images
+RUN chmod -R 777 /var/www/api/public/images

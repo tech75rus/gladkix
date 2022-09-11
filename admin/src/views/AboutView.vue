@@ -38,13 +38,11 @@ export default {
           class: Header,
           inlineToolbar : false
         },
-//        image: Image,
         image: {
           class: Image,
           config: {
             endpoints: {
-              byFile: 'https://localhost/image-file', // Your backend file uploader endpoint
-//              byUrl: 'https://localhost/image-url', // Your endpoint that provides uploading by Url
+              byFile: host + '/image-file', // Your backend file uploader endpoint
             }
           }
         },
