@@ -19,6 +19,3 @@ RUN curl -1sLf 'https://dl.cloudsmith.io/public/symfony/stable/setup.deb.sh' | b
 	apt-get install -y symfony-cli
 
 RUN chown -R www-data:www:data /var/www
-
-RUN mkdir -p /var/www/api/public/images
-RUN chmod -R 777 /var/www/api/public/images
