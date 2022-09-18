@@ -13,6 +13,7 @@ import {host} from "@/service/host";
 import EditorJS from '@editorjs/editorjs';
 import Header from '@editorjs/header';
 import Image from '@editorjs/image';
+import Raw from '@editorjs/raw';
 
 export default {
   name: 'AboutView',
@@ -20,19 +21,42 @@ export default {
     return {
       header: '',
       editor: '',
+      text: '',
     }
   },
   methods: {
     loadMessage() {
       this.editor.save().then(result => {
-        console.log(result);
+        let form = new FormData();
+        form.append('article', JSON.stringify(result));
+        let onceHeader = true;
+        let onceShortArticle = true;
+        for (let block of result.blocks) {
+          if (onceHeader && block.type === 'header') {
+            form.append('header', block.data.text);
+            onceHeader = false;
+          }
+          if (onceShortArticle && block.type === 'paragraph') {
+            form.append('short_article', block.data.text);
+            onceShortArticle = false;
+          }
+        }
+        axios.post(host + '/admin/article-create', form, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }).then(response => {
+          console.log(response);
+        })
       })
+
     }
   },
   mounted() {
     this.editor = new EditorJS({
       holder: 'editor',
       autofocus: true,
+//      readOnly: true,
       tools: {
         header: {
           class: Header,
@@ -46,28 +70,10 @@ export default {
             }
           }
         },
+        raw: {
+          class: Raw
+        }
       },
-      data: {
-        "time": 1662637183472,
-        "blocks": [
-          {
-            "id": "QlG9OEvduX",
-            "type": "header",
-            "data": {
-              "text": "Hello",
-              "level": 1
-            }
-          },
-          {
-            "id": "oN2o2APr1C",
-            "type": "paragraph",
-            "data": {
-              "text": "This is description"
-            }
-          }
-        ],
-        "version": "2.25.0"
-      }
     });
   },
 }

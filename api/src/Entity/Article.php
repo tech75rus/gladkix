@@ -31,6 +31,10 @@ class Article
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $at_update = null;
 
+    #[ORM\Column(length: 1024)]
+    #[Groups('app')]
+    private ?string $short_article = null;
+
     public function __construct()
     {
         $this->at_create = new \DateTime('now');
@@ -78,6 +82,18 @@ class Article
     public function setAtUpdate(?\DateTimeInterface $at_update): self
     {
         $this->at_update = $at_update;
+
+        return $this;
+    }
+
+    public function getShortArticle(): ?string
+    {
+        return $this->short_article;
+    }
+
+    public function setShortArticle(string $short_article): self
+    {
+        $this->short_article = $short_article;
 
         return $this;
     }

@@ -2,7 +2,7 @@
   <div class="home">
     <router-link :to="'/article/' + item.id" v-for="item in articles" class="article shadow">
       <h2 class="header">{{ item.header }}</h2>
-      <p v-html="item.article"></p>
+      <p v-html="item.short_article"></p>
     </router-link>
   </div>
 </template>
@@ -39,7 +39,7 @@ export default {
     })
     let i = 0;
     for (let article of document.querySelectorAll('.article')) {
-      if (i > this.gradient.length) {
+      if (i > this.gradient.length - 1) {
         i = 0;
       }
       article.classList.add(this.gradient[i]);

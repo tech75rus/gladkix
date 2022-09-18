@@ -17,7 +17,7 @@ class TestController extends AbstractController
     public function __construct($dir_image, $host)
     {
         $this->dir_image = $dir_image;
-        $this->host = $host;
+        $this->host = $host . '/images/article/';
     }
 
     #[Route('/', name: 'app_test')]
@@ -41,7 +41,7 @@ class TestController extends AbstractController
         $data = [
             'success' => 1,
             'file' => [
-                'url' => $this->host . '/' . $image->getClientOriginalName()
+                'url' => $this->host . $image->getClientOriginalName()
             ]
         ];
         return new JsonResponse($data, 201);

@@ -46,10 +46,12 @@ class ArticleController extends AbstractController
     {
         if ($request->request->all()) {
             $header = $request->request->get('header');
-            $text = $request->request->get('text');
+            $shortArticle = $request->request->get('short_article');
+            $dataArticle = $request->request->get('article');
             $article = new Article();
             if ($header) $article->setHeader($header);
-            if ($text) $article->setArticle($text);
+            if ($dataArticle) $article->setArticle($dataArticle);
+            if ($shortArticle) $article->setShortArticle($shortArticle);
             $article->setAtUpdate(new \DateTime('now'));
             $this->entityManager->persist($article);
             $this->entityManager->flush();

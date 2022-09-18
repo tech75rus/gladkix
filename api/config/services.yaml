@@ -22,8 +22,8 @@ services:
 
     App\Controller\TestController:
         arguments:
-            $dir_image: '%kernel.project_dir%/public/images'
-            $host: '%env(HOST)%/images'
+            $dir_image: '%kernel.project_dir%/public/images/article'
+            $host: '%env(HOST)%'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
