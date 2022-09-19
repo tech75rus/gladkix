@@ -30,7 +30,7 @@ export default {
       this.article = response.data.article;
     });
 
-    new EditorJS({
+    const editor = new EditorJS({
       holder: 'editor',
       readOnly: true,
       tools: {
