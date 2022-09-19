@@ -30,8 +30,6 @@ export default {
       this.article = response.data.article;
     });
 
-    document.querySelector('.codex-editor').remove();
-
     const editor = new EditorJS({
       holder: 'editor',
       readOnly: true,
