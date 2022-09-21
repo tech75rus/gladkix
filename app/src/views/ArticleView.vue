@@ -16,6 +16,7 @@ import Header from '@editorjs/header';
 import Image from '@editorjs/image';
 import Raw from '@editorjs/raw';
 import {one} from "@/service/Test";
+import {Test} from "@/service/Test";
 
 
 export default {
@@ -31,7 +32,8 @@ export default {
       this.article = response.data.article;
     });
 
-    one();
+    let test = new Test();
+    test.one();
     const editor = new EditorJS({
       holder: 'editor',
       readOnly: true,
