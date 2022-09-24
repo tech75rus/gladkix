@@ -1,9 +1,6 @@
 <template>
   <div class="home">
-    <div id="editor">
-    </div>
-    <!--    <h1>{{ article.header }}</h1>-->
-<!--    <div v-html="article.article" class="block"></div>-->
+    <div id="article"></div>
   </div>
 </template>
 
@@ -11,12 +8,7 @@
 import hljs from "highlight.js";
 import axios from "axios";
 import {host} from "@/service/host";
-import EditorJS from '@editorjs/editorjs';
-import Header from '@editorjs/header';
-import Image from '@editorjs/image';
-import Raw from '@editorjs/raw';
-import {one} from "@/service/Test";
-import {Test} from "@/service/Test";
+import {Article} from "@/service/Article";
 
 
 export default {
@@ -32,32 +24,7 @@ export default {
       this.article = response.data.article;
     });
 
-    let test = new Test();
-    test.one();
-    const editor = new EditorJS({
-      holder: 'editor',
-      readOnly: true,
-      tools: {
-        header: {
-          class: Header,
-          inlineToolbar : false
-        },
-        raw: {
-          class: Raw
-        },
-        image: {
-          class: Image,
-          config: {
-            endpoints: {
-              byFile: host + '/article/image-file', // Your backend file uploader endpoint
-
-            }
-          }
-        },
-      },
-      data: JSON.parse(this.article),
-    })
-
+    new Article(this.article, '#article');
     hljs.highlightAll();
   }
 }
@@ -65,7 +32,27 @@ export default {
 
 <style lang="scss">
 @import "highlight.js/scss/monokai";
-.block {
-  text-align: left;
+.home {
+  font-size: 1.15rem;
+  h1 {
+    text-align: center;
+  }
+  h2 {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  p {
+    text-align: left;
+    margin-bottom: 6px;
+  }
+  pre {
+    text-align: left;
+    margin: 10px 0;
+  }
+  img {
+    text-align: center;
+    margin: 10px 0;
+    max-width: 100%;
+  }
 }
 </style>
