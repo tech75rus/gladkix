@@ -7,11 +7,19 @@ export class Article {
     }
 
     showArticle(data, selector) {
+        let article = document.querySelector(selector);
+
+        if (article.children.length !== 0) {
+            let parent = article.parentElement;
+            article.remove();
+            let id = document.createElement('div');
+            id.id = selector.slice(1);
+            parent.appendChild(id);
+        }
+
         for (let block in data) {
             let dataBlock = data[block].data;
             let dataType = data[block].type;
-            console.log(dataType);
-            console.log(dataBlock);
             this.methods[dataType](dataBlock, selector);
         }
     }
