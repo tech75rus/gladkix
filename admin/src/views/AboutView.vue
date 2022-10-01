@@ -1,47 +1,81 @@
 <template>
   <div v-if="true">
-    <form @submit.prevent="clickMessage">
-      <input type="text" v-model.lazy="header">
-      <textarea cols="130" rows="30" v-model="text"></textarea>
-      <button>Send</button>
-    </form>
     <span v-html="text"></span>
+    <div id="editor"></div>
+    <button @click="loadMessage">Save</button>
+
   </div>
 </template>
 
 <script>
 import axios from 'axios';
 import {host} from "@/service/host";
+import EditorJS from '@editorjs/editorjs';
+import Header from '@editorjs/header';
+import Image from '@editorjs/image';
+import Raw from '@editorjs/raw';
 
 export default {
   name: 'AboutView',
   data() {
     return {
       header: '',
-      text: '<p>Hello World!</p>\n' +
-          '<p>Some initial <strong>bold</strong> text</p>\n' +
-          '<p>Bla bla bla</p>\n',
+      editor: '',
+      text: '',
     }
   },
   methods: {
-    clickMessage() {
-      let data = new FormData();
-      data.append('header', this.header);
-      data.append('text', this.text);
-      axios.post(host + '/admin/article-create', data, {
-        headers: {
-          "Content-Type": 'application/x-www-form-urlencoded'
-        }
-      }).then(response => {
-        console.log(response);
-      }).catch(error => {
-        console.log(error);
-      })
-    },
     loadMessage() {
+      this.editor.save().then(result => {
+        let form = new FormData();
+        form.append('article', JSON.stringify(result));
+        let onceHeader = true;
+        let onceShortArticle = true;
+        for (let block of result.blocks) {
+          if (onceHeader && block.type === 'header') {
+            form.append('header', block.data.text);
+            onceHeader = false;
+          }
+          if (onceShortArticle && block.type === 'paragraph') {
+            form.append('short_article', block.data.text);
+            onceShortArticle = false;
+          }
+        }
+        axios.post(host + '/admin/article-create', form, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }).then(response => {
+          console.log(response);
+        })
+      })
 
     }
-  }
+  },
+  mounted() {
+    this.editor = new EditorJS({
+      holder: 'editor',
+      autofocus: true,
+//      readOnly: true,
+      tools: {
+        header: {
+          class: Header,
+          inlineToolbar : false
+        },
+        image: {
+          class: Image,
+          config: {
+            endpoints: {
+              byFile: host + '/image-file', // Your backend file uploader endpoint
+            }
+          }
+        },
+        raw: {
+          class: Raw
+        }
+      },
+    });
+  },
 }
 </script>
 

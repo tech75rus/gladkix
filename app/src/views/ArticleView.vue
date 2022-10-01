@@ -1,34 +1,27 @@
 <template>
   <div class="home">
-    <h1>{{ article.header }}</h1>
-    <div v-html="article.article" class="block"></div>
+    <Article ></Article>
   </div>
 </template>
 
 <script>
-import hljs from "highlight.js";
-import axios from "axios";
-import {host} from "@/service/host";
+import Article from "@/components/Article";
+
 
 export default {
   name: 'ArticleView',
+  components: {
+    Article
+  },
   data() {
     return {
-      article: ''
+      article: '',
+      editor: '',
     }
   },
-  async mounted() {
-    await axios.get( host +'/article/' + this.$route.params.id).then(response => {
-      this.article = response.data;
-    });
-    hljs.highlightAll();
-  }
 }
 </script>
 
 <style lang="scss">
 @import "highlight.js/scss/monokai";
-.block {
-  text-align: left;
-}
 </style>

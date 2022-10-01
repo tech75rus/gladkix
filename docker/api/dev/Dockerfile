@@ -18,5 +18,6 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&
 RUN curl -1sLf 'https://dl.cloudsmith.io/public/symfony/stable/setup.deb.sh' | bash && \
 	apt-get install -y symfony-cli && symfony server:ca:install
 
-WORKDIR /var/www/api
+RUN chown -R www-data:www-data /var/www
 
+WORKDIR /var/www/api
