@@ -32,7 +32,7 @@ services:
       - db
     container_name: gladkix_api_prod
     working_dir: /var/www/api
-    user: "1000:1000"
+#    user: "1000:1000"
     entrypoint: [ "/bin/sh", "/var/www/install.sh" ]
 
   db:
