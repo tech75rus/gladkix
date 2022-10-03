@@ -1,9 +1,12 @@
 <template>
-  <div class="home">
-    <router-link :to="'/article/' + item.id" v-for="item in articles" class="article shadow">
-      <h2 class="header">{{ item.header }}</h2>
-      <p v-html="item.short_article"></p>
-    </router-link>
+  <div>
+    <h2 class="head">Статьи</h2>
+    <div class="home">
+      <router-link :to="'/article/' + item.id" v-for="item in articles" class="article shadow">
+        <h2 class="header">{{ item.header }}</h2>
+        <p v-html="item.short_article"></p>
+      </router-link>
+    </div>
   </div>
 </template>
 
@@ -53,6 +56,10 @@ export default {
 @import "src/assets/scss/gradient";
 @import "src/assets/scss/shadow";
 
+.head {
+  display: none;
+  margin-bottom: 20px;
+}
 .home {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -86,6 +93,11 @@ export default {
 @media (max-width: 996px) {
   .home {
     grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 600px) {
+  .head{
+    display: block;
   }
 }
 </style>
