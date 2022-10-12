@@ -1,18 +1,40 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <h1>GOODLAVKA</h1>
+    <button @click="$router.push('/login')">Login</button>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import axios from "axios";
+import {host} from "../service/host";
 
 export default {
-  name: 'HomeView',
-  components: {
-    HelloWorld
-  }
+  name: 'Home',
+  data() {
+    return {
+      token: ''
+    }
+  },
+  created() {
+    // axios.get(host + '/admin/main', {
+    //   headers: {
+    //     'token': localStorage.getItem('token')
+    //   }
+    // }).then(() => {
+    //   this.$store.dispatch('actionLoader');
+    //   this.$store.dispatch('actionLoginIn');
+    // }).catch(() => {
+    //   this.$router.push('/login');
+    //   this.$store.dispatch('actionLoader');
+    // });
+  },
 }
 </script>
+
+<style scoped lang="scss">
+button {
+  margin: 5px 0;
+}
+</style>

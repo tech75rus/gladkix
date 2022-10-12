@@ -79,9 +79,10 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-form {
-  display: flex;
-  flex-direction: column;
+<style lang="scss">
+.ce-block__content {
+  background: #292d38;
+  border-radius: 5px;
+  margin: 5px auto;
 }
 </style>
