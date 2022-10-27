@@ -52,7 +52,17 @@ const routes = [
     meta: {
       title: 'article'
     },
-  }
+  },
+  {
+    path: '/work/random-color',
+    name: 'random-color',
+    component: function () {
+      return import('../views/work/RandomColor')
+    },
+    meta: {
+      title: 'random-color'
+    },
+  },
 ]
 
 const router = createRouter({
