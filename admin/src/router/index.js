@@ -13,12 +13,12 @@ const routes = [
     component: HomeView
   },
   {
-    path: '/about',
-    name: 'About',
+    path: '/add-article',
+    name: 'AddArticle',
     meta: {
       layout: 'main',
     },
-    component: () => import('../views/AboutView')
+    component: () => import('../views/AddArticleView')
   },
   {
     path: '/registration',
@@ -35,6 +35,14 @@ const routes = [
       layout: 'empty',
     },
     component: Login
+  },
+  {
+    path: '/technology-tag',
+    name: 'TechnologyTag',
+    meta: {
+      layout: 'main',
+    },
+    component: () => import('../views/TechnologyTagView')
   },
 ]
 
