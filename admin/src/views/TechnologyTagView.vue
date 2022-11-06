@@ -3,7 +3,6 @@
     <h2>Список тегов</h2>
     <p v-for="tag in tags">
       {{ tag.name }}
-      {{ tag.id }}
     </p>
     <form @submit.prevent="setTechnologyTag()">
       <input type="text" placeholder="Введите новый тег" v-model="tag">
@@ -68,5 +67,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.technology-tag {
+  h2 {
+    margin-bottom: 20px;
+  }
+  p {
+    margin-bottom: 10px;
+  }
+  form {
+    input {
+      padding: 5px;
+    }
+    button {
+      padding: 5px;
+    }
+  }
+}
 </style>

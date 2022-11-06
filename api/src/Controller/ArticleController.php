@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Article;
 use App\Repository\ArticleRepository;
+use App\Repository\TechnologyTagRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -42,16 +43,21 @@ class ArticleController extends AbstractController
 
     #[Route('/admin/article-create', name: 'add-article', methods: ["POST"])]
     #[IsGranted('ROLE_ADMIN')]
-    public function articleCreate(Request $request): ?Response
+    public function articleCreate(Request $request, TechnologyTagRepository $tagRepository): ?Response
     {
         if ($request->request->all()) {
-            $header = $request->request->get('header');
-            $shortArticle = $request->request->get('short_article');
-            $dataArticle = $request->request->get('article');
             $article = new Article();
-            if ($header) $article->setHeader($header);
-            if ($dataArticle) $article->setArticle($dataArticle);
-            if ($shortArticle) $article->setShortArticle($shortArticle);
+            if ($request->request->has('header')) $article->setHeader($request->request->get('header'));
+            if ($request->request->has('short_article')) $article->setShortArticle($request->request->get('short_article'));
+            if ($request->request->has('article')) $article->setArticle($request->request->get('article'));
+            if ($request->request->has('tags')) {
+                $tags = explode(',', $request->request->get('tags'));
+                foreach ($tags as $tagId) {
+                    if ($tag = $tagRepository->find($tagId)) {
+                        $article->addTechnologyTag($tag);
+                    }
+                }
+            }
             $article->setAtUpdate(new \DateTime('now'));
             $this->entityManager->persist($article);
             $this->entityManager->flush();
