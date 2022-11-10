@@ -13,6 +13,14 @@ const routes = [
     component: HomeView
   },
   {
+    path: '/list-article',
+    name: 'ListArticle',
+    meta: {
+      layout: 'main',
+    },
+    component: () => import('../views/ListArticleView')
+  },
+  {
     path: '/add-article',
     name: 'AddArticle',
     meta: {

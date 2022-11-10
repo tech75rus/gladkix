@@ -6,6 +6,11 @@
 				<img src="../assets/icons/main-active.png" alt="" v-show="isActive('/')">
 				<span class="menu-mobile-text">Главная</span>
 			</router-link>
+			<router-link to="/list-article" class="menu-item" :class="[button ? 'menu-mobile-item-show' : 'menu-mobile-item-hidden']">
+				<img src="../assets/icons/main.png" alt="" v-show="!isActive('/list-article')">
+				<img src="../assets/icons/main-active.png" alt="" v-show="isActive('/list-article')">
+				<span class="menu-mobile-text">Статьи</span>
+			</router-link>
 			<router-link to="/add-article" class="menu-item" :class="[button ? 'menu-mobile-item-show' : 'menu-mobile-item-hidden']">
 				<img src="../assets/icons/user.png" alt="" v-show="!isActive('/add-article')">
 				<img src="../assets/icons/user-active.png" alt="" v-show="isActive('/add-article')">
@@ -26,6 +31,11 @@
 				<img src="../assets/icons/main.png" alt="" v-show="!isActive('/')">
 				<img src="../assets/icons/main-active.png" alt="" v-show="isActive('/')">
 				<span :class="[button ? 'menu-text-show' : 'menu-text-hidden']">Главная</span>
+			</router-link>
+			<router-link to="/list-article" class="menu-item">
+				<img src="../assets/icons/main.png" alt="" v-show="!isActive('/list-article')">
+				<img src="../assets/icons/main-active.png" alt="" v-show="isActive('/list-article')">
+				<span :class="[button ? 'menu-text-show' : 'menu-text-hidden']">Статьи</span>
 			</router-link>
 			<router-link to="/add-article" class="menu-item">
 				<img src="../assets/icons/user.png" alt="" v-show="!isActive('/add-article')">
