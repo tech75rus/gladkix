@@ -16,11 +16,13 @@ class ArticleController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
     private ArticleRepository $articleRepository;
+    private TechnologyTagRepository $tagRepository;
 
-    public function __construct(EntityManagerInterface $entityManager, ArticleRepository $articleRepository)
+    public function __construct(EntityManagerInterface $entityManager, ArticleRepository $articleRepository, TechnologyTagRepository $tagRepository)
     {
         $this->entityManager = $entityManager;
         $this->articleRepository = $articleRepository;
+        $this->tagRepository = $tagRepository;
     }
 
     #[Route('/articles', methods: ["GET"])]
@@ -43,7 +45,7 @@ class ArticleController extends AbstractController
 
     #[Route('/admin/article-create', name: 'add-article', methods: ["POST"])]
     #[IsGranted('ROLE_ADMIN')]
-    public function articleCreate(Request $request, TechnologyTagRepository $tagRepository): ?Response
+    public function articleCreate(Request $request): ?Response
     {
         if ($request->request->all()) {
             $article = new Article();
@@ -53,7 +55,7 @@ class ArticleController extends AbstractController
             if ($request->request->has('tags')) {
                 $tags = explode(',', $request->request->get('tags'));
                 foreach ($tags as $tagId) {
-                    if ($tag = $tagRepository->find($tagId)) {
+                    if ($tag = $this->tagRepository->find($tagId)) {
                         $article->addTechnologyTag($tag);
                     }
                 }
@@ -68,18 +70,29 @@ class ArticleController extends AbstractController
     }
 
     #[Route('/admin/article-update/{id}', name: 'article-update', methods: ["POST"])]
-    #[IsGranted(['ROLE_ADMIN'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function articleUpdate(Request $request, int $id): ?Response
     {
         $article = $this->articleRepository->find($id);
         if (!$article) {
             return new Response('Статья не существует', 404);
         }
-        if (!$request->request->all()) {
-            $header = $request->request->get('header');
-            $text = $request->request->get('text');
-            if ($header) $article->setHeader($header);
-            if ($text) $article->setArticle($text);
+        if ($request->request->all()) {
+            if ($request->request->has('header')) $article->setHeader($request->request->get('header'));
+            if ($request->request->has('short_article')) $article->setShortArticle($request->request->get('short_article'));
+            if ($request->request->has('article')) $article->setArticle($request->request->get('article'));
+            $allTags = $this->tagRepository->findAll();
+            $requestTags = [];
+            if ($request->request->has('tags')) {
+                $requestTags = explode(',', $request->request->get('tags'));// Получение тегов из запроса
+            }
+            foreach ($allTags as $item) {
+                if (in_array($item->getId(), $requestTags)) {
+                    $article->addTechnologyTag($item);
+                } else {
+                    $article->removeTechnologyTag($item);
+                }
+            }
             $article->setAtUpdate(new \DateTime('now'));
             $this->entityManager->flush();
             return new Response('Статья обновлена', 201);

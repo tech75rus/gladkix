@@ -21,6 +21,14 @@ const routes = [
     component: () => import('../views/AddArticleView')
   },
   {
+    path: '/update-article/:id',
+    name: 'UpdateArticle',
+    meta: {
+      layout: 'main',
+    },
+    component: () => import('../views/UpdateArticleView')
+  },
+  {
     path: '/registration',
     name: 'Registration',
     meta: {

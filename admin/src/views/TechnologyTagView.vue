@@ -54,7 +54,6 @@ export default {
     getTechnologyTags() {
       axios.get(host + '/technology-tags').then(response => {
         this.tags = response.data;
-        console.log(response.data);
       })
     }
   },

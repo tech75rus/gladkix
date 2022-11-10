@@ -1,17 +1,13 @@
 <template>
   <div class="article-create">
-    <span v-html="text"></span>
     <div id="editor"></div>
-<!--    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">-->
-<!--      <path d="M272 304h-96C78.8 304 0 382.8 0 480c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32C448 382.8 369.2 304 272 304zM48.99 464C56.89 400.9 110.8 352 176 352h96c65.16 0 119.1 48.95 127 112H48.99zM224 256c70.69 0 128-57.31 128-128c0-70.69-57.31-128-128-128S96 57.31 96 128C96 198.7 153.3 256 224 256zM224 48c44.11 0 80 35.89 80 80c0 44.11-35.89 80-80 80S144 172.1 144 128C144 83.89 179.9 48 224 48z"/>-->
-<!--    </svg>-->
     <div class="tags">
       <label v-for="tag in tags">
         {{ tag.name }}
         <input type="checkbox" :value=tag.id v-model="selectedTags">
       </label>
     </div>
-    <button @click="loadMessage">Сохранить статью</button>
+    <button @click="loadMessage">Обновить статью</button>
     <span class="success" v-if="success">Статья добавлена</span>
     <span class="error" v-else-if="error">Произошла ошибка при добавлении статьи</span>
   </div>
@@ -36,6 +32,7 @@ export default {
       selectedTags: [],
       success: '',
       error: '',
+      article: '',
     }
   },
   methods: {
@@ -58,7 +55,7 @@ export default {
         if (this.selectedTags.length > 0) {
           form.append('tags', this.selectedTags);
         }
-        axios.post(host + '/admin/article-create', form, {
+        axios.post(host + '/admin/article-update/' + this.$route.params.id, form, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
@@ -70,13 +67,20 @@ export default {
         })
       })
     },
-    getTechnologyTags() {
-      axios.get(host + '/technology-tags').then(response => {
-        this.tags = response.data;
+    async getArticle() {
+      await axios.get(host + '/technology-tags').then(response => {
+        this.tags = response.data
+      });
+      await axios.get(host + '/article/' + this.$route.params.id).then(response => {
+        this.article = JSON.parse(response.data.article);
+        for (let tag of response.data.technologyTags) {
+          this.selectedTags.push(tag.id);
+        }
       })
     },
   },
-  mounted() {
+  async mounted() {
+    await this.getArticle();
     this.editor = new EditorJS({
       holder: 'editor',
       autofocus: true,
@@ -98,8 +102,8 @@ export default {
           class: Raw
         }
       },
+      data: this.article
     });
-    this.getTechnologyTags();
   },
 }
 </script>
@@ -135,10 +139,13 @@ export default {
   }
 }
 .success {
+  display: block;
   color: #69c257;
   padding-top: 10px;
 }
+
 .error {
+  display: block;
   color: #b24141;
   padding-top: 10px;
 }

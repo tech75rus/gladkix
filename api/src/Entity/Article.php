@@ -38,6 +38,7 @@ class Article
     private ?string $short_article = null;
 
     #[ORM\ManyToMany(targetEntity: TechnologyTag::class, mappedBy: 'articles')]
+    #[Groups('app')]
     private Collection $technologyTags;
 
     public function __construct()
