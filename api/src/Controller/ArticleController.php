@@ -100,7 +100,7 @@ class ArticleController extends AbstractController
         return new Response('Не получены данные', 400);
     }
 
-    #[Route('/admin/article-delete/{id}')]
+    #[Route('/admin/article-delete/{id}', methods: ['DELETE'])]
     #[IsGranted('ROLE_ADMIN')]
     public function articleDelete(int $id): ?Response
     {
@@ -110,6 +110,7 @@ class ArticleController extends AbstractController
         }
         $header = $article->getHeader();
         $this->entityManager->remove($article);
+        $this->entityManager->flush();
         return new Response('Удалена статья ' . $header);
     }
 }

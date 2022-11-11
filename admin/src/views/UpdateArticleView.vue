@@ -7,9 +7,11 @@
         <input type="checkbox" :value=tag.id v-model="selectedTags">
       </label>
     </div>
-    <button @click="loadMessage">Обновить статью</button>
+    <button class="button-update" @click="loadMessage">Обновить статью</button>
+    <button class="button-delete" @click="deleteArticle()">Удалить статью</button>
     <span class="success" v-if="success">Статья добавлена</span>
     <span class="error" v-else-if="error">Произошла ошибка при добавлении статьи</span>
+    <span class="delete" v-else-if="deleteMessage">{{ deleteMessage }}</span>
   </div>
 </template>
 
@@ -33,6 +35,7 @@ export default {
       success: '',
       error: '',
       article: '',
+      deleteMessage: '',
     }
   },
   methods: {
@@ -66,6 +69,13 @@ export default {
           console.log(error);
         })
       })
+    },
+    deleteArticle() {
+      axios.delete(host + '/admin/article-delete/' + this.$route.params.id).then(() => {
+        this.deleteMessage = 'Статья удалена';
+      }).catch(() => {
+        this.deleteMessage = 'Произошла ошибка при удалении';
+      });
     },
     async getArticle() {
       await axios.get(host + '/technology-tags').then(response => {
@@ -109,6 +119,8 @@ export default {
 </script>
 
 <style lang="scss">
+@import "src/assets/scss/color";
+
 .ce-block__content {
   background: #292d38;
   border-radius: 5px;
@@ -117,6 +129,7 @@ export default {
 .article-create {
   button {
     padding: 7px;
+    margin: 5px;
     background-color: rgba(255, 255, 255, .2);
     border: 1px solid #d8dbdf;
     color: #d8dbdf;
@@ -124,8 +137,11 @@ export default {
     font-size: 1rem;
     transition: .1s;
   }
-  button:hover {
+  .button-update:hover {
     background-color: #ff801fa1;
+  }
+  .button-delete:hover {
+    background-color: #d94949a1;
   }
 }
 .tags {
@@ -140,13 +156,17 @@ export default {
 }
 .success {
   display: block;
-  color: #69c257;
+  color: $success;
   padding-top: 10px;
 }
-
 .error {
   display: block;
-  color: #b24141;
+  color: $error;
+  padding-top: 10px;
+}
+.delete {
+  display: block;
+  color: $warning;
   padding-top: 10px;
 }
 </style>
