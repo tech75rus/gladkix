@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ArticleRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -35,9 +37,14 @@ class Article
     #[Groups('app')]
     private ?string $short_article = null;
 
+    #[ORM\ManyToMany(targetEntity: TechnologyTag::class, mappedBy: 'articles')]
+    #[Groups('app')]
+    private Collection $technologyTags;
+
     public function __construct()
     {
         $this->at_create = new \DateTime('now');
+        $this->technologyTags = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -94,6 +101,33 @@ class Article
     public function setShortArticle(string $short_article): self
     {
         $this->short_article = $short_article;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TechnologyTag>
+     */
+    public function getTechnologyTags(): Collection
+    {
+        return $this->technologyTags;
+    }
+
+    public function addTechnologyTag(TechnologyTag $technologyTag): self
+    {
+        if (!$this->technologyTags->contains($technologyTag)) {
+            $this->technologyTags->add($technologyTag);
+            $technologyTag->addArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTechnologyTag(TechnologyTag $technologyTag): self
+    {
+        if ($this->technologyTags->removeElement($technologyTag)) {
+            $technologyTag->removeArticle($this);
+        }
 
         return $this;
     }

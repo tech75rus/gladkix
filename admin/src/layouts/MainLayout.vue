@@ -4,12 +4,22 @@
 			<router-link to="/" class="menu-item" :class="[button ? 'menu-mobile-item-show' : 'menu-mobile-item-hidden']">
 				<img src="../assets/icons/main.png" alt="" v-show="!isActive('/')">
 				<img src="../assets/icons/main-active.png" alt="" v-show="isActive('/')">
-				<span class="menu-mobile-text">Home</span>
+				<span class="menu-mobile-text">Главная</span>
 			</router-link>
-			<router-link to="/about" class="menu-item" :class="[button ? 'menu-mobile-item-show' : 'menu-mobile-item-hidden']">
-				<img src="../assets/icons/user.png" alt="" v-show="!isActive('/about')">
-				<img src="../assets/icons/user-active.png" alt="" v-show="isActive('/about')">
-				<span class="menu-mobile-text">About</span>
+			<router-link to="/list-article" class="menu-item" :class="[button ? 'menu-mobile-item-show' : 'menu-mobile-item-hidden']">
+				<img src="../assets/icons/main.png" alt="" v-show="!isActive('/list-article')">
+				<img src="../assets/icons/main-active.png" alt="" v-show="isActive('/list-article')">
+				<span class="menu-mobile-text">Статьи</span>
+			</router-link>
+			<router-link to="/add-article" class="menu-item" :class="[button ? 'menu-mobile-item-show' : 'menu-mobile-item-hidden']">
+				<img src="../assets/icons/user.png" alt="" v-show="!isActive('/add-article')">
+				<img src="../assets/icons/user-active.png" alt="" v-show="isActive('/add-article')">
+				<span class="menu-mobile-text">Добавить статью</span>
+			</router-link>
+			<router-link to="/technology-tag" class="menu-item" :class="[button ? 'menu-mobile-item-show' : 'menu-mobile-item-hidden']">
+				<img src="../assets/icons/user.png" alt="" v-show="!isActive('/technology-tag')">
+				<img src="../assets/icons/user-active.png" alt="" v-show="isActive('/technology-tag')">
+				<span class="menu-mobile-text">Теги</span>
 			</router-link>
 			<button @click="changeMenuMobileSize">
 				<img src="../assets/icons/right-arrow.png" alt="" v-show="!button">
@@ -20,12 +30,22 @@
 			<router-link to="/" class="menu-item">
 				<img src="../assets/icons/main.png" alt="" v-show="!isActive('/')">
 				<img src="../assets/icons/main-active.png" alt="" v-show="isActive('/')">
-				<span :class="[button ? 'menu-text-show' : 'menu-text-hidden']">Home</span>
+				<span :class="[button ? 'menu-text-show' : 'menu-text-hidden']">Главная</span>
 			</router-link>
-			<router-link to="/about" class="menu-item">
-				<img src="../assets/icons/user.png" alt="" v-show="!isActive('/about')">
-				<img src="../assets/icons/user-active.png" alt="" v-show="isActive('/about')">
-				<span :class="[button ? 'menu-text-show' : 'menu-text-hidden']">About</span>
+			<router-link to="/list-article" class="menu-item">
+				<img src="../assets/icons/main.png" alt="" v-show="!isActive('/list-article')">
+				<img src="../assets/icons/main-active.png" alt="" v-show="isActive('/list-article')">
+				<span :class="[button ? 'menu-text-show' : 'menu-text-hidden']">Статьи</span>
+			</router-link>
+			<router-link to="/add-article" class="menu-item">
+				<img src="../assets/icons/user.png" alt="" v-show="!isActive('/add-article')">
+				<img src="../assets/icons/user-active.png" alt="" v-show="isActive('/add-article')">
+				<span :class="[button ? 'menu-text-show' : 'menu-text-hidden']">Добавить статью</span>
+			</router-link>
+			<router-link to="/technology-tag" class="menu-item">
+				<img src="../assets/icons/user.png" alt="" v-show="!isActive('/technology-tag')">
+				<img src="../assets/icons/user-active.png" alt="" v-show="isActive('/technology-tag')">
+				<span :class="[button ? 'menu-text-show' : 'menu-text-hidden']">Теги</span>
 			</router-link>
 			<button @click="changeSizeMenu">
 				<img src="../assets/icons/right-arrow.png" alt="" v-show="!button">

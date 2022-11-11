@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use App\Repository\ArticleRepository;
+use App\Repository\TechnologyTagRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -13,11 +16,13 @@ class TestController extends AbstractController
 {
     private string $dir_image;
     private string $host;
+    private EntityManagerInterface $entityManager;
 
-    public function __construct($dir_image, $host)
+    public function __construct($dir_image, $host, EntityManagerInterface $entityManager)
     {
         $this->dir_image = $dir_image;
         $this->host = $host . '/images/article/';
+        $this->entityManager = $entityManager;
     }
 
     #[Route('/', name: 'app_test')]
@@ -53,5 +58,33 @@ class TestController extends AbstractController
     public function imageUrl(Request $request): ?Response
     {
         return new Response('image url', 201);
+    }
+
+    #[Route('/tag', name: 'tag', methods: ["GET"])]
+    function testTechnologyTag(ArticleRepository $articleRepository, TechnologyTagRepository $technologyTagRepository): ?Response
+    {
+        $article = $articleRepository->find(14);
+        $technologyTag = $technologyTagRepository->find(4);
+//        dd($article);
+//        $article = new Article();
+//        $article->setHeader('Test');
+//        $article->setArticle('asdasdasd');
+//        $article->setShortArticle('asd');
+//        $technologyTag = new TechnologyTag();
+//        $technologyTag->setName('test');
+//        $article->addTechnologyTag($technologyTag);
+//        $this->entityManager->persist($article);
+//        $this->entityManager->persist($technologyTag);
+//        $this->entityManager->flush();
+        $array = [];
+        $array['article']['id'] = $article->getId();
+        $array['article']['header'] = $article->getHeader();
+        $array['article']['article'] = $article->getArticle();
+        $array['article']['short_article'] = $article->getShortArticle();
+        $array['technology_tag']['id'] = $technologyTag->getId();
+        $array['technology_tag']['name'] = $technologyTag->getName();
+        return $this->json($array);
+        $json = json_encode($array);
+        return new Response($json);
     }
 }
