@@ -113,7 +113,7 @@ export default {
 .tags {
   display: flex;
   flex-wrap: wrap;
-  line-height: 40px;
+  line-height: 30px;
   margin-bottom: 15px;
   padding: 10px;
   border-radius: 10px;
