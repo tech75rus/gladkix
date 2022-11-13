@@ -3,7 +3,7 @@ nelmio_cors:
         origin_regex: true
         allow_origin: ['%env(CORS_ALLOW_ORIGIN)%']
         allow_methods: ['GET', 'OPTIONS', 'POST', 'PUT', 'PATCH', 'DELETE']
-        allow_headers: ['DNT', 'User-Agent', 'X-Requested-With', 'If-Modified-Since', 'Cache-Control', 'Content-Type', 'Range', 'Authorization', 'sec-ch-ua-platform', 'sec-ch-ua-mobile', 'sec-ch-ua', 'Referer', 'Accept']
+        allow_headers: ['DNT', 'User-Agent', 'X-Requested-With', 'If-Modified-Since', 'Cache-Control', 'Content-Type', 'Range', 'Authorization', 'sec-ch-ua-platform', 'sec-ch-ua-mobile', 'sec-ch-ua', 'Referer', 'Accept', 'tags']
 #        allow_headers: ['DNT', 'User-Agent', 'X-Requested-With', 'If-Modified-Since', 'Cache-Control', 'Content-Type', 'Range', 'Authorization']
         expose_headers: ['Link']
         max_age: 3600

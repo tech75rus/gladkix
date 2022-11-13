@@ -1,11 +1,22 @@
 <template>
   <div>
     <h2 class="head">Статьи</h2>
-    <div class="home">
+    <div class="tags shadow">
+      <span class="tag-active" @click="setTag(0, $event)">Все</span>
+      <span
+          @click="setTag(tag.id, $event)"
+          v-for="tag in tags"
+      >{{ tag.name }}
+      </span>
+    </div>
+    <div class="home" v-if="articles">
       <router-link :to="'/article/' + item.id" v-for="item in articles" class="article shadow">
         <h2 class="header">{{ item.header }}</h2>
         <p v-html="item.short_article"></p>
       </router-link>
+    </div>
+    <div class="message" v-if="!articles">
+      <p>Не найдено статей</p>
     </div>
   </div>
 </template>
@@ -31,23 +42,62 @@ export default {
           'gradient-ocean',
           'gradient-red',
       ],
+      tags: [],
     }
   },
   components: {
     HelloWorld
   },
-  async mounted() {
-    await axios.get(host + '/articles').then(response => {
-      this.articles = response.data;
-    })
-    let i = 0;
-    for (let article of document.querySelectorAll('.article')) {
-      if (i > this.gradient.length - 1) {
-        i = 0;
+  methods: {
+    async getArticle(id) {
+      await axios.get(host + '/articles', {
+        headers: {
+          'tags': id
+        }
+      }).then(response => {
+        this.articles = response.data;
+      }).catch(error => {
+        this.articles = false;
+        console.log(error);
+      });
+      this.getGradient();
+    },
+    async getTags() {
+      await axios.get(host + '/technology-tags').then(response => {
+        response.data.forEach(res => {
+          this.tags.push(res);
+        });
+      }).catch(error => {
+        console.log(error.data);
+      });
+    },
+    async setTag(id, event = null) {
+      await this.getArticle(id);
+      if (event) {
+        const tagActive = document.querySelectorAll('.tag-active');
+        tagActive.forEach(res => {
+          res.classList.remove('tag-active');
+        });
+        const tag = event.target;
+        tag.classList.add('tag-active');
       }
-      article.classList.add(this.gradient[i]);
-      i++;
-    }
+    },
+    getGradient() {
+      let i = 0;
+      this.gradient.sort(() => Math.random() - 0.5);
+      console.log(this.gradient);
+      for (let article of document.querySelectorAll('.article')) {
+        if (i > this.gradient.length - 1) {
+          i = 0;
+        }
+        article.classList.add(this.gradient[i]);
+        i++;
+      }
+    },
+  },
+  async mounted() {
+    await this.getTags();
+    await this.setTag(0);
   },
 }
 </script>
@@ -59,6 +109,21 @@ export default {
 .head {
   display: none;
   margin-bottom: 20px;
+}
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  line-height: 40px;
+  margin-bottom: 15px;
+  padding: 10px;
+  border-radius: 10px;
+  span {
+    margin: 0 10px;
+    cursor: pointer;
+  }
+}
+.tag-active {
+  color: red;
 }
 .home {
   display: grid;
