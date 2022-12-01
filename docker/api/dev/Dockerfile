@@ -16,8 +16,13 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&
 	mv composer.phar /usr/local/bin/composer
 
 RUN curl -1sLf 'https://dl.cloudsmith.io/public/symfony/stable/setup.deb.sh' | bash && \
-	apt-get install -y symfony-cli && symfony server:ca:install
+	apt-get install -y symfony-cli
 
-RUN chown -R www-data:www-data /var/www
+RUN groupadd -g 1000 gladkix
+RUN useradd -u 1000 -g gladkix gladkix
+RUN mkdir -p /home/gladkix
+RUN chown -R gladkix:gladkix /home/gladkix
+
+USER gladkix
 
 WORKDIR /var/www/api
