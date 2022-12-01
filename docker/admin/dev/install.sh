@@ -2,7 +2,7 @@
 
 mkdir src/service
 touch src/service/host.js
-echo "let localhost = 'https://localhost';
+echo "let localhost = 'http://localhost';
 
 export let host = localhost;" > /var/www/admin/src/service/host.js
 

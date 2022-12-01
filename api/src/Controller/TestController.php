@@ -40,7 +40,7 @@ class TestController extends AbstractController
         /** @var UploadedFile $image */
         $image = $request->files->get('image');
         if (!is_dir($this->dir_image)) {
-            mkdir($this->dir_image);
+            mkdir($this->dir_image, 0777, true);
         }
         if (!file_exists($this->dir_image . '/' . $image->getClientOriginalName())) {
             $image->move($this->dir_image, $image->getClientOriginalName());
