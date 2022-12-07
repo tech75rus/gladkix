@@ -27,7 +27,10 @@ services:
     volumes:
       - ./api:/var/www/api
       - ./docker/api/prod/install.sh:/var/www/install.sh
+      - ./dump:/var/www/dump
     restart: always
+    environment:
+      AUTH_YANDEX_DISK: ${AUTH_YANDEX_DISK}
     depends_on:
       - db
     container_name: gladkix_api_prod
