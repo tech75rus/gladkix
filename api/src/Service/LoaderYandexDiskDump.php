@@ -1,7 +1,7 @@
 <?php
 
 $token = getenv('AUTH_YANDEX_DISK');
-$file = '/var/www/gladkix/dump/gladkix.sql';
+$file = '/var/www/dump/gladkix.sql';
 $path = '/Dump/';
 
 $ch = curl_init('https://cloud-api.yandex.net/v1/disk/resources/upload?path=' . urlencode($path . basename($file)) . '&overwrite=true');
