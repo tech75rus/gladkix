@@ -23,9 +23,13 @@ class TechnologyTagController extends AbstractController
     public function getTechnologyTags(TechnologyTagRepository $tagRepository): ?Response
     {
         $tags = $tagRepository->findAll();
-        return $this->json($tags, 201, [], [
+        $response =  $this->json($tags, 201, [], [
             'groups' => 'app'
         ]);
+
+        $response->setSharedMaxAge(3600);
+
+        return $response;
     }
 
     #[Route('/set-technology-tag', name: 'set-technology-tag', methods: ["POST"])]

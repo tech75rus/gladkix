@@ -31,6 +31,4 @@ if (empty($res['error'])) {
     if ($http_code == 201) {
         echo 'Файл успешно загружен.' . PHP_EOL;
     }
-} else {
-    print_r($res['error']);
 }
