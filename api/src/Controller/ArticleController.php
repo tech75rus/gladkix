@@ -31,16 +31,21 @@ class ArticleController extends AbstractController
         $tag = $request->headers->has('tags') ? $request->headers->get('tags') : '0';
         if ($tag === '0') {
             $articles = $this->articleRepository->findAll();
+            $response = $this->json($articles, 200, [], [
+                'groups' => 'app'
+            ]);
+            $response->setSharedMaxAge(3600);
+            return $response;
         } else {
             $tag = $this->tagRepository->find($tag);
             $articles = $tag->getArticles();
             if (count($articles) === 0) {
                 return new Response('Статьи не найдены', 404);
             }
+            return $this->json($articles, 200, [], [
+                'groups' => 'app'
+            ]);
         }
-        return $this->json($articles, 200, [], [
-            'groups' => 'app'
-        ]);
     }
 
     #[Route('/article/{id}', name: 'app_admin', methods: ["GET"])]
