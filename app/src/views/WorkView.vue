@@ -5,7 +5,7 @@
       <img src="../assets/images/random-color.png" alt="random color">
       <div class="description">
         <h2>Random Color</h2>
-        <p>Генерация слечайных цветов, с возможность сохранения каждого отдельно</p>
+        <p>Генерация слечайных цветов, с возможностью сохранения каждого отдельно</p>
       </div>
     </router-link>
   </div>
