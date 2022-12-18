@@ -134,7 +134,6 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: start;
-    border-radius: 10px;
     width: 100%;
     overflow: hidden;
     .header {
