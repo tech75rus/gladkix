@@ -2,7 +2,7 @@
   <div>
     <h2 class="head">Статьи</h2>
     <div class="tags shadow">
-      <span class="tag-active" @click="setTag(0, $event)">Все</span>
+      <span class="tag-active" @click="setTag(0, $event)">Все теги</span>
       <span
           @click="setTag(tag.id, $event)"
           v-for="tag in tags"
