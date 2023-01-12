@@ -1,11 +1,18 @@
 <template>
   <div class="home">
     <h1>Работы</h1>
-    <router-link to="/work/random-color" class="work show-menu-desktop" target="_blank">
+    <router-link to="/work/random-color" class="work shadow" target="_blank">
       <img src="../assets/images/random-color.png" alt="random color">
       <div class="description">
         <h2>Random Color</h2>
         <p>Генерация слечайных цветов, с возможностью сохранения каждого отдельно</p>
+      </div>
+    </router-link>
+    <router-link to="/work/slider" class="work shadow" target="_blank">
+      <img src="../assets/images/slider.png" alt="slider, слайдер">
+      <div class="description">
+        <h2>Slider</h2>
+        <p>Слайдер для изображений</p>
       </div>
     </router-link>
   </div>
