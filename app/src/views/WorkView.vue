@@ -8,7 +8,7 @@
         <p>Генерация слечайных цветов, с возможностью сохранения каждого отдельно</p>
       </div>
     </router-link>
-    <router-link to="/work/slider" class="work shadow" target="_blank">
+    <router-link to="/work/slider" class="work shadow">
       <img src="../assets/images/slider.png" alt="slider, слайдер">
       <div class="description">
         <h2>Slider</h2>
