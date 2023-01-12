@@ -63,6 +63,16 @@ const routes = [
       title: 'random-color'
     },
   },
+  {
+    path: '/work/slider',
+    name: 'slider',
+    component: function () {
+      return import('../views/work/Slider.vue')
+    },
+    meta: {
+      title: 'slider'
+    },
+  },
 ]
 
 const router = createRouter({

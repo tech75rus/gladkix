@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <h1>Работы</h1>
-    <router-link to="/work/random-color" class="work show-menu-desktop" target="_blank">
+    <router-link to="/work/random-color" class="work shadow" target="_blank">
       <img src="../assets/images/random-color.png" alt="random color">
       <div class="description">
         <h2>Random Color</h2>
