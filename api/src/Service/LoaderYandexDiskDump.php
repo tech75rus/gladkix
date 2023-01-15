@@ -1,9 +1,12 @@
 <?php
 
-$token = getenv('AUTH_YANDEX_DISK');
+$token = getenv('AUTH_YANDEX_DISK') ?? 'Нет ключа';
 $file = '/var/www/dump/gladkix.sql';
-$path = '/Dump/';
+$path = '/dump/';
 
+if (!file_exists($file)) {
+    return;
+}
 $ch = curl_init('https://cloud-api.yandex.net/v1/disk/resources/upload?path=' . urlencode($path . basename($file)) . '&overwrite=true');
 curl_setopt($ch, CURLOPT_HTTPHEADER, ['Authorization: OAuth ' . $token]);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

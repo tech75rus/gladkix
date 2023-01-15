@@ -18,6 +18,7 @@ services:
     working_dir: /var/www/api
     environment:
       DATABASE_URL: ${DATABASE_URL}
+      AUTH_YANDEX_DISK: ${AUTH_YANDEX_DISK}
     container_name: gladkix_api_dev
     entrypoint: ["/bin/sh", "/var/www/install.sh"]
 
@@ -33,10 +34,10 @@ services:
     volumes:
       - mysql:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: gladkix
+      MYSQL_USER: gladkix
+      MYSQL_PASSWORD: 123456
     container_name: gladkix_db_dev
 
   app:
