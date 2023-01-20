@@ -1,13 +1,16 @@
 button {
   outline: none;
   border: none;
-  border-radius: 25px;
+  border-radius: 5px;
   padding: 12px;
   margin-top: auto;
-  margin-bottom: 30px;
-  width: 80%;
-  background-color: #22222b;
+  background-color: #EE876022;
+  color: #EE8760;
   cursor: pointer;
   font-weight: bold;
   font-size: 14px;
+
+  &:hover {
+    background-color: #EE876033;
+  }
 }

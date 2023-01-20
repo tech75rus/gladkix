@@ -5,7 +5,7 @@ $file = '/var/www/dump/gladkix.sql';
 $path = '/dump/';
 
 if (!file_exists($file)) {
-    return;
+    return 'Файла не существует';
 }
 $ch = curl_init('https://cloud-api.yandex.net/v1/disk/resources/upload?path=' . urlencode($path . basename($file)) . '&overwrite=true');
 curl_setopt($ch, CURLOPT_HTTPHEADER, ['Authorization: OAuth ' . $token]);
