@@ -90,6 +90,9 @@ export default {
     },
   },
   async mounted() {
+    if (document.querySelector('.codex-editor')) {
+      document.querySelector('.codex-editor').remove();
+    }
     await this.getArticle();
     this.editor = new EditorJS({
       holder: 'editor',
