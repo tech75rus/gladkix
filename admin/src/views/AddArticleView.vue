@@ -75,7 +75,7 @@ export default {
       })
     },
     getEditor() {
-      window.editor =  new EditorJS({
+      new EditorJS({
         holder: 'editor',
         autofocus: true,
 //      readOnly: true,
