@@ -30,7 +30,6 @@ export default {
   data() {
     return {
       header: '',
-      editor: '',
       text: '',
       tags: '',
       selectedTags: [],
@@ -75,30 +74,34 @@ export default {
         this.tags = response.data;
       })
     },
-  },
-  mounted() {
-    this.editor = new EditorJS({
-      holder: 'editor',
-      autofocus: true,
+    getEditor() {
+      window.editor =  new EditorJS({
+        holder: 'editor',
+        autofocus: true,
 //      readOnly: true,
-      tools: {
-        header: {
-          class: Header,
-          inlineToolbar : false
-        },
-        image: {
-          class: Image,
-          config: {
-            endpoints: {
-              byFile: host + '/image-file', // Your backend file uploader endpoint
+        tools: {
+          header: {
+            class: Header,
+            inlineToolbar : false
+          },
+          image: {
+            class: Image,
+            config: {
+              endpoints: {
+                byFile: host + '/image-file', // Your backend file uploader endpoint
+              }
             }
+          },
+          raw: {
+            class: Raw
           }
         },
-        raw: {
-          class: Raw
-        }
-      },
-    });
+      });
+
+    }
+  },
+  mounted() {
+    this.getEditor();
     this.getTechnologyTags();
   },
 }
