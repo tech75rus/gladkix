@@ -99,10 +99,13 @@ export default {
       });
     }
   },
-  async mounted() {
-    await this.getEditor();
-    await this.getTechnologyTags();
-    this.$forceUpdate();
+   mounted() {
+    this.getEditor();
+    this.getTechnologyTags();
+    let renderEditor = document.querySelectorAll('.codex-editor');
+    if (renderEditor.length > 1) {
+      renderEditor[0].remove();
+    }
   },
 }
 </script>
