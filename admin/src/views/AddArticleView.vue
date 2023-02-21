@@ -99,9 +99,9 @@ export default {
       });
     }
   },
-   mounted() {
-    this.getEditor();
-    this.getTechnologyTags();
+  async mounted() {
+    await this.getEditor();
+    await this.getTechnologyTags();
     let renderEditor = document.querySelectorAll('.codex-editor');
     if (renderEditor.length > 1) {
       renderEditor[0].remove();
