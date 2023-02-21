@@ -97,12 +97,12 @@ export default {
           }
         },
       });
-
     }
   },
-  mounted() {
-    this.getEditor();
-    this.getTechnologyTags();
+  async mounted() {
+    await this.getEditor();
+    await this.getTechnologyTags();
+    this.$forceUpdate();
   },
 }
 </script>
