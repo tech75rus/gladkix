@@ -30,7 +30,6 @@ export default {
   data() {
     return {
       header: '',
-      editor: '',
       text: '',
       tags: '',
       selectedTags: [],
@@ -75,30 +74,36 @@ export default {
         this.tags = response.data;
       })
     },
-  },
-  mounted() {
-    this.editor = new EditorJS({
-      holder: 'editor',
-      autofocus: true,
+    getEditor() {
+      new EditorJS({
+        holder: 'editor',
+        autofocus: true,
 //      readOnly: true,
-      tools: {
-        header: {
-          class: Header,
-          inlineToolbar : false
-        },
-        image: {
-          class: Image,
-          config: {
-            endpoints: {
-              byFile: host + '/image-file', // Your backend file uploader endpoint
+        tools: {
+          header: {
+            class: Header,
+            inlineToolbar : false
+          },
+          image: {
+            class: Image,
+            config: {
+              endpoints: {
+                byFile: host + '/image-file', // Your backend file uploader endpoint
+              }
             }
+          },
+          raw: {
+            class: Raw
           }
         },
-        raw: {
-          class: Raw
-        }
-      },
-    });
+      });
+    }
+  },
+  mounted() {
+    if (document.querySelector('.codex-editor')) {
+      document.querySelector('.codex-editor').remove();
+    }
+    this.getEditor();
     this.getTechnologyTags();
   },
 }
