@@ -1,0 +1,10 @@
+# Environment
+.env
+.env.local
+
+# Logs
+logs/
+*.log
+
+# Docker
+.docker/
