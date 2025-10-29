@@ -7,11 +7,11 @@ down:
 ps:
 	docker compose ps -a
 
-exec nginx:
+exec-nginx:
 	docker compose exec nginx sh
 
-exec backend:
-	docker compose exec backend sh
+exec-backend:
+	docker compose exec backend bash
 
-exec db:
+exec-db:
 	docker compose exec db sh

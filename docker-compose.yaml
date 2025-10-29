@@ -4,6 +4,7 @@ services:
     ports: 
       - "80:80"
     volumes:
+      - ./portfolio/backend/public:/var/www/backend/public
       - ./docker/dev/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - db
@@ -17,7 +18,7 @@ services:
       context: ./
       dockerfile: ./docker/dev/backend/Dockerfile
     volumes:
-      - ./backend:/var/www/backend
+      - ./portfolio/backend:/var/www/backend
       - ./docker/dev/backend/php.ini:/usr/local/etc/php/php.ini
     restart: always
     container_name: gladkix_backend_dev
