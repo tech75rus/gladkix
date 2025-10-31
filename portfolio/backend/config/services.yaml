@@ -18,3 +18,16 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    # Кастомные репозитории
+    App\Article\Repository\ArticleRepository:
+        tags: ['doctrine.repository_service']
+        
+    # App\Project\Repository\ProjectRepository:
+    #     tags: ['doctrine.repository_service']
+        
+    # App\Category\Repository\CategoryRepository:
+    #     tags: ['doctrine.repository_service']
+        
+    # App\Tag\Repository\TagRepository:
+    #     tags: ['doctrine.repository_service']
