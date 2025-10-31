@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Entity;
+namespace App\Article\Entity;
 
-use App\Repository\ArticleRepository;
+use App\Article\Repository\ArticleRepository;
+use App\Category\Entity\Category;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Article
 {
     #[ORM\Id]
@@ -50,28 +52,24 @@ class Article
     private ?string $coverImage = null;
 
     #[ORM\Column(
-        default: 5,
         options: ['comment' => 'Оценочное время чтения статьи в минутах']
     )]
-    private ?int $readingTime = null;
+    private ?int $readingTime = 5;
 
     #[ORM\Column(
-        default: 0,
         options: ['comment' => 'Количество просмотров статьи']
     )]
-    private ?int $viewCount = null;
+    private ?int $viewCount = 0;
 
     #[ORM\Column(
-        default: false,
         options: ['comment' => 'Статус публикации статьи (опубликована или нет)']
     )]
-    private ?bool $isPublished = null;
+    private ?bool $isPublished = false;
 
     #[ORM\Column(
-        default: false,
         options: ['comment' => 'Является ли статья featured/рекомендованной']
     )]
-    private ?bool $isFeatured = null;
+    private ?bool $isFeatured = false;
 
     #[ORM\Column(
         length: 255, 
@@ -103,6 +101,9 @@ class Article
         options: ['comment' => 'Дата и время последнего обновления статьи']
     )]
     private ?\DateTimeImmutable $updateAt = null;
+
+    #[ORM\ManyToOne(inversedBy: 'Articles')]
+    private ?Category $category = null;
 
     public function getId(): ?int
     {
@@ -258,6 +259,7 @@ class Article
         return $this->createdAt;
     }
 
+    #[ORM\PrePersist]
     public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
         $this->createdAt = $createdAt;
@@ -270,9 +272,22 @@ class Article
         return $this->updateAt;
     }
 
+    #[ORM\PreUpdate]
     public function setUpdateAt(?\DateTimeImmutable $updateAt): static
     {
         $this->updateAt = $updateAt;
+
+        return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): static
+    {
+        $this->category = $category;
 
         return $this;
     }
