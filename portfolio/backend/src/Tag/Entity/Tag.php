@@ -3,6 +3,7 @@
 namespace App\Tag\Entity;
 
 use App\Article\Entity\Article;
+use App\Project\Entity\Project;
 use App\Tag\Repository\TagRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -43,9 +44,16 @@ class Tag
     #[ORM\ManyToMany(targetEntity: Article::class, inversedBy: 'tags')]
     private Collection $articles;
 
+    /**
+     * @var Collection<int, Project>
+     */
+    #[ORM\ManyToMany(targetEntity: Project::class, mappedBy: 'tags')]
+    private Collection $projects;
+
     public function __construct()
     {
         $this->articles = new ArrayCollection();
+        $this->projects = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -110,6 +118,33 @@ class Tag
     public function removeArticle(Article $article): static
     {
         $this->articles->removeElement($article);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Project>
+     */
+    public function getProjects(): Collection
+    {
+        return $this->projects;
+    }
+
+    public function addProject(Project $project): static
+    {
+        if (!$this->projects->contains($project)) {
+            $this->projects->add($project);
+            $project->addTag($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProject(Project $project): static
+    {
+        if ($this->projects->removeElement($project)) {
+            $project->removeTag($this);
+        }
 
         return $this;
     }
