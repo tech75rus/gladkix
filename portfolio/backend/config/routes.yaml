@@ -3,3 +3,19 @@
 #         path: ../src/Controller/
 #         namespace: App\Controller
 #     type: attribute
+
+categories:
+    resource: '../src/Category/Controller/'
+    type: attribute
+
+articles:
+    resource: '../src/Article/Controller/'
+    type: attribute
+
+tags:
+    resource: '../src/Tag/Controller/'
+    type: attribute
+
+projects:
+    resource: '../src/Project/Controller/'
+    type: attribute

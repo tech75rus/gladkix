@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Project\Dto;
+namespace App\Tag\Dto;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class CreateProjectDto
+class CreateTagDto
 {
     public function __construct(
         #[Assert\NotBlank(message: "Название тега обязательно")]

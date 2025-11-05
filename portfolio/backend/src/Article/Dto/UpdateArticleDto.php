@@ -30,6 +30,9 @@ class UpdateArticleDto
         #[Assert\Url(message: "URL обложки должен быть валидным")]
         public ?string $coverImage = null,
 
+        #[Assert\Positive(message: "Время чтения должно быть положительным числом")]
+        public int $readingTime = 1,
+
         #[Assert\Positive(message: "ID категории должен быть положительным числом")]
         public ?int $categoryId = null,
 
@@ -43,6 +46,9 @@ class UpdateArticleDto
 
         #[Assert\Type(type: 'bool', message: "Рекомендованная статья должна быть true или false")]
         public ?bool $isFeatured = null,
+
+        #[Assert\DateTime(message: "Дата публикации должна быть в формате Y-m-d H:i:s")]
+        public ?\DateTimeImmutable $publishedAt = null,
 
         #[Assert\Length(
             max: 255,

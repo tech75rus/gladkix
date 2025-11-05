@@ -85,13 +85,13 @@ class Tag
         return $this;
     }
 
-    public function getCreateAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createAt;
     }
 
     #[ORM\PrePersist]
-    public function setCreateAt(\DateTimeImmutable $createAt): static
+    public function setCreatedAt(\DateTimeImmutable $createAt): static
     {
         $this->createAt = $createAt;
 

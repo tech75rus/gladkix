@@ -15,6 +15,12 @@ class CreateArticleDto
             maxMessage: "Заголовок не может превышать {{ limit }} символов"
         )]
         public string $title,
+        
+        #[Assert\Length(
+            max: 500,
+            maxMessage: "Краткое описание не может превышать {{ limit }} символов"
+        )]
+        public ?string $excerpt = null,
 
         #[Assert\NotBlank(message: "Содержание статьи обязательно")]
         #[Assert\Length(
@@ -23,17 +29,14 @@ class CreateArticleDto
         )]
         public string $content,
 
-        #[Assert\Length(
-            max: 500,
-            maxMessage: "Краткое описание не может превышать {{ limit }} символов"
-        )]
-        public ?string $excerpt = null,
-
         #[Assert\Url(message: "URL обложки должен быть валидным")]
         public ?string $coverImage = null,
 
         #[Assert\Positive(message: "ID категории должен быть положительным числом")]
         public ?int $categoryId = null,
+
+        #[Assert\Positive(message: "Время чтения должно быть положительным числом")]
+        public int $readingTime = 5,
 
         #[Assert\All([
             new Assert\Positive(message: "Все ID тегов должны быть положительными числами")
@@ -45,6 +48,9 @@ class CreateArticleDto
 
         #[Assert\Type(type: 'bool', message: "Рекомендованная статья должна быть true или false")]
         public bool $isFeatured = false,
+
+        #[Assert\DateTime(message: "Дата публикации должна быть в формате Y-m-d H:i:s")]
+        public ?\DateTimeImmutable $publishedAt = null,
 
         #[Assert\Length(
             max: 255,

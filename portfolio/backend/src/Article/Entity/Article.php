@@ -281,13 +281,13 @@ class Article
         return $this;
     }
 
-    public function getUpdateAt(): ?\DateTimeImmutable
+    public function getUpdatedAt(): ?\DateTimeImmutable
     {
         return $this->updateAt;
     }
 
     #[ORM\PreUpdate]
-    public function setUpdateAt(?\DateTimeImmutable $updateAt): static
+    public function setUpdatedAt(?\DateTimeImmutable $updateAt): static
     {
         $this->updateAt = $updateAt;
 
