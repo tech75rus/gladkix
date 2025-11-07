@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Exception\MissingConstructorArgumentsException;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -61,6 +62,17 @@ class CategoryController extends AbstractController
                 'category' => $this->serializeCategory($category)
             ], Response::HTTP_CREATED);
 
+        } catch(MissingConstructorArgumentsException $e) {
+            $missingFields = $e->getMissingConstructorArguments();
+            
+            return $this->json([
+                'success' => false,
+                'message' => 'Отсутствуют обязательные поля',
+                'missingFields' => $missingFields,
+                'requiredFields' => [
+                    'name'
+                ]
+            ], Response::HTTP_BAD_REQUEST);
         } catch (\InvalidArgumentException $e) {
             return $this->json(
                 ['error' => $e->getMessage()], 

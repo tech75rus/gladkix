@@ -257,11 +257,9 @@ class Category
     }
 
     #[ORM\PrePersist]
-    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    public function setCreatedAt(): void
     {
-        $this->createdAt = $createdAt;
-
-        return $this;
+        $this->createdAt = new \DateTimeImmutable();
     }
 
     public function getUpdatedAt(): ?\DateTimeImmutable
@@ -270,11 +268,9 @@ class Category
     }
 
     #[ORM\PreUpdate]
-    public function setUpdatedAt(?\DateTimeImmutable $updateAt): static
+    public function setUpdatedAt(): void
     {
-        $this->updateAt = $updateAt;
-
-        return $this;
+        $this->updateAt = new \DateTimeImmutable();
     }
 
     /**
