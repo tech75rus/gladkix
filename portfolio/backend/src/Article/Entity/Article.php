@@ -177,7 +177,7 @@ class Article
         return $this->coverImage;
     }
 
-    public function setCoverImage(string $coverImage): static
+    public function setCoverImage(?string $coverImage): static
     {
         $this->coverImage = $coverImage;
 
@@ -274,11 +274,9 @@ class Article
     }
 
     #[ORM\PrePersist]
-    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    public function setCreatedAt(): void
     {
-        $this->createdAt = $createdAt;
-
-        return $this;
+        $this->createdAt = new \DateTimeImmutable();
     }
 
     public function getUpdatedAt(): ?\DateTimeImmutable
@@ -287,11 +285,9 @@ class Article
     }
 
     #[ORM\PreUpdate]
-    public function setUpdatedAt(?\DateTimeImmutable $updateAt): static
+    public function setUpdatedAt(): void
     {
-        $this->updateAt = $updateAt;
-
-        return $this;
+        $this->updateAt = new \DateTimeImmutable();
     }
 
     public function getCategory(): ?Category

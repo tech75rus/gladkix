@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Exception\MissingConstructorArgumentsException;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -42,15 +43,24 @@ class ArticleController extends AbstractController
                 CreateArticleDto::class,
                 'json'
             );
-
             $errors = $this->validator->validate($createDto);
             if (count($errors) > 0) {
-                return $this->json(
-                    ['errors' => (string)$errors], 
-                    Response::HTTP_BAD_REQUEST
-                );
+                $errorMessages = [];
+                
+                foreach ($errors as $error) {
+                    $fieldName = $error->getPropertyPath();
+                    $message = $error->getMessage();
+                    
+                    $errorMessages[$fieldName] = $message;
+                }
+                
+                return $this->json([
+                    'success' => false,
+                    'message' => 'Ошибки валидации',
+                    'errors' => $errorMessages
+                ], Response::HTTP_BAD_REQUEST);
             }
-
+            
             $article = $this->articleFactory->createFromDto($createDto);
 
             $this->articleRepository->save($article, true);
@@ -59,13 +69,25 @@ class ArticleController extends AbstractController
                 'message' => 'Статья успешно создана',
                 'article' => $this->serializeArticle($article)
             ], Response::HTTP_CREATED);
-
         } catch (\InvalidArgumentException $e) {
             return $this->json(
                 ['error' => $e->getMessage()], 
                 Response::HTTP_BAD_REQUEST
             );
+        } catch(MissingConstructorArgumentsException $e) {
+            $missingFields = $e->getMissingConstructorArguments();
+            
+            return $this->json([
+                'success' => false,
+                'message' => 'Отсутствуют обязательные поля',
+                'missingFields' => $missingFields,
+                'requiredFields' => [
+                    'title',
+                    'content'
+                ]
+            ], Response::HTTP_BAD_REQUEST);
         } catch (\Exception $e) {
+            dd($e);
             return $this->json(
                 ['error' => 'Внутренняя ошибка сервера'], 
                 Response::HTTP_INTERNAL_SERVER_ERROR
@@ -204,11 +226,11 @@ class ArticleController extends AbstractController
             'publishedAt' => $article->getPublishedAt()?->format('Y-m-d H:i:s'),
             'createdAt' => $article->getCreatedAt()?->format('Y-m-d H:i:s'),
             'updatedAt' => $article->getUpdatedAt()?->format('Y-m-d H:i:s'),
-            'category' => [
+            'category' => $article->getCategory() ? [
                 'id' => $article->getCategory()->getId(),
                 'name' => $article->getCategory()->getName(),
                 'slug' => $article->getCategory()->getSlug()
-            ],
+            ] : null,
             'tags' => array_map(function ($tag) {
                 return [
                     'id' => $tag->getId(),

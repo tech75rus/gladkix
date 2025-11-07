@@ -34,11 +34,13 @@ class ArticleFactory
         $article->setMetaTitle($dto->metaTitle);
         $article->setMetaDescription($dto->metaDescription);
 
-        $category = $this->categoryRepository->find($dto->categoryId);
-        if (!$category) {
-            throw new \InvalidArgumentException("Категория с ID {$dto->categoryId} не найдена");
+        if ($dto->categoryId !== null) {
+            $category = $this->categoryRepository->find($dto->categoryId);
+            if (!$category) {
+                throw new \InvalidArgumentException("Категория с ID {$dto->categoryId} не найдена");
+            }
+            $article->setCategory($category);
         }
-        $article->setCategory($category);
 
         foreach ($dto->tagIds as $tagId) {
             $tag = $this->tagRepository->find($tagId);

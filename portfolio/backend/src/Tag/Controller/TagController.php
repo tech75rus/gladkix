@@ -1,7 +1,6 @@
 <?php
-// src/Api/Controller/TagController.php
 
-namespace App\Api\Controller;
+namespace App\Tag\Controller;
 
 use App\Tag\Dto\CreateTagDto;
 use App\Tag\Dto\UpdateTagDto;

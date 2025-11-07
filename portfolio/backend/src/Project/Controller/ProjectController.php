@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Api\Controller;
+namespace App\Project\Controller;
 
 use App\Project\Dto\CreateProjectDto;
 use App\Project\Dto\UpdateProjectDto;
