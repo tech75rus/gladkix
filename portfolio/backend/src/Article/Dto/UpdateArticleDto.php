@@ -30,9 +30,6 @@ class UpdateArticleDto
         #[Assert\Url(message: "URL обложки должен быть валидным")]
         public ?string $coverImage = null,
 
-        #[Assert\Positive(message: "Время чтения должно быть положительным числом")]
-        public int $readingTime = 1,
-
         #[Assert\Positive(message: "ID категории должен быть положительным числом")]
         public ?int $categoryId = null,
 

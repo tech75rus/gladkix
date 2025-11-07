@@ -28,7 +28,7 @@ class ArticleFactory
         $article->setExcerpt($dto->excerpt);
         $article->setContent($dto->content);
         $article->setCoverImage($dto->coverImage);
-        $article->setReadingTime($dto->readingTime);
+        $article->setReadingTime($this->calculateReadingTime($dto->content));
         $article->setIsPublished($dto->isPublished);
         $article->setIsFeatured($dto->isFeatured);
         $article->setMetaTitle($dto->metaTitle);
@@ -66,23 +66,20 @@ class ArticleFactory
             $article->setTitle($dto->title);
             $article->setSlug($this->slugger->slug($dto->title)->lower());
         }
-        
+
         if ($dto->excerpt !== null) {
             $article->setExcerpt($dto->excerpt);
         }
-        
+
         if ($dto->content !== null) {
             $article->setContent($dto->content);
+            $article->setReadingTime($this->calculateReadingTime($dto->content));
         }
-        
+
         if ($dto->coverImage !== null) {
             $article->setCoverImage($dto->coverImage);
         }
-        
-        if ($dto->readingTime !== null) {
-            $article->setReadingTime($dto->readingTime);
-        }
-        
+
         if ($dto->isPublished !== null) {
             $article->setIsPublished($dto->isPublished);
             // Если статья публикуется впервые - устанавливаем дату публикации
@@ -90,24 +87,24 @@ class ArticleFactory
                 $article->setPublishedAt(new \DateTimeImmutable());
             }
         }
-        
+
         if ($dto->isFeatured !== null) {
             $article->setIsFeatured($dto->isFeatured);
         }
-        
+
         if ($dto->metaTitle !== null) {
             $article->setMetaTitle($dto->metaTitle);
         }
-        
+
         if ($dto->metaDescription !== null) {
             $article->setMetaDescription($dto->metaDescription);
         }
-        
+
         if ($dto->publishedAt !== null) {
             $article->setPublishedAt($dto->publishedAt);
         }
-        
-        // ✅ ОБНОВЛЕНИЕ КАТЕГОРИИ
+
+        // ОБНОВЛЕНИЕ КАТЕГОРИИ
         if ($dto->categoryId !== null) {
             $category = $this->categoryRepository->find($dto->categoryId);
             if (!$category) {
@@ -115,8 +112,8 @@ class ArticleFactory
             }
             $article->setCategory($category);
         }
-        
-        // ✅ ОБНОВЛЕНИЕ ТЕГОВ
+
+        // ОБНОВЛЕНИЕ ТЕГОВ
         if ($dto->tagIds !== null) {
             // Очищаем текущие теги
             foreach ($article->getTags() as $tag) {
@@ -131,8 +128,6 @@ class ArticleFactory
                 }
             }
         }
-        
-        // updated_at обновится автоматически через @ORM\PreUpdate
     }
 
     /**
@@ -146,7 +141,6 @@ class ArticleFactory
             content: $content,
             categoryId: $categoryId,
             tagIds: [],
-            readingTime: $this->calculateReadingTime($content),
             isPublished: false,
             isFeatured: false
         );

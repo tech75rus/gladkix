@@ -35,9 +35,6 @@ class CreateArticleDto
         #[Assert\Positive(message: "ID категории должен быть положительным числом")]
         public ?int $categoryId = null,
 
-        #[Assert\Positive(message: "Время чтения должно быть положительным числом")]
-        public int $readingTime = 5,
-
         #[Assert\All([
             new Assert\Positive(message: "Все ID тегов должны быть положительными числами")
         ])]

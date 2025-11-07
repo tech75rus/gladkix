@@ -18,7 +18,6 @@ use Symfony\Component\Serializer\Exception\MissingConstructorArgumentsException;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-#[AutoconfigureTag('controller.service_arguments')]
 #[Route('/api/articles')]
 class ArticleController extends AbstractController
 {
@@ -122,7 +121,6 @@ class ArticleController extends AbstractController
     public function update(int $id, Request $request): JsonResponse
     {
         try {
-            // 1. ПОИСК СУЩНОСТИ
             $article = $this->articleRepository->find($id);
             if (!$article) {
                 return $this->json(
@@ -131,7 +129,6 @@ class ArticleController extends AbstractController
                 );
             }
 
-            // 2. ДЕСЕРИАЛИЗАЦИЯ JSON → DTO
             /** @var UpdateArticleDto $updateDto */
             $updateDto = $this->serializer->deserialize(
                 $request->getContent(),
@@ -139,7 +136,6 @@ class ArticleController extends AbstractController
                 'json'
             );
 
-            // 3. ВАЛИДАЦИЯ DTO
             $errors = $this->validator->validate($updateDto);
             if (count($errors) > 0) {
                 return $this->json(
@@ -148,10 +144,8 @@ class ArticleController extends AbstractController
                 );
             }
 
-            // 4. ОБНОВЛЕНИЕ СУЩНОСТИ через ФАБРИКУ
             $this->articleFactory->updateFromDto($article, $updateDto);
 
-            // 5. СОХРАНЕНИЕ ИЗМЕНЕНИЙ
             $this->articleRepository->save($article, true);
 
             return $this->json([
