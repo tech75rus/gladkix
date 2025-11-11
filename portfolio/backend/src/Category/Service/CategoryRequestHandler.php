@@ -1,5 +1,4 @@
 <?php
-// src/Category/Service/CategoryRequestHandler.php
 
 namespace App\Category\Service;
 
@@ -64,15 +63,15 @@ class CategoryRequestHandler
                 UpdateCategoryDto::class,
                 'json'
             );
-
+            
             // Валидация DTO
             $errors = $this->validator->validate($updateDto);
             if (count($errors) > 0) {
                 return CategoryUpdateResult::validationFailed($errors);
             }
-
+            
             return $this->categoryService->updateCategory($id, $updateDto);
-
+            
         } catch (MissingConstructorArgumentsException $e) {
             return CategoryUpdateResult::missingFields($e->getMissingConstructorArguments());
         } catch (\Exception $e) {

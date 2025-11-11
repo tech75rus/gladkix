@@ -1,9 +1,7 @@
 <?php
-// src/Category/Controller/CategoryController.php
 
 namespace App\Category\Controller;
 
-use App\Category\Dto\UpdateCategoryDto;
 use App\Category\Entity\Category;
 use App\Category\Factory\CategoryFactory;
 use App\Category\Repository\CategoryRepository;
@@ -98,32 +96,17 @@ class CategoryController extends AbstractController
     #[Route('/{id}', name: 'category_update', methods: ['PUT'])]
     public function update(int $id, Request $request): JsonResponse
     {
-        try {
-            /** @var UpdateCategoryDto $updateDto */
-            $updateDto = $this->serializer->deserialize(
-                $request->getContent(),
-                UpdateCategoryDto::class,
-                'json'
-            );
+        $result = $this->categoryRequestHandler->handleUpdateRequest($id, $request);
 
-            $result = $this->categoryService->updateCategory($id, $updateDto);
-
-            if ($result->isSuccess()) {
-                return $this->json([
-                    'success' => true,
-                    'message' => 'Категория успешно обновлена',
-                    'category' => $this->serializeCategory($result->getCategory())
-                ]);
-            }
-
-            return $this->handleErrorResult($result);
-
-        } catch (\Exception $e) {
+        if ($result->isSuccess()) {
             return $this->json([
-                'success' => false,
-                'error' => 'Внутренняя ошибка сервера'
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+                'success' => true,
+                'message' => 'Категория успешно обновлена',
+                'category' => $this->serializeCategory($result->getCategory())
+            ]);
         }
+
+        return $this->handleErrorResult($result);
     }
 
     /**
