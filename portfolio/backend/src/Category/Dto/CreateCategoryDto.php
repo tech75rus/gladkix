@@ -23,7 +23,7 @@ class CreateCategoryDto
         public ?string $description = null,
 
         #[Assert\Regex(
-            pattern: '\/^#[0-9A-Fa-f]{6}$\/',
+            pattern: '/^#[0-9A-Fa-f]{6}$/',
             message: "Цвет должен быть в HEX формате (#FFFFFF)"
         )]
         public ?string $color = null,

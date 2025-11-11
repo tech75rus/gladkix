@@ -3,7 +3,6 @@
 
 namespace App\Category\Controller;
 
-use App\Category\Dto\CreateCategoryDto;
 use App\Category\Dto\UpdateCategoryDto;
 use App\Category\Entity\Category;
 use App\Category\Factory\CategoryFactory;
@@ -15,9 +14,10 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\Exception\MissingConstructorArgumentsException;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use App\Category\Service\CategoryService;
+use App\Category\Service\CategoryRequestHandler;
 
 #[AutoconfigureTag('controller.service_arguments')]
 #[Route('/api/categories')]
@@ -26,9 +26,11 @@ class CategoryController extends AbstractController
     public function __construct(
         private CategoryRepository $categoryRepository,
         private CategoryFactory $categoryFactory,
+        private CategoryService $categoryService,
         private EntityManagerInterface $entityManager,
         private SerializerInterface $serializer,
-        private ValidatorInterface $validator
+        private ValidatorInterface $validator,
+        private CategoryRequestHandler $categoryRequestHandler
     ) {}
 
     /**
@@ -37,53 +39,17 @@ class CategoryController extends AbstractController
     #[Route('', name: 'category_create', methods: ['POST'])]
     public function create(Request $request): JsonResponse
     {
-        try {
-            /** @var CreateCategoryDto $createDto */
-            $createDto = $this->serializer->deserialize(
-                $request->getContent(),
-                CreateCategoryDto::class,
-                'json'
-            );
+        $result = $this->categoryRequestHandler->handleCreateRequest($request);
 
-            $errors = $this->validator->validate($createDto);
-            if (count($errors) > 0) {
-                return $this->json(
-                    ['errors' => (string)$errors], 
-                    Response::HTTP_BAD_REQUEST
-                );
-            }
-
-            $category = $this->categoryFactory->createFromDto($createDto);
-
-            $this->categoryRepository->save($category, true);
-
+        if ($result->isSuccess()) {
             return $this->json([
+                'success' => true,
                 'message' => 'Категория успешно создана',
-                'category' => $this->serializeCategory($category)
+                'category' => $this->serializeCategory($result->getCategory())
             ], Response::HTTP_CREATED);
-
-        } catch(MissingConstructorArgumentsException $e) {
-            $missingFields = $e->getMissingConstructorArguments();
-            
-            return $this->json([
-                'success' => false,
-                'message' => 'Отсутствуют обязательные поля',
-                'missingFields' => $missingFields,
-                'requiredFields' => [
-                    'name'
-                ]
-            ], Response::HTTP_BAD_REQUEST);
-        } catch (\InvalidArgumentException $e) {
-            return $this->json(
-                ['error' => $e->getMessage()], 
-                Response::HTTP_BAD_REQUEST
-            );
-        } catch (\Exception $e) {
-            return $this->json(
-                ['error' => 'Внутренняя ошибка сервера'], 
-                Response::HTTP_INTERNAL_SERVER_ERROR
-            );
         }
+
+        return $this->handleErrorResult($result);
     }
 
     /**
@@ -133,15 +99,6 @@ class CategoryController extends AbstractController
     public function update(int $id, Request $request): JsonResponse
     {
         try {
-
-            $category = $this->categoryRepository->find($id);
-            if (!$category) {
-                return $this->json(
-                    ['error' => 'Категория не найдена'], 
-                    Response::HTTP_NOT_FOUND
-                );
-            }
-
             /** @var UpdateCategoryDto $updateDto */
             $updateDto = $this->serializer->deserialize(
                 $request->getContent(),
@@ -149,33 +106,23 @@ class CategoryController extends AbstractController
                 'json'
             );
 
-            $errors = $this->validator->validate($updateDto);
-            if (count($errors) > 0) {
-                return $this->json(
-                    ['errors' => (string)$errors], 
-                    Response::HTTP_BAD_REQUEST
-                );
+            $result = $this->categoryService->updateCategory($id, $updateDto);
+
+            if ($result->isSuccess()) {
+                return $this->json([
+                    'success' => true,
+                    'message' => 'Категория успешно обновлена',
+                    'category' => $this->serializeCategory($result->getCategory())
+                ]);
             }
 
-            $this->categoryFactory->updateFromDto($category, $updateDto);
+            return $this->handleErrorResult($result);
 
-            $this->categoryRepository->save($category, true);
-
-            return $this->json([
-                'message' => 'Категория успешно обновлена',
-                'category' => $this->serializeCategory($category)
-            ]);
-
-        } catch (\InvalidArgumentException $e) {
-            return $this->json(
-                ['error' => $e->getMessage()], 
-                Response::HTTP_BAD_REQUEST
-            );
         } catch (\Exception $e) {
-            return $this->json(
-                ['error' => 'Внутренняя ошибка сервера'], 
-                Response::HTTP_INTERNAL_SERVER_ERROR
-            );
+            return $this->json([
+                'success' => false,
+                'error' => 'Внутренняя ошибка сервера'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -272,5 +219,29 @@ class CategoryController extends AbstractController
             'isVisible' => $category->isVisible(),
             'itemCount' => $category->getItemCount()
         ];
+    }
+
+    /**
+     * Обработка ошибок из сервиса
+     */
+    private function handleErrorResult($result): JsonResponse
+    {
+        $errorData = [
+            'success' => false,
+            'error' => $result->getError()
+        ];
+
+        if ($result->getErrorDetails()) {
+            $errorData['details'] = $result->getErrorDetails();
+        }
+
+        $statusCode = match($result->getError()) {
+            'Category not found' => Response::HTTP_NOT_FOUND,
+            'Category with this name already exists' => Response::HTTP_CONFLICT,
+            'Validation failed' => Response::HTTP_BAD_REQUEST,
+            default => Response::HTTP_BAD_REQUEST
+        };
+
+        return $this->json($errorData, $statusCode);
     }
 }
