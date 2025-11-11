@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class UpdateCategoryDto
 {
     public function __construct(
-        // ✅ Все поля опциональны для обновления
+        // Все поля опциональны для обновления
         #[Assert\Length(
             min: 2,
             max: 100,

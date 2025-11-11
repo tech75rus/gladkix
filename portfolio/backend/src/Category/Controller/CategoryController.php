@@ -237,7 +237,7 @@ class CategoryController extends AbstractController
 
         $statusCode = match($result->getError()) {
             'Category not found' => Response::HTTP_NOT_FOUND,
-            'Category with this name already exists' => Response::HTTP_CONFLICT,
+            'Категория с таким названием уже существует' => Response::HTTP_CONFLICT,
             'Validation failed' => Response::HTTP_BAD_REQUEST,
             default => Response::HTTP_BAD_REQUEST
         };

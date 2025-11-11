@@ -33,7 +33,7 @@ class CategoryCreationResult
 
     public static function duplicateName(string $name, Category $existingCategory): self
     {
-        return new self(false, null, 'Category with this name already exists', [
+        return new self(false, null, 'Категория с таким названием уже существует', [
             'field' => 'name',
             'value' => $name,
             'existing_category_id' => $existingCategory->getId()

@@ -32,7 +32,7 @@ class CategoryUpdateResult
 
     public static function duplicateName(string $name): self
     {
-        return new self(false, null, 'Category with this name already exists', [
+        return new self(false, null, 'Категория с таким названием уже существует', [
             'field' => 'name',
             'value' => $name
         ]);
