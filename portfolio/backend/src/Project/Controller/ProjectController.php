@@ -94,50 +94,17 @@ class ProjectController extends AbstractController
     #[Route('/{id}', name: 'api_project_update', methods: ['PUT'])]
     public function update(int $id, Request $request): JsonResponse
     {
-        try {
-            $project = $this->projectRepository->find($id);
-            if (!$project) {
-                return $this->json(
-                    ['error' => 'Проект не найден'], 
-                    Response::HTTP_NOT_FOUND
-                );
-            }
+        $result = $this->projectRequestHandler->handleUpdateRequest($id, $request);
 
-            /** @var UpdateProjectDto $updateDto */
-            $updateDto = $this->serializer->deserialize(
-                $request->getContent(),
-                UpdateProjectDto::class,
-                'json'
-            );
-
-            $errors = $this->validator->validate($updateDto);
-            if (count($errors) > 0) {
-                return $this->json(
-                    ['errors' => (string)$errors], 
-                    Response::HTTP_BAD_REQUEST
-                );
-            }
-
-            $this->projectFactory->updateFromDto($project, $updateDto);
-
-            $this->projectRepository->save($project, true);
-
+        if ($result->isSuccess()) {
             return $this->json([
-                'message' => 'Проект успешно обновлен',
-                'project' => $this->serializeProject($project)
-            ]);
-
-        } catch (\InvalidArgumentException $e) {
-            return $this->json(
-                ['error' => $e->getMessage()], 
-                Response::HTTP_BAD_REQUEST
-            );
-        } catch (\Exception $e) {
-            return $this->json(
-                ['error' => 'Внутренняя ошибка сервера'], 
-                Response::HTTP_INTERNAL_SERVER_ERROR
-            );
+                'success' => true,
+                'message' => 'Категория успешно обновлена',
+                'category' => $this->serializeProject($result->getProject())
+            ], Response::HTTP_CREATED);
         }
+
+        return $this->handleErrorResult($result);
     }
 
     /**
