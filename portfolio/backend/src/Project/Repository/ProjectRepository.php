@@ -25,6 +25,15 @@ class ProjectRepository extends ServiceEntityRepository
             }
     }
 
+    public function remove(Project $project, bool $flush = false): void
+    {
+            $this->getEntityManager()->remove($project);
+
+            if ($flush) {
+                $this->getEntityManager()->flush();
+            }
+    }
+
     //    /**
     //     * @return Project[] Returns an array of Project objects
     //     */
