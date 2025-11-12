@@ -70,7 +70,7 @@ class ProjectCreationResult
 
     // Геттеры
     public function isSuccess(): bool { return $this->success; }
-    public function getCategory(): ?Project { return $this->project; }
+    public function getProject(): ?Project { return $this->project; }
     public function getError(): ?string { return $this->error; }
     public function getErrorDetails(): ?array { return $this->errorDetails; }
     public function getValidationErrors(): ?ConstraintViolationListInterface { return $this->validationErrors; }

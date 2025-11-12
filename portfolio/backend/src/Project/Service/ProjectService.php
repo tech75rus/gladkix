@@ -24,7 +24,7 @@ class ProjectService
     public function createProject(CreateProjectDto $dto): ProjectCreationResult
     {
         // Проверка уникальности имени
-        $existingProject = $this->projectRepository->findOneBy(['name' => $dto->title]);
+        $existingProject = $this->projectRepository->findOneBy(['title' => $dto->title]);
         if ($existingProject) {
             return ProjectCreationResult::duplicateName($dto->title, $existingProject);
         }
