@@ -150,7 +150,7 @@ class ProjectController extends AbstractController
         );
 
         return $this->json([
-            'projects' => array_map([$this, 'serializeProjectForList'], $projects)
+            'projects' => array_map([$this, 'serializeProject'], $projects)
         ]);
     }
 
@@ -175,7 +175,7 @@ class ProjectController extends AbstractController
         return $this->json([
             'status' => $status,
             'count' => count($projects),
-            'projects' => array_map([$this, 'serializeProjectForList'], $projects)
+            'projects' => array_map([$this, 'serializeProject'], $projects)
         ]);
     }
 
