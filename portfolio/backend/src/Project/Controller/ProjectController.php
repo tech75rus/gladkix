@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use App\Project\Service\ProjectRequestHandler;
 
 #[Route('/api/projects')]
 class ProjectController extends AbstractController
@@ -24,7 +25,8 @@ class ProjectController extends AbstractController
         private ProjectFactory $projectFactory,
         private EntityManagerInterface $entityManager,
         private SerializerInterface $serializer,
-        private ValidatorInterface $validator
+        private ValidatorInterface $validator,
+        private ProjectRequestHandler $projectRequestHandler
     ) {}
 
     /**
@@ -33,42 +35,17 @@ class ProjectController extends AbstractController
     #[Route('', name: 'api_project_create', methods: ['POST'])]
     public function create(Request $request): JsonResponse
     {
-        try {
-            /** @var CreateProjectDto $createDto */
-            $createDto = $this->serializer->deserialize(
-                $request->getContent(),
-                CreateProjectDto::class,
-                'json'
-            );
+        $result = $this->projectRequestHandler->handleCreateRequest($request);
 
-            $errors = $this->validator->validate($createDto);
-            if (count($errors) > 0) {
-                return $this->json(
-                    ['errors' => (string)$errors], 
-                    Response::HTTP_BAD_REQUEST
-                );
-            }
-
-            $project = $this->projectFactory->createFromDto($createDto);
-
-            $this->projectRepository->save($project, true);
-
+        if ($result->isSuccess()) {
             return $this->json([
-                'message' => 'Проект успешно создан',
-                'project' => $this->serializeProject($project)
+                'success' => true,
+                'message' => 'Категория успешно создана',
+                'category' => $this->serializeProject($result->getProject())
             ], Response::HTTP_CREATED);
-
-        } catch (\InvalidArgumentException $e) {
-            return $this->json(
-                ['error' => $e->getMessage()], 
-                Response::HTTP_BAD_REQUEST
-            );
-        } catch (\Exception $e) {
-            return $this->json(
-                ['error' => 'Внутренняя ошибка сервера'], 
-                Response::HTTP_INTERNAL_SERVER_ERROR
-            );
         }
+
+        return $this->handleErrorResult($result);
     }
 
     /**
@@ -264,31 +241,6 @@ class ProjectController extends AbstractController
     }
 
     /**
-     * Сериализация проекта для списка
-     */
-    private function serializeProjectForList(Project $project): array
-    {
-        return [
-            'id' => $project->getId(),
-            'title' => $project->getTitle(),
-            'slug' => $project->getSlug(),
-            'description' => $project->getDescription(),
-            'coverImage' => $project->getCoverImage(),
-            'projectUrl' => $project->getProjectUrl(),
-            'githubUrl' => $project->getGithubUrl(),
-            'status' => $project->getStatus(),
-            'statusLabel' => $this->getStatusLabel($project->getStatus()),
-            'createdAt' => $project->getCreatedAt()?->format('Y-m-d H:i:s'),
-            'tags' => array_map(function ($tag) {
-                return [
-                    'id' => $tag->getId(),
-                    'name' => $tag->getName()
-                ];
-            }, $project->getTags()->toArray())
-        ];
-    }
-
-    /**
      * Получить читабельное название статуса
      */
     private function getStatusLabel(string $status): string
@@ -300,5 +252,29 @@ class ProjectController extends AbstractController
         ];
 
         return $labels[$status] ?? $status;
+    }
+
+    /**
+     * Обработка ошибок из сервиса
+     */
+    private function handleErrorResult($result): JsonResponse
+    {
+        $errorData = [
+            'success' => false,
+            'error' => $result->getError()
+        ];
+
+        if ($result->getErrorDetails()) {
+            $errorData['details'] = $result->getErrorDetails();
+        }
+
+        $statusCode = match($result->getError()) {
+            'Category not found' => Response::HTTP_NOT_FOUND,
+            'Категория с таким названием уже существует' => Response::HTTP_CONFLICT,
+            'Validation failed' => Response::HTTP_BAD_REQUEST,
+            default => Response::HTTP_BAD_REQUEST
+        };
+
+        return $this->json($errorData, $statusCode);
     }
 }
