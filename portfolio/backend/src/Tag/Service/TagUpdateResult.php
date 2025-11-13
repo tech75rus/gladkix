@@ -1,27 +1,27 @@
 <?php
 
-namespace App\Project\Service;
+namespace App\Tag\Service;
 
-use App\Project\Entity\Project;
+use App\Tag\Entity\Tag;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
-class ProjectUpdateResult
+class TagUpdateResult
 {
     public function __construct(
         private bool $success,
-        private ?Project $project = null,
+        private ?Tag $tag = null,
         private ?string $error = null,
         private ?array $errorDetails = null
     ) {}
 
-    public static function success(Project $project): self
+    public static function success(Tag $tag): self
     {
-        return new self(true, $project);
+        return new self(true, $tag);
     }
 
     public static function notFound(): self
     {
-        return new self(false, null, 'Project not found');
+        return new self(false, null, 'Tag not found');
     }
 
     public static function validationFailed(ConstraintViolationListInterface $errors): self
@@ -61,7 +61,7 @@ class ProjectUpdateResult
 
     // Геттеры
     public function isSuccess(): bool { return $this->success; }
-    public function getProject(): ?Project { return $this->project; }
+    public function getTag(): ?Tag { return $this->tag; }
     public function getError(): ?string { return $this->error; }
     public function getErrorDetails(): ?array { return $this->errorDetails; }
 }
