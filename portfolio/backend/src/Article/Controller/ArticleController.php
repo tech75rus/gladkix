@@ -2,18 +2,16 @@
 
 namespace App\Article\Controller;
 
-use App\Article\Dto\CreateArticleDto;
-use App\Article\Dto\UpdateArticleDto;
 use App\Article\Entity\Article;
 use App\Article\Factory\ArticleFactory;
 use App\Article\Repository\ArticleRepository;
+use App\Article\Service\ArticleRequestHandler;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\Exception\MissingConstructorArgumentsException;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -25,7 +23,8 @@ class ArticleController extends AbstractController
         private ArticleFactory $articleFactory,
         private EntityManagerInterface $entityManager,
         private SerializerInterface $serializer,
-        private ValidatorInterface $validator
+        private ValidatorInterface $validator,
+        private ArticleRequestHandler $articleRequestHandler
     ) {}
 
     /**
@@ -34,63 +33,17 @@ class ArticleController extends AbstractController
     #[Route('', name: 'article_create', methods: ['POST'])]
     public function create(Request $request): JsonResponse
     {
-        try {
-            /** @var CreateArticleDto $createDto */
-            $createDto = $this->serializer->deserialize(
-                $request->getContent(),
-                CreateArticleDto::class,
-                'json'
-            );
-            $errors = $this->validator->validate($createDto);
-            if (count($errors) > 0) {
-                $errorMessages = [];
-                
-                foreach ($errors as $error) {
-                    $fieldName = $error->getPropertyPath();
-                    $message = $error->getMessage();
-                    
-                    $errorMessages[$fieldName] = $message;
-                }
-                
-                return $this->json([
-                    'success' => false,
-                    'message' => 'Ошибки валидации',
-                    'errors' => $errorMessages
-                ], Response::HTTP_BAD_REQUEST);
-            }
-            
-            $article = $this->articleFactory->createFromDto($createDto);
+        $result = $this->articleRequestHandler->handleCreateRequest($request);
 
-            $this->articleRepository->save($article, true);
-
+        if ($result->isSuccess()) {
             return $this->json([
+                'success' => true,
                 'message' => 'Статья успешно создана',
-                'article' => $this->serializeArticle($article)
-            ], Response::HTTP_CREATED);
-        } catch (\InvalidArgumentException $e) {
-            return $this->json(
-                ['error' => $e->getMessage()], 
-                Response::HTTP_BAD_REQUEST
-            );
-        } catch(MissingConstructorArgumentsException $e) {
-            $missingFields = $e->getMissingConstructorArguments();
-            
-            return $this->json([
-                'success' => false,
-                'message' => 'Отсутствуют обязательные поля',
-                'missingFields' => $missingFields,
-                'requiredFields' => [
-                    'title',
-                    'content'
-                ]
-            ], Response::HTTP_BAD_REQUEST);
-        } catch (\Exception $e) {
-            dd($e);
-            return $this->json(
-                ['error' => 'Внутренняя ошибка сервера'], 
-                Response::HTTP_INTERNAL_SERVER_ERROR
-            );
+                'article' => $this->serializeArticle($result->getArticle())
+                ], Response::HTTP_CREATED);
         }
+
+        return $this->handleErrorResult($result);
     }
 
     /**
@@ -119,50 +72,17 @@ class ArticleController extends AbstractController
     #[Route('/{id}', name: 'article_update', methods: ['PUT'])]
     public function update(int $id, Request $request): JsonResponse
     {
-        try {
-            $article = $this->articleRepository->find($id);
-            if (!$article) {
-                return $this->json(
-                    ['error' => 'Статья не найдена'], 
-                    Response::HTTP_NOT_FOUND
-                );
-            }
-
-            /** @var UpdateArticleDto $updateDto */
-            $updateDto = $this->serializer->deserialize(
-                $request->getContent(),
-                UpdateArticleDto::class,
-                'json'
-            );
-
-            $errors = $this->validator->validate($updateDto);
-            if (count($errors) > 0) {
-                return $this->json(
-                    ['errors' => (string)$errors], 
-                    Response::HTTP_BAD_REQUEST
-                );
-            }
-
-            $this->articleFactory->updateFromDto($article, $updateDto);
-
-            $this->articleRepository->save($article, true);
-
+        $result = $this->articleRequestHandler->handleUpdateRequest($id, $request);
+        
+        if ($result->isSuccess()) {
             return $this->json([
+                'success' => true,
                 'message' => 'Статья успешно обновлена',
-                'article' => $this->serializeArticle($article)
-            ]);
-
-        } catch (\InvalidArgumentException $e) {
-            return $this->json(
-                ['error' => $e->getMessage()], 
-                Response::HTTP_BAD_REQUEST
-            );
-        } catch (\Exception $e) {
-            return $this->json(
-                ['error' => 'Внутренняя ошибка сервера'], 
-                Response::HTTP_INTERNAL_SERVER_ERROR
-            );
+                'article' => $this->serializeArticle($result->getArticle())
+            ], Response::HTTP_CREATED);
         }
+        
+        return $this->handleErrorResult($result);
     }
 
     /**
@@ -231,5 +151,29 @@ class ArticleController extends AbstractController
                 ];
             }, $article->getTags()->toArray())
         ];
+    }
+
+    /**
+     * Обработка ошибок из сервиса
+     */
+    private function handleErrorResult($result): JsonResponse
+    {
+        $errorData = [
+            'success' => false,
+            'error' => $result->getError()
+        ];
+
+        if ($result->getErrorDetails()) {
+            $errorData['details'] = $result->getErrorDetails();
+        }
+
+        $statusCode = match($result->getError()) {
+            'Article not found' => Response::HTTP_NOT_FOUND,
+            'Статья с таким названием уже существует' => Response::HTTP_CONFLICT,
+            'Validation failed' => Response::HTTP_BAD_REQUEST,
+            default => Response::HTTP_BAD_REQUEST
+        };
+
+        return $this->json($errorData, $statusCode);
     }
 }
