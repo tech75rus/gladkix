@@ -2,7 +2,6 @@
 
 namespace App\Tag\Controller;
 
-use App\Tag\Dto\CreateTagDto;
 use App\Tag\Dto\UpdateTagDto;
 use App\Tag\Entity\Tag;
 use App\Tag\Factory\TagFactory;
@@ -15,6 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use App\Tag\Service\TagRequestHandler;
 
 #[Route('/api/tags')]
 class TagController extends AbstractController
@@ -24,7 +24,8 @@ class TagController extends AbstractController
         private TagFactory $tagFactory,
         private EntityManagerInterface $entityManager,
         private SerializerInterface $serializer,
-        private ValidatorInterface $validator
+        private ValidatorInterface $validator,
+        private TagRequestHandler $tagRequestHandler
     ) {}
 
     /**
@@ -33,56 +34,17 @@ class TagController extends AbstractController
     #[Route('', name: 'api_tag_create', methods: ['POST'])]
     public function create(Request $request): JsonResponse
     {
-        try {
-            // 1. ДЕСЕРИАЛИЗАЦИЯ JSON → DTO
-            /** @var CreateTagDto $createDto */
-            $createDto = $this->serializer->deserialize(
-                $request->getContent(),
-                CreateTagDto::class,
-                'json'
-            );
+        $result = $this->tagRequestHandler->handleCreateRequest($request);
 
-            // 2. ВАЛИДАЦИЯ DTO
-            $errors = $this->validator->validate($createDto);
-            if (count($errors) > 0) {
-                return $this->json(
-                    ['errors' => (string)$errors], 
-                    Response::HTTP_BAD_REQUEST
-                );
-            }
-
-            // 3. ПРОВЕРКА УНИКАЛЬНОСТИ названия
-            $existingTag = $this->tagRepository->findOneBy(['name' => $createDto->name]);
-            if ($existingTag) {
-                return $this->json(
-                    ['error' => 'Тег с таким названием уже существует'], 
-                    Response::HTTP_BAD_REQUEST
-                );
-            }
-
-            // 4. СОЗДАНИЕ СУЩНОСТИ через ФАБРИКУ
-            $tag = $this->tagFactory->createFromDto($createDto);
-
-            // 5. СОХРАНЕНИЕ в БАЗУ ДАННЫХ
-            $this->tagRepository->save($tag, true);
-
-            // 6. ВОЗВРАТ РЕЗУЛЬТАТА
+        if ($result->isSuccess()) {
             return $this->json([
-                'message' => 'Тег успешно создан',
-                'tag' => $this->serializeTag($tag)
+                'success' => true,
+                'message' => 'Тэг успешно создан',
+                'category' => $this->serializeTag($result->getTag())
             ], Response::HTTP_CREATED);
-
-        } catch (\InvalidArgumentException $e) {
-            return $this->json(
-                ['error' => $e->getMessage()], 
-                Response::HTTP_BAD_REQUEST
-            );
-        } catch (\Exception $e) {
-            return $this->json(
-                ['error' => 'Внутренняя ошибка сервера'], 
-                Response::HTTP_INTERNAL_SERVER_ERROR
-            );
         }
+
+        return $this->handleErrorResult($result);
     }
 
     /**
@@ -270,5 +232,29 @@ class TagController extends AbstractController
             'articleCount' => $tag->getArticles()->count(),
             'projectCount' => $tag->getProjects()->count()
         ];
+    }
+
+    /**
+     * Обработка ошибок из сервиса
+     */
+    private function handleErrorResult($result): JsonResponse
+    {
+        $errorData = [
+            'success' => false,
+            'error' => $result->getError()
+        ];
+
+        if ($result->getErrorDetails()) {
+            $errorData['details'] = $result->getErrorDetails();
+        }
+
+        $statusCode = match($result->getError()) {
+            'Tag not found' => Response::HTTP_NOT_FOUND,
+            'Тег с таким названием уже существует' => Response::HTTP_CONFLICT,
+            'Validation failed' => Response::HTTP_BAD_REQUEST,
+            default => Response::HTTP_BAD_REQUEST
+        };
+
+        return $this->json($errorData, $statusCode);
     }
 }

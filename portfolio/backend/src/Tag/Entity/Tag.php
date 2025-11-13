@@ -91,11 +91,9 @@ class Tag
     }
 
     #[ORM\PrePersist]
-    public function setCreatedAt(\DateTimeImmutable $createAt): static
+    public function setCreatedAt(): void
     {
-        $this->createAt = $createAt;
-
-        return $this;
+        $this->createAt = new \DateTimeImmutable();
     }
 
     /**

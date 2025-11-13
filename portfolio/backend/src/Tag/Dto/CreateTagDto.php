@@ -15,7 +15,7 @@ class CreateTagDto
             maxMessage: "Название проекта не может превышать {{ limit }} символов"
         )]
         #[Assert\Regex(
-            pattern: '\/^[a-zA-Zа-яА-Я0-9\s\.\+\#\-\_]+$/u',
+            pattern: '/^[a-zA-Zа-яА-Я0-9\s\.\+\#\-\_]+$/u',
             message: "Название тега может содержать только буквы, цифры, пробелы и символы .+#-_"
         )]
         public string $name,
@@ -26,6 +26,6 @@ class CreateTagDto
             minMessage: "Краткое описание должно содержать не меньше {{ limit }} символов",
             maxMessage: "Краткое описание не может превышать {{ limit }} символов"
         )]
-        public string $description,
+        public ?string $description = null,
     ) {}
 }
