@@ -1,5 +1,14 @@
+
+@import '@fontsource/inter/300.css';
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+@import '@fontsource/inter/600.css';
+@import '@fontsource/inter/700.css';
+
 /* Базовые стили для админки */
 :root {
+  --font-primary: 'Inter', sans-serif;
+
   --primary-50: #f0f9ff;
   --primary-100: #e0f2fe;
   --primary-500: #3b82f6;
@@ -17,6 +26,12 @@
   --surface-700: #334155;
   --surface-800: #1e293b;
   --surface-900: #0f172a;
+}
+
+body {
+  font-family: var(--font-primary);
+  background-color: var(--surface-50);
+  color: var(--surface-800);
 }
 
 /* Стили для компонентов */

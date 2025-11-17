@@ -1,73 +1,168 @@
 <template>
   <div>
-    <div class="mb-6">
+    <!-- Заголовок -->
+    <div class="mb-8">
       <h1 class="text-3xl font-bold text-surface-900">Дашборд</h1>
       <p class="text-surface-600">Обзор вашего портфолио</p>
     </div>
 
     <!-- Статистика -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-      <Card class="p-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <Card>
         <template #content>
           <div class="flex justify-between items-center">
             <div>
-              <div class="text-2xl font-bold text-primary">0</div>
+              <div class="text-2xl font-bold text-primary">{{ stats.articles.total }}</div>
               <div class="text-surface-600">Статей</div>
             </div>
-            <i class="pi pi-file text-3xl text-primary opacity-60"></i>
+            <i class="pi pi-file text-3xl text-primary"></i>
+          </div>
+          <div class="mt-2 text-sm text-surface-500">
+            {{ stats.articles.published }} опубликовано
           </div>
         </template>
       </Card>
 
-      <Card class="p-4">
+      <Card>
         <template #content>
           <div class="flex justify-between items-center">
             <div>
-              <div class="text-2xl font-bold text-green-600">0</div>
+              <div class="text-2xl font-bold text-green-500">{{ stats.projects.total }}</div>
               <div class="text-surface-600">Проектов</div>
             </div>
-            <i class="pi pi-briefcase text-3xl text-green-600 opacity-60"></i>
+            <i class="pi pi-briefcase text-3xl text-green-500"></i>
+          </div>
+          <div class="mt-2 text-sm text-surface-500">
+            {{ stats.projects.completed }} завершено
           </div>
         </template>
       </Card>
 
-      <Card class="p-4">
+      <Card>
         <template #content>
           <div class="flex justify-between items-center">
             <div>
-              <div class="text-2xl font-bold text-purple-600">0</div>
+              <div class="text-2xl font-bold text-purple-500">{{ stats.categories }}</div>
               <div class="text-surface-600">Категорий</div>
             </div>
-            <i class="pi pi-tags text-3xl text-purple-600 opacity-60"></i>
+            <i class="pi pi-folder text-3xl text-purple-500"></i>
+          </div>
+          <div class="mt-2 text-sm text-surface-500">
+            {{ stats.categoriesVisible }} активно
           </div>
         </template>
       </Card>
 
-      <Card class="p-4">
+      <Card>
         <template #content>
           <div class="flex justify-between items-center">
             <div>
-              <div class="text-2xl font-bold text-orange-600">0</div>
+              <div class="text-2xl font-bold text-orange-500">{{ stats.tags }}</div>
               <div class="text-surface-600">Тегов</div>
             </div>
-            <i class="pi pi-hashtag text-3xl text-orange-600 opacity-60"></i>
+            <i class="pi pi-tags text-3xl text-orange-500"></i>
+          </div>
+          <div class="mt-2 text-sm text-surface-500">
+            Используется в проектах
           </div>
         </template>
       </Card>
     </div>
 
-    <!-- Быстрые действия -->
-    <Card>
-      <template #title>Быстрые действия</template>
-      <template #content>
-        <div class="flex flex-wrap gap-4">
-          <Button label="Новая статья" icon="pi pi-plus" severity="primary" />
-          <Button label="Новый проект" icon="pi pi-plus" severity="secondary" />
-          <Button label="Новая категория" icon="pi pi-plus" severity="success" />
-          <Button label="Новый тег" icon="pi pi-plus" severity="help" />
-        </div>
-      </template>
-    </Card>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <!-- Последние статьи -->
+      <Card>
+        <template #title>Последние статьи</template>
+        <template #content>
+          <div class="space-y-4">
+            <div 
+              v-for="article in recentArticles" 
+              :key="article.id"
+              class="flex items-center gap-3 p-3 hover:bg-surface-50 rounded-lg transition-colors"
+            >
+              <img 
+                :src="article.cover_image || '/placeholder-article.jpg'" 
+                :alt="article.title"
+                class="w-12 h-9 object-cover rounded"
+              >
+              <div class="flex-1 min-w-0">
+                <div class="font-medium text-sm truncate">{{ article.title }}</div>
+                <div class="flex items-center gap-2 text-xs text-surface-500">
+                  <Tag 
+                    :value="article.category.name" 
+                    class="text-xs"
+                    :style="{ 
+                      backgroundColor: article.category.color + '20',
+                      color: article.category.color,
+                      borderColor: article.category.color
+                    }"
+                  />
+                  <span>{{ article.reading_time }} мин</span>
+                  <span>{{ formatDate(article.published_at) }}</span>
+                </div>
+              </div>
+              <Button 
+                icon="pi pi-arrow-right" 
+                text rounded 
+                severity="secondary"
+                @click="$router.push(`/admin/articles`)"
+              />
+            </div>
+          </div>
+          <div class="mt-4 text-center">
+            <Button 
+              label="Все статьи" 
+              text 
+              @click="$router.push('/admin/articles')"
+            />
+          </div>
+        </template>
+      </Card>
+
+      <!-- Активные проекты -->
+      <Card>
+        <template #title>Активные проекты</template>
+        <template #content>
+          <div class="space-y-4">
+            <div 
+              v-for="project in activeProjects" 
+              :key="project.id"
+              class="flex items-center gap-3 p-3 hover:bg-surface-50 rounded-lg transition-colors"
+            >
+              <img 
+                :src="project.cover_image || '/placeholder-project.jpg'" 
+                :alt="project.title"
+                class="w-12 h-12 object-cover rounded-lg"
+              >
+              <div class="flex-1 min-w-0">
+                <div class="font-medium text-sm truncate">{{ project.title }}</div>
+                <div class="flex items-center gap-2 text-xs text-surface-500">
+                  <Tag 
+                    :value="getStatusLabel(project.status)" 
+                    :severity="getStatusSeverity(project.status)"
+                    class="text-xs"
+                  />
+                  <span>{{ formatDate(project.updated_at) }}</span>
+                </div>
+              </div>
+              <Button 
+                icon="pi pi-arrow-right" 
+                text rounded 
+                severity="secondary"
+                @click="$router.push(`/admin/projects`)"
+              />
+            </div>
+          </div>
+          <div class="mt-4 text-center">
+            <Button 
+              label="Все проекты" 
+              text 
+              @click="$router.push('/admin/projects')"
+            />
+          </div>
+        </template>
+      </Card>
+    </div>
   </div>
 </template>
 
@@ -75,4 +170,97 @@
 definePageMeta({
   layout: 'admin'
 })
+
+// Mock данные для статистики
+const stats = reactive({
+  articles: {
+    total: 15,
+    published: 12
+  },
+  projects: {
+    total: 8,
+    completed: 5
+  },
+  categories: 6,
+  categoriesVisible: 4,
+  tags: 24
+})
+
+// Последние статьи
+const recentArticles = ref([
+  {
+    id: 1,
+    title: 'Введение в Vue 3 Composition API',
+    cover_image: '/vue-cover.jpg',
+    category: { name: 'Vue.js', color: '#3B82F6' },
+    reading_time: 8,
+    published_at: '2024-01-15'
+  },
+  {
+    id: 2,
+    title: 'Nuxt 3: Полное руководство',
+    cover_image: '/nuxt-cover.jpg',
+    category: { name: 'Nuxt', color: '#10B981' },
+    reading_time: 12,
+    published_at: '2024-01-10'
+  },
+  {
+    id: 3,
+    title: 'TypeScript для начинающих',
+    cover_image: '/ts-cover.jpg',
+    category: { name: 'TypeScript', color: '#3178C6' },
+    reading_time: 10,
+    published_at: '2024-01-08'
+  }
+])
+
+// Активные проекты
+const activeProjects = ref([
+  {
+    id: 1,
+    title: 'Портфолио сайт на Nuxt 3',
+    cover_image: '/portfolio-cover.jpg',
+    status: 'completed',
+    updated_at: '2024-01-15'
+  },
+  {
+    id: 2,
+    title: 'E-commerce платформа',
+    cover_image: '/ecommerce-cover.jpg',
+    status: 'in_progress',
+    updated_at: '2024-01-20'
+  },
+  {
+    id: 3,
+    title: 'Мобильное приложение',
+    cover_image: '/mobile-cover.jpg',
+    status: 'planning',
+    updated_at: '2024-01-18'
+  }
+])
+
+// Методы
+const formatDate = (dateString) => {
+  return new Date(dateString).toLocaleDateString('ru-RU')
+}
+
+const getStatusLabel = (status) => {
+  const labels = {
+    planning: 'Планирование',
+    in_progress: 'В работе',
+    completed: 'Завершен',
+    on_hold: 'На паузе'
+  }
+  return labels[status] || status
+}
+
+const getStatusSeverity = (status) => {
+  const severities = {
+    planning: 'secondary',
+    in_progress: 'warning',
+    completed: 'success',
+    on_hold: 'danger'
+  }
+  return severities[status] || 'info'
+}
 </script>
