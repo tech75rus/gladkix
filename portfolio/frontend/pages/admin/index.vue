@@ -81,7 +81,7 @@
               class="flex items-center gap-3 p-3 hover:bg-surface-50 rounded-lg transition-colors"
             >
               <img 
-                :src="article.cover_image || '/placeholder-article.jpg'" 
+                :src="article.cover_image" 
                 :alt="article.title"
                 class="w-12 h-9 object-cover rounded"
               >
@@ -130,7 +130,7 @@
               class="flex items-center gap-3 p-3 hover:bg-surface-50 rounded-lg transition-colors"
             >
               <img 
-                :src="project.cover_image || '/placeholder-project.jpg'" 
+                :src="project.cover_image" 
                 :alt="project.title"
                 class="w-12 h-12 object-cover rounded-lg"
               >
@@ -186,12 +186,12 @@ const stats = reactive({
   tags: 24
 })
 
-// Последние статьи
+// Последние статьи с реальными изображениями
 const recentArticles = ref([
   {
     id: 1,
     title: 'Введение в Vue 3 Composition API',
-    cover_image: '/vue-cover.jpg',
+    cover_image: 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=200&h=150&fit=crop', // Vue.js изображение
     category: { name: 'Vue.js', color: '#3B82F6' },
     reading_time: 8,
     published_at: '2024-01-15'
@@ -199,7 +199,7 @@ const recentArticles = ref([
   {
     id: 2,
     title: 'Nuxt 3: Полное руководство',
-    cover_image: '/nuxt-cover.jpg',
+    cover_image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=200&h=150&fit=crop', // Код программирования
     category: { name: 'Nuxt', color: '#10B981' },
     reading_time: 12,
     published_at: '2024-01-10'
@@ -207,33 +207,33 @@ const recentArticles = ref([
   {
     id: 3,
     title: 'TypeScript для начинающих',
-    cover_image: '/ts-cover.jpg',
+    cover_image: 'https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=200&h=150&fit=crop', // Еще код
     category: { name: 'TypeScript', color: '#3178C6' },
     reading_time: 10,
     published_at: '2024-01-08'
   }
 ])
 
-// Активные проекты
+// Активные проекты с реальными изображениями
 const activeProjects = ref([
   {
     id: 1,
     title: 'Портфолио сайт на Nuxt 3',
-    cover_image: '/portfolio-cover.jpg',
+    cover_image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=200&h=200&fit=crop', // Веб-дизайн
     status: 'completed',
     updated_at: '2024-01-15'
   },
   {
     id: 2,
     title: 'E-commerce платформа',
-    cover_image: '/ecommerce-cover.jpg',
+    cover_image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=200&h=200&fit=crop', // Электронная коммерция
     status: 'in_progress',
     updated_at: '2024-01-20'
   },
   {
     id: 3,
     title: 'Мобильное приложение',
-    cover_image: '/mobile-cover.jpg',
+    cover_image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=200&h=200&fit=crop', // Мобильные телефоны
     status: 'planning',
     updated_at: '2024-01-18'
   }

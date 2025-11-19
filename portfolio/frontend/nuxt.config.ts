@@ -1,4 +1,5 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
+import Aura from '@primeuix/themes/aura';
+
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
@@ -7,12 +8,22 @@ export default defineNuxtConfig({
     'primeflex/primeflex.css',
     '~/assets/css/main.css'
   ],
-  
-  build: {
-    transpile: ['primevue']
+  modules: [
+      '@primevue/nuxt-module'
+  ],
+  primevue: {
+    options: {
+      ripple: true,
+      theme: {
+          preset: Aura,
+          darkModeSelector: false,
+      }
+    },
   },
-  
-  plugins: [
-    '~/plugins/primevue.js'
-  ]
+
+  build: {
+    transpile: [
+      'primevue'
+    ]
+  }  
 })
