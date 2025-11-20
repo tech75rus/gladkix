@@ -20,7 +20,11 @@
             }"
             icon="pi pi-bold"
             v-tooltip="'Сделать текст жирным'"
-          />
+          >
+            <template #icon>
+              <Icon name="ph:text-bold" size="18px"/>
+            </template>
+          </Button>
           
           <!-- Кнопка для курсива -->
           <Button 
@@ -31,21 +35,21 @@
             }"
             icon="pi pi-italic"
             v-tooltip="'Сделать текст курсивом'"
-            />
+            >
+            <template #icon>
+              <Icon name="ph:text-italic" size="18px"/>
+            </template>
+          </Button>
           <Button 
             @click="editor.chain().focus().toggleHeading({ level: 2 }).run()"
             :class="{ 
               'p-button-outlined': !editor?.isActive('heading', { level: 2 }), 
               'p-button-primary': editor?.isActive('heading', { level: 2 }) 
             }"
-            label="H2"
             v-tooltip="'Сделать заголовок 2 уровня'"
           >
             <template #icon>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                <path d="M2.5 13.5v-11h1v4.75h6.5v-4.75h1v11h-1v-5.25h-6.5v5.25h-1z"/>
-                <path d="M13.734 10.065v-.805h-2.634v-.566h2.447v-.805h-2.447v-.566h2.634v-.805h-3.444v3.547h3.444z"/>
-              </svg>
+              <Icon name="ph:text-h-two" size="18px"/>
             </template>
           </Button>
         </template>
@@ -82,10 +86,13 @@
         <!-- Кнопка сохранения -->
         <Button 
           @click="saveContent"
-          icon="pi pi-save" 
           label="Сохранить"
           class="p-button-success"
-        />
+        >
+          <template #icon>  
+            <Icon name="ph:floppy-disk" size="20px"/>
+          </template>
+        </Button>
       </div>
     </template>
   </Card>

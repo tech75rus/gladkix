@@ -5,11 +5,12 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   css: [
     'primeicons/primeicons.css',
-    'primeflex/primeflex.css',
     '~/assets/css/main.css'
   ],
   modules: [
-      '@primevue/nuxt-module'
+      '@primevue/nuxt-module',
+      '@nuxt/icon',
+      '@nuxtjs/tailwindcss',
   ],
   primevue: {
     options: {
@@ -25,5 +26,5 @@ export default defineNuxtConfig({
     transpile: [
       'primevue'
     ]
-  }  
+  },
 })

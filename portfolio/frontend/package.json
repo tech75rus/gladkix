@@ -13,16 +13,19 @@
     "@fontsource/inter": "^5.2.8",
     "@primeuix/themes": "^1.2.5",
     "@primevue/themes": "^4.4.1",
+    "@tiptap/extension-image": "^3.11.0",
     "@tiptap/starter-kit": "^3.10.7",
     "@tiptap/vue-3": "^3.10.7",
     "nuxt": "^4.2.1",
-    "primeflex": "^4.0.0",
     "primeicons": "^7.0.0",
     "primevue": "^4.4.1",
     "vue": "^3.5.24",
     "vue-router": "^4.6.3"
   },
   "devDependencies": {
+    "@iconify-json/ph": "^1.2.2",
+    "@nuxt/icon": "^2.1.0",
+    "@nuxtjs/tailwindcss": "^6.14.0",
     "@primevue/nuxt-module": "^4.4.1"
   }
 }
