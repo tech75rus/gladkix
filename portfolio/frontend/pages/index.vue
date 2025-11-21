@@ -42,7 +42,24 @@
     <Button icon="pi pi-file" label="Тест" class="p-button-secondary" />
     <Button icon="pi pi-pencil" label="Тест" class="p-button-secondary" />
 
+
   </div>
+  <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 
+              md:top-0 md:left-0 md:right-auto md:bottom-auto 
+              md:w-64 md:border-t-0 md:border-r md:h-screen">
+    
+    <div class="flex justify-around items-center h-16 
+                md:flex-col md:items-start md:justify-start md:p-4 md:space-y-2">
+      
+      <button v-for="item in menuItems" :key="item.id" 
+              class="flex flex-col items-center p-2 md:flex-row md:w-full md:justify-start 
+                    md:p-3 md:rounded-lg md:hover:bg-gray-100">
+        <Icon :name="item.icon" size="24px"></Icon>
+        <span class="text-xs mt-1 md:mt-0 md:ml-3 md:text-sm">{{ item.label }}</span>
+      </button>
+      
+    </div>
+  </nav>
 </template>
 
 <script setup>
@@ -50,6 +67,28 @@ import { ref } from 'vue'
 
 const count = ref(0)
 const testColor = ref('#3B82F6')
+const menuItems = [
+  {
+    id: 1,
+    label: 'Home',
+    icon: 'ph:house'
+  },
+  {
+    id: 2,
+    label: 'Profile',
+    icon: 'ph:user'
+  },
+  {
+    id: 3,
+    label: 'Settings',
+    icon: 'ph:gear-six'
+  },
+  {
+    id: 4,
+    label: 'Logout',
+    icon: 'ph:sign-out'
+  }
+]
 
 const checkClick = () => {
   count.value++
