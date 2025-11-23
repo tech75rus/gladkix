@@ -9,23 +9,18 @@
 :root {
   --font-primary: 'Inter', sans-serif;
 
-  --primary-50: #f0f9ff;
-  --primary-100: #e0f2fe;
-  --primary-500: #3b82f6;
-  --primary-600: #2563eb;
-  --primary-700: #1d4ed8;
-  
-  --surface-0: #ffffff;
-  --surface-50: #f8fafc;
-  --surface-100: #f1f5f9;
-  --surface-200: #e2e8f0;
-  --surface-300: #cbd5e1;
-  --surface-400: #94a3b8;
-  --surface-500: #64748b;
-  --surface-600: #475569;
-  --surface-700: #334155;
-  --surface-800: #1e293b;
-  --surface-900: #0f172a;
+  --primary-10: #f2f5f8;
+  --primary-50: #dce8f2;
+  --primary-100: #c5d8ea;
+  --primary-200: #9bbade;
+  --primary-300: #729cd2;
+  --primary-400: #4e74bf;
+  --primary-500: #3a5ba6;
+  --primary-600: #2b4580;
+  --primary-700: #1f3260;
+  --primary-800: #162547;
+  --primary-900: #101C40;
+  --primary-950: #0a1226;
 }
 
 body {
@@ -48,7 +43,12 @@ body {
 .p-card {
   border-radius: 8px;
   box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-  border: 1px solid var(--surface-200);
+  cursor: pointer;
+  /* border: 1px solid var(--surface-200); */
+}
+
+.p-card:hover {
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 }
 
 .p-datatable .p-datatable-thead > tr > th {

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="m-6">
     <!-- Заголовок -->
     <div class="mb-8">
       <h1 class="text-3xl font-bold text-surface-900">Дашборд</h1>
@@ -8,14 +8,14 @@
 
     <!-- Статистика -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-      <Card>
+      <Card class="bg-rose-50 border border-rose-300">
         <template #content>
           <div class="flex justify-between items-center">
             <div>
-              <div class="text-2xl font-bold text-primary">{{ stats.articles.total }}</div>
-              <div class="text-surface-600">Статей</div>
+              <div class="text-2xl font-bold text-rose-400">{{ stats.articles.total }}</div>
+              <div class="text-primary-600">Статей</div>
             </div>
-            <i class="pi pi-file text-3xl text-primary"></i>
+            <Icon name="ph:file-bold" size="32px" class="text-rose-400"></Icon>
           </div>
           <div class="mt-2 text-sm text-surface-500">
             {{ stats.articles.published }} опубликовано
@@ -23,14 +23,14 @@
         </template>
       </Card>
 
-      <Card>
+      <Card class="bg-lime-50 border border-lime-300">
         <template #content>
           <div class="flex justify-between items-center">
             <div>
-              <div class="text-2xl font-bold text-green-500">{{ stats.projects.total }}</div>
+              <div class="text-2xl font-bold text-lime-400">{{ stats.projects.total }}</div>
               <div class="text-surface-600">Проектов</div>
             </div>
-            <i class="pi pi-briefcase text-3xl text-green-500"></i>
+            <Icon name="ph:briefcase-bold" size="32px" class="text-lime-400"></Icon>
           </div>
           <div class="mt-2 text-sm text-surface-500">
             {{ stats.projects.completed }} завершено
@@ -38,14 +38,14 @@
         </template>
       </Card>
 
-      <Card>
+      <Card class="bg-custom-50 border border-custom-300">
         <template #content>
           <div class="flex justify-between items-center">
             <div>
-              <div class="text-2xl font-bold text-purple-500">{{ stats.categories }}</div>
+              <div class="text-2xl font-bold text-custom-400">{{ stats.categories }}</div>
               <div class="text-surface-600">Категорий</div>
             </div>
-            <i class="pi pi-folder text-3xl text-purple-500"></i>
+            <Icon name="ph:folder-bold" size="32px" class="text-custom-400"></Icon>
           </div>
           <div class="mt-2 text-sm text-surface-500">
             {{ stats.categoriesVisible }} активно
@@ -53,14 +53,14 @@
         </template>
       </Card>
 
-      <Card>
+      <Card class="bg-amber-50 border border-amber-300">
         <template #content>
           <div class="flex justify-between items-center">
             <div>
-              <div class="text-2xl font-bold text-orange-500">{{ stats.tags }}</div>
+              <div class="text-2xl font-bold text-amber-500">{{ stats.tags }}</div>
               <div class="text-surface-600">Тегов</div>
             </div>
-            <i class="pi pi-tags text-3xl text-orange-500"></i>
+            <Icon name="ph:tag-bold" size="32px" class="text-amber-500"></Icon>
           </div>
           <div class="mt-2 text-sm text-surface-500">
             Используется в проектах
@@ -102,11 +102,12 @@
                 </div>
               </div>
               <Button 
-                icon="pi pi-arrow-right" 
                 text rounded 
                 severity="secondary"
                 @click="$router.push(`/admin/articles`)"
-              />
+              >
+                <Icon name="ph:arrow-right"></Icon>
+              </Button>
             </div>
           </div>
           <div class="mt-4 text-center">
