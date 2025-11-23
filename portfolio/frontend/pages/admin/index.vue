@@ -1,10 +1,5 @@
 <template>
   <div class="m-6">
-    <!-- Заголовок -->
-    <div class="mb-8">
-      <h1 class="text-3xl font-bold text-surface-900">Дашборд</h1>
-      <p class="text-surface-600">Обзор вашего портфолио</p>
-    </div>
 
     <!-- Статистика -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -38,14 +33,14 @@
         </template>
       </Card>
 
-      <Card class="bg-custom-50 border border-custom-300">
+      <Card class="bg-violet-50 border border-violet-300">
         <template #content>
           <div class="flex justify-between items-center">
             <div>
-              <div class="text-2xl font-bold text-custom-400">{{ stats.categories }}</div>
+              <div class="text-2xl font-bold text-violet-400">{{ stats.categories }}</div>
               <div class="text-surface-600">Категорий</div>
             </div>
-            <Icon name="ph:folder-bold" size="32px" class="text-custom-400"></Icon>
+            <Icon name="ph:folder-bold" size="32px" class="text-violet-400"></Icon>
           </div>
           <div class="mt-2 text-sm text-surface-500">
             {{ stats.categoriesVisible }} активно
@@ -101,12 +96,11 @@
                   <span>{{ formatDate(article.published_at) }}</span>
                 </div>
               </div>
-              <Button 
+              <Button class="p-3"
                 text rounded 
-                severity="secondary"
                 @click="$router.push(`/admin/articles`)"
               >
-                <Icon name="ph:arrow-right"></Icon>
+                <Icon name="ph:arrow-right" size="22"></Icon>
               </Button>
             </div>
           </div>
@@ -146,12 +140,12 @@
                   <span>{{ formatDate(project.updated_at) }}</span>
                 </div>
               </div>
-              <Button 
-                icon="pi pi-arrow-right" 
+              <Button class="p-3"
                 text rounded 
-                severity="secondary"
                 @click="$router.push(`/admin/projects`)"
-              />
+              >
+                <Icon name="ph:arrow-right" size="22"></Icon>
+              </Button>
             </div>
           </div>
           <div class="mt-4 text-center">

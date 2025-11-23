@@ -1,6 +1,5 @@
 <template>
-  <div class="bg-custom-10 min-h-screen p-6">
-    <h2>Layout for ADMIN</h2>
+  <div class="bg-custom-10 min-h-screen p-3">
     <slot></slot>
   </div>    
 </template>
