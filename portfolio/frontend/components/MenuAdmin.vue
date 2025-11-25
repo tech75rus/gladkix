@@ -1,11 +1,17 @@
 <template>
-    <nav class="hidden md:flex flex flex-col p-4 space-y-4 bg-white rounded-lg shadow-md">
+    <nav class="hidden md:flex flex flex-col space-y-4 py-4 bg-white rounded-lg shadow-md transition-all duration-300 overflow-hidden"
+      :class="sidebar ? 'w-[220px] px-4' : 'w-16 px-2'"
+    >
       <NuxtLink 
         to="/admin" 
-        class="text-xl font-bold text-custom-200 flex items-center p-3 rounded-lg hover:bg-custom-20 transition-colors duration-200"
+        class="font-bold text-custom-200 flex items-center p-3 rounded-lg hover:bg-custom-20 transition-colors duration-200"
       >
-        <Icon name="ph:crown" size="26"/>
-        <span v-if="sidebar" class="mx-4">Admin</span>
+        <Icon name="ph:crown" size="26" class="w-6 h-6 shrink-0"/>
+        <span v-if="sidebar" class="mx-4 transition-all duration-300 whitespace-nowrap overflow-hidden"
+          :class="sidebar ? 'opacity-100 max-w-[200px]' : 'opacity-0 max-w-0'"
+        >
+          Admin
+        </span>
       </NuxtLink>
       
       <ul class="flex flex-col space-y-1">
@@ -15,8 +21,12 @@
             class="flex items-center p-3 rounded-lg text-custom-600 hover:bg-custom-600 transition-colors duration-200"
             :class="{ 'bg-custom-50': isActive(item.to) }"
           >
-            <Icon :name="item.icon" size="26"/>
-            <span v-if="sidebar" class="mx-4">{{ item.label }}</span>
+            <Icon :name="item.icon" size="26" class="w-6 h-6 shrink-0"/>
+            <span v-if="sidebar" class="mx-4 transition-all duration-300 whitespace-nowrap overflow-hidden"
+              :class="sidebar ? 'opacity-100 max-w-[120px]' : 'opacity-0 max-w-0'"
+            >
+              {{ item.label }}
+            </span>
           </NuxtLink>
         </li>
       </ul>
@@ -27,7 +37,7 @@
         <Button
           class="p-3 bg-transparent text-custom-500 border-transparent rounded-lg"
         >
-          <Icon name="ph:sidebar" size="26"/>
+          <Icon name="ph:sidebar" size="26" class="w-6 h-6 shrink-0"/>
         </Button>
       </div>
     </nav>
