@@ -35,9 +35,11 @@
         @click="clickSidebar"
       >
         <Button
-          class="p-3 bg-transparent text-custom-500 border-transparent rounded-lg"
-        >
-          <Icon name="ph:sidebar" size="26" class="w-6 h-6 shrink-0"/>
+          class="p-3 bg-transparent text-custom-500 border-transparent rounded-lg transition-transform duration-300">
+          <Icon 
+            :name=" sidebar ? 'ph:square-half' : 'ph:sidebar'" 
+            size="26" class="w-6 h-6 shrink-0"
+          />
         </Button>
       </div>
     </nav>
