@@ -44,7 +44,7 @@
       </div>
     </nav>
 
-    <div class="fixed md:hidden">
+    <div class="fixed md:hidden z-[9999]">
       <Button label="Secondary" severity="secondary" raised class="mr-2 mb-2 bg-white" @click="openMenu">
         <Icon name="ph:square-half" size="26" class="w-6 h-6 shrink-0"/>
       </Button>
@@ -52,9 +52,8 @@
       <!-- Оверлей -->
       <div 
         v-if="menuOpen"
-        class="fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity duration-300"
-        :class="isDragging ? 'opacity-30' : 'opacity-50'"
-        @pointerdown="closeMenu"
+        class="fixed inset-0 bg-black bg-opacity-50 z-[9999] transition-opacity duration-300"
+        @click="closeMenu"
       ></div>
 
       <div 
@@ -127,7 +126,7 @@ const openMenu = () => {
   menuPosition.value = 0
 }
 
-const closeMenu = () => {
+const closeMenu = (event) => {
   menuOpen.value = false
   menuPosition.value = -menuWidth
 }
