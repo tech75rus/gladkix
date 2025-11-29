@@ -70,5 +70,6 @@ div {
   -webkit-user-select: none;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
+  touch-action: none; /* ⚡ КРИТИЧЕСКИ ВАЖНО ДЛЯ TOUCH */
 }
 </style>

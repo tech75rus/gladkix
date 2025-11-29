@@ -25,38 +25,47 @@ definePageMeta({
   layout: 'admin'
 })
 
-const position = ref(0)
-const isDragging = ref(false)
-const startX = ref(0)
-const startPosition = ref(0)
+const position = ref(0)           // Текущая позиция элемента
+const isDragging = ref(false)     // Флаг: перетаскиваем ли сейчас?
+const startX = ref(0)             // Начальная X-координата мыши
+const startPosition = ref(0)      // Начальная позиция элемента
 
 // ⚡ Добавляем requestAnimationFrame для максимальной плавности
 let rafId = null
 
 const startDrag = (event) => {
-  isDragging.value = true
-  startX.value = event.clientX
-  startPosition.value = position.value
+  isDragging.value = true                    // Включаем режим перетаскивания
+  startX.value = event.clientX               // Запоминаем где нажали (X координата)
+  startPosition.value = position.value       // Запоминаем начальную позицию элемента
+  
+  // ⚡ ВАЖНО: Захватываем pointer для надёжности
   event.currentTarget.setPointerCapture(event.pointerId)
 }
-
 const handleDrag = (event) => {
-  if (!isDragging.value) return
+  if (!isDragging.value) return  // Если не в режиме перетаскивания - выходим
   
-  // ⚡ Используем requestAnimationFrame для плавности
+  // ⚡ ОТМЕНЯЕМ предыдущий кадр анимации если он есть
   if (rafId) {
     cancelAnimationFrame(rafId)
   }
   
+  // ⚡ ЗАПУСКАЕМ новый кадр анимации
   rafId = requestAnimationFrame(() => {
+    // Вычисляем насколько сдвинули мышь
     const deltaX = event.clientX - startX.value
+    
+    // Обновляем позицию элемента
     position.value = startPosition.value + deltaX
+    
+    // Сбрасываем ID анимации
     rafId = null
   })
 }
 
 const stopDrag = () => {
-  isDragging.value = false
+  isDragging.value = false    // Выключаем режим перетаскивания
+  
+  // ⚡ ОЧИЩАЕМ анимацию если она ещё работает
   if (rafId) {
     cancelAnimationFrame(rafId)
     rafId = null
