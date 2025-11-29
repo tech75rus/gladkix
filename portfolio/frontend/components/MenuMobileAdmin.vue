@@ -12,7 +12,11 @@
     ></div>
 
     <div 
-      class="fixed top-0 left-0 h-full w-64 bg-white shadow-lg z-[9999] transition-transform duration-300"
+      class="fixed top-0 left-0 h-full w-64 bg-white shadow-lg z-[9999]"
+      :class="{
+        'transition-transform duration-300': !isDragging, // Плавно когда не тащим
+        'transition-none': isDragging // Без анимации когда тащим
+      }"
       :style="{ transform: `translateX(${menuPosition}px)` }"
       @pointerdown="startDrag"
       @pointermove="handlerDrag"
@@ -95,7 +99,7 @@ const startDrag = (e) => {
   e.currentTarget.setPointerCapture(e.pointerId)
 }
 
-const handlerDrag = (e) => {
+const handlerDrag = (e) => {  
   if (!isDragging.value) return
   
   if (rafId) {
