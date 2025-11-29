@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed md:hidden z-[9999]">
+  <div class="fixed md:hidden z-[9999] touch-none">
     <Button label="Secondary" severity="secondary" raised class="mr-2 mb-2 bg-white" @click="openMenu">
       <Icon name="ph:square-half" size="26" class="w-6 h-6 shrink-0"/>
     </Button>
@@ -108,18 +108,36 @@ const handlerDrag = (e) => {
 
   rafId = requestAnimationFrame(() => {
     const deltaX = e.clientX - startX.value;
-    menuPosition.value = startPosition.value + deltaX;
+    let newPosition = startPosition.value + deltaX;
+
+    // ⚡ ОГРАНИЧИВАЕМ ДВИЖЕНИЕ: от -256px до 0px
+    newPosition = Math.max(-menuWidth, Math.min(0, newPosition));
+
+    menuPosition.value = newPosition;
     rafId = null;
   })
 }
 
 const stopDrag = () => {
   isDragging.value = false
+  
+  // ⚡ ЛОГИКА АВТОМАТИЧЕСКОГО ЗАКРЫТИЯ/ОТКРЫТИЯ
+  const threshold = menuWidth * 0.3; // 30% от ширины = 77px
+
+  if (menuPosition.value > -threshold) {
+    // Меню открыто больше чем на 70% - оставляем открытым
+    menuOpen.value = true
+    menuPosition.value = 0
+  } else {
+    // Меню открыто меньше чем на 70% - закрываем
+    menuOpen.value = false
+    menuPosition.value = -menuWidth
+  }
+
   if (rafId) {
     cancelAnimationFrame(rafId)
     rafId = null
   }
-
 }
 
 onUnmounted(() => {
