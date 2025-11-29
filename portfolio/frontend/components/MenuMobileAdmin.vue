@@ -14,9 +14,10 @@
     <div 
       class="fixed top-0 left-0 h-full w-64 bg-white shadow-lg z-[9999] transition-transform duration-300"
       :style="{ transform: `translateX(${menuPosition}px)` }"
-      @pointerdown="handlePointerDown"
-      @touchmove="handlePointerMove"
-      @pointerup="handlePointerUp"
+      @pointerdown="startDrag"
+      @pointermove="handlerDrag"
+      @pointerup="stopDrag"
+      @pointercancel="stopDrag"
     >
       <nav class="flex flex-col space-y-4 py-4 px-4">
         <NuxtLink 
@@ -57,23 +58,22 @@ const menuItems = [
 ]
 
 const menuOpen = ref(false);
-const sidebar = ref(true);
 const route = useRoute()
 
 // Переменные для перетаскивания
+const menuPosition = ref(-256) // Начальная позиция (скрыто)
+const menuWidth = 256 // Ширина меню
+
 const isDragging = ref(false)
+const startPosition = ref(0);
 const startX = ref(0)
 const currentX = ref(0)
-const menuPosition = ref(-256) // Начальная позиция (скрыто)
-const menuWidth = 356 // Ширина меню
+
+let rafId = null;
 
 // Функция проверки активного пути
 const isActive = (path) => {
     return route.path.startsWith(path)
-}
-
-const clickSidebar = () => {
-  sidebar.value = !sidebar.value;
 }
 
 const openMenu = () => {
@@ -87,51 +87,42 @@ const closeMenu = () => {
 }
 
 // Pointer events для плавного перетаскивания
-const handlePointerDown = (e) => {
-  isDragging.value = true
-  startX.value = e.clientX
-  currentX.value = menuPosition.value
+const startDrag = (e) => {
+  isDragging.value = true;
+  startX.value = e.clientX;
+  startPosition.value = menuPosition.value;
+
+  e.currentTarget.setPointerCapture(e.pointerId)
 }
 
-const handlePointerMove = (e) => {
+const handlerDrag = (e) => {
   if (!isDragging.value) return
   
-  const deltaX = e.touches[0].clientX - startX.value
-  let newPosition = currentX.value + deltaX
-  
-  // Ограничиваем движение в пределах от -menuWidth до 0
-  newPosition = Math.max(-menuWidth, Math.min(0, newPosition))
-  menuPosition.value = newPosition
+  if (rafId) {
+    cancelAnimationFrame(rafId)
+  }
+
+  rafId = requestAnimationFrame(() => {
+    const deltaX = e.clientX - startX.value;
+    menuPosition.value = startPosition.value + deltaX;
+    rafId = null;
+  })
 }
 
-const handlePointerUp = () => {
-  if (!isDragging.value) return
-  
+const stopDrag = () => {
   isDragging.value = false
-  
-  // Определяем, нужно ли закрыть или открыть меню based on position
-  const threshold = menuWidth * 0.3 // 30% порог
-  
-  if (menuPosition.value > -threshold) {
-    // Открываем меню
-    menuOpen.value = true
-    menuPosition.value = 0
-  } else {
-    // Закрываем меню
-    menuOpen.value = false
-    menuPosition.value = -menuWidth
+  if (rafId) {
+    cancelAnimationFrame(rafId)
+    rafId = null
   }
+
 }
 
-const handlePointerCancel = () => {
-  isDragging.value = false
-  // Возвращаем в исходное состояние при отмене
-  if (menuOpen.value) {
-    menuPosition.value = 0
-  } else {
-    menuPosition.value = -menuWidth
+onUnmounted(() => {
+  if (rafId) {
+    cancelAnimationFrame(rafId);
   }
-}
+})
 
 // Закрытие меню при изменении маршрута
 watch(() => route.path, () => {
@@ -145,7 +136,11 @@ watch(() => route.path, () => {
 <style scoped>
 /* Улучшаем производительность анимаций */
 nav {
-  touch-action: pan-y;
+  will-change: transform;
   user-select: none;
+  -webkit-user-select: none;
+  backface-visibility: hidden;
+  touch-action: none; /* ⚡ САМОЕ ВАЖНОЕ! */
+  -webkit-touch-callout: none;
 }
 </style>
