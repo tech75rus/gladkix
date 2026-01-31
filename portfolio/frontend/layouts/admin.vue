@@ -1,5 +1,6 @@
 <template>
   <div class="bg-custom-10 min-h-screen p-4 flex flex-row">
+    <Toast />
     <MenuAdmin />
     <MenuMobileAdmin />
     <div class="flex-1">
