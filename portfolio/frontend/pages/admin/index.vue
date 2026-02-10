@@ -1,6 +1,5 @@
 <template>
-  <div class="m-6">
-
+  <div>
     <!-- Статистика -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
       <Card class="bg-rose-50 border border-rose-300">

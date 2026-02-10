@@ -1,13 +1,12 @@
 <template>
-  <h2 class="text-3xl">Hello Articles</h2>
-
-  <DataTable :value="articles" paginator :rows="5" :rowsPerPageOptions="[5, 10, 20, 50]" >
-    <Column field="title" header="Описание" style="width: 25%"></Column>
-    <Column field="excerpt" header="Короткое описание" style="width: 25%"></Column>
-    <Column field="createdAt" header="Создан" style="width: 25%"></Column>
-    <Column field="readingTime" header="Время чтения" style="width: 25%"></Column>
-  </DataTable>
-
+  <div class="grid grid-cols-1">
+    <DataTable :value="articles" paginator :rows="5" :rowsPerPageOptions="[5, 10, 20, 50]" class="whitespace-nowrap">
+      <Column field="id" header="Code"></Column>
+      <Column field="title" header="Name"></Column>
+      <Column field="createdAt" header="Category"></Column>
+      <Column field="readingTime" header="Quantity"></Column>
+    </DataTable>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -26,4 +25,30 @@ const { data: articles } = useFetch<Article[]>('/api/articles', {
 </script>
 
 <style scoped>
+@media (max-width: 500px) {
+  :deep(.p-paginator) {
+    padding: 7px 0;
+  }
+  :deep(.p-paginator-content) {
+    font-size: .85rem;
+  }
+  :deep(.p-paginator-content > button) {
+    /* font-size: .75rem;      Уменьшаем размер шрифта */
+    padding: 0.25rem 0.5rem; /* Уменьшаем внутренние отступы */
+    min-width: 2rem;         /* Уменьшаем минимальную ширину */
+  }
+}
+@media (max-width: 400px) {
+  :deep(.p-paginator) {
+    padding: 7px 0;
+  }
+  :deep(.p-paginator-content) {
+    font-size: .85rem;
+  }
+  :deep(.p-paginator-content > button) {
+    /* font-size: .75rem;      Уменьшаем размер шрифта */
+    padding: 0.1rem 0.2rem; /* Уменьшаем внутренние отступы */
+    min-width: 1.3rem;         /* Уменьшаем минимальную ширину */
+  }
+}
 </style>
