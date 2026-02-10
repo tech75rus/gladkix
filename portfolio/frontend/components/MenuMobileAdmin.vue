@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed md:hidden z-[9999] touch-none">
+  <div class="fixed z-[9999] touch-none">
     <Button label="Secondary" severity="secondary" raised class="mr-2 mb-2 bg-white" @click="openMenu">
       <Icon name="ph:square-half" size="26" class="w-6 h-6 shrink-0"/>
     </Button>

@@ -1,6 +1,6 @@
 <template>
   <div class="grid grid-cols-1">
-    <DataTable :value="articles" paginator :rows="5" :rowsPerPageOptions="[5, 10, 20, 50]" class="whitespace-nowrap">
+    <DataTable :value="articles" paginator :rows="20" class="whitespace-nowrap">
       <Column field="id" header="Code"></Column>
       <Column field="title" header="Name"></Column>
       <Column field="createdAt" header="Category"></Column>

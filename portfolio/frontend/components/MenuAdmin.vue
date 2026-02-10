@@ -1,5 +1,6 @@
 <template>
-    <nav class="hidden md:flex flex flex-col space-y-4 py-4 mr-[15px] bg-white rounded-lg shadow-md transition-all duration-300 overflow-hidden"
+    <nav class="hidden flex flex-col space-y-4 py-4 mr-[15px] bg-white rounded-lg shadow-md 
+      transition-all duration-300 overflow-hidden h-[calc(100vh-2rem)] fixed"
       :class="sidebar ? 'w-[220px] px-4' : 'w-16 px-2'"
     >
       <NuxtLink 
