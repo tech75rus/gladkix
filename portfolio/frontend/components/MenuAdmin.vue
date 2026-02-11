@@ -47,6 +47,8 @@
 </template>
 
 <script setup>
+const emit = defineEmits(['close']);
+
 // Реактивные данные меню
 const menuItems = [
   { to: '/admin/articles', icon: 'ph:article', label: 'Articles' },
@@ -66,6 +68,7 @@ const isActive = (path) => {
 
 const clickSidebar = () => {
   sidebar.value = !sidebar.value;
+  emit('close', sidebar.value);
 }
 
 // Закрытие меню при изменении маршрута
