@@ -18,7 +18,7 @@ definePageMeta({
   layout: 'admin'
 })
 
-const { data: articles } = useFetch<Article[]>('/api/articles', {
+const { data: articles } = useFetch<Article[]>('/backend/articles', {
   server: false
 });
 

@@ -3,7 +3,7 @@
     <Toast />
     <MenuAdmin @close="open = $event" class="md:flex" />
     <MenuMobileAdmin class="md:hidden" />
-    <div class="flex-1"
+    <div class="flex-1 transition-all duration-300"
       :class="[open ? 'md:ml-[235px]' : 'md:ml-[80px]']"
     >
       <slot></slot>

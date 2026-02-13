@@ -38,7 +38,7 @@
           @click="clickSidebar"
         >
           <Icon 
-            :name=" sidebar ? 'ph:square-half' : 'ph:sidebar'" 
+            :name=" sidebar ? 'ph:sidebar' : 'ph:square-half'" 
             size="26" class="w-6 h-6 shrink-0"
           />
         </Button>

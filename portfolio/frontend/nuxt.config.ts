@@ -29,8 +29,8 @@ export default defineNuxtConfig({
   },
   nitro: {
     devProxy: {
-      '/api': {
-        target: 'http://localhost:80/api', // Бэкенд на компьютере
+      '/backend': {
+        target: 'http://localhost:80/api'
       }
     }
   },
