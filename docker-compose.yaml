@@ -1,53 +1,43 @@
 services:
-  nginx:
-    image: nginx:alpine
-    ports: 
-      - "80:80"
-    volumes:
-      - ./portfolio/backend/public:/var/www/backend/public
-      - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
-    depends_on:
-      - db
-      - backend
-    container_name: gladkix_nginx_dev
-    networks:
-      - gladkix_network
-
   backend:
     build:
       context: ./
       dockerfile: ./docker/backend/Dockerfile
+    image: gladkix_backend
+    ports:
+      - 7777:80
     volumes:
       - ./portfolio/backend:/var/www/backend
       - ./docker/backend/php.ini:/usr/local/etc/php/php.ini
-    restart: always
-    container_name: gladkix_backend_dev
+    restart: unless-stopped
     depends_on:
       - db
     environment:
-      DATABASE_URL: "mysql://gladkix:1234@db:3306/gladkix?serverVersion=8.0&charset=utf8mb4"
+      DATABASE_URL: "postgresql://gladkix:secret_password_123@db:5432/gladkix_db?serverVersion=16&charset=utf8"
       APP_ENV: "${APP_ENV:-prod}"
       APP_DEBUG: "${APP_DEBUG:-0}"
     networks:
       - gladkix_network
 
   db:
-    image: mysql:8.4
-    restart: always
-    volumes:
-      - db_data:/var/lib/mysql
-#    command: --default-authentication-plugin=mysql_native_password
+    image: postgres:16-alpine
+    restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: gladkix
-      MYSQL_USER: gladkix
-      MYSQL_PASSWORD: 1234
-    container_name: gladkix_db_dev
+      POSTGRES_USER: gladkix
+      POSTGRES_PASSWORD: secret_password_123
+      POSTGRES_DB: gladkix_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gladkix"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     networks:
-      - gladkix_network
+      - gladkix_network       
 
 volumes:
-  db_data:
+  postgres_data:
 
 networks:
   gladkix_network:

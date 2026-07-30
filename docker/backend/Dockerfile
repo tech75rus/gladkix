@@ -1,34 +1,17 @@
-FROM php:8.3-fpm-alpine
+FROM dunglas/frankenphp:1.12-php8.3-bookworm
 
-# Установка системных зависимостей
-RUN apk update && apk add --no-cache \
-    git \
-    curl \
-    libzip-dev \
-    freetype-dev \
-    oniguruma-dev \
-    icu-dev \
-    libxml2-dev \
-    bash
+RUN install-php-extensions \
+    zip \
+    pdo_pgsql 
 
-# Установка PHP расширений
-RUN docker-php-ext-install -j$(nproc) \
-        pdo_mysql \
-        zip \
-        intl \
-        mbstring \
-        xml \
-        opcache
-
-# Установка Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Настройка рабочей директории
-WORKDIR /var/www/backend
+WORKDIR /app
 
-# Создание пользователя
-RUN adduser -D -u 1000 backend && chown -R backend:backend /var/www
+
+RUN adduser --system --uid 1000 --group backend && \
+    chown -R backend:backend /app && \
+    mkdir -p /data/caddy && chown -R backend:backend /data
 
 USER backend
-
-EXPOSE 9000

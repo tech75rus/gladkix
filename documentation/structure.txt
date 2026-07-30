@@ -1,0 +1,157 @@
+.
+├── backups
+├── docker
+│   ├── backend
+│   │   ├── Dockerfile
+│   │   └── php.ini
+│   └── nginx
+│       └── nginx.conf
+├── docker-compose.yaml
+├── documentation
+│   └── DATABASE.md
+├── logs
+├── makefile
+├── portfolio
+│   ├── backend
+│   │   ├── bin
+│   │   │   └── console
+│   │   ├── composer.json
+│   │   ├── composer.lock
+│   │   ├── config
+│   │   │   ├── bundles.php
+│   │   │   ├── packages
+│   │   │   │   ├── cache.yaml
+│   │   │   │   ├── doctrine_migrations.yaml
+│   │   │   │   ├── doctrine.yaml
+│   │   │   │   ├── framework.yaml
+│   │   │   │   ├── property_info.yaml
+│   │   │   │   ├── routing.yaml
+│   │   │   │   ├── twig.yaml
+│   │   │   │   ├── validator.yaml
+│   │   │   │   └── web_profiler.yaml
+│   │   │   ├── preload.php
+│   │   │   ├── routes
+│   │   │   │   ├── framework.yaml
+│   │   │   │   └── web_profiler.yaml
+│   │   │   ├── routes.yaml
+│   │   │   └── services.yaml
+│   │   ├── migrations
+│   │   ├── public
+│   │   │   └── index.php
+│   │   ├── src
+│   │   │   ├── Article
+│   │   │   │   ├── Controller
+│   │   │   │   │   └── ArticleController.php
+│   │   │   │   ├── Dto
+│   │   │   │   │   ├── CreateArticleDto.php
+│   │   │   │   │   └── UpdateArticleDto.php
+│   │   │   │   ├── Entity
+│   │   │   │   │   └── Article.php
+│   │   │   │   ├── Factory
+│   │   │   │   │   └── ArticleFactory.php
+│   │   │   │   ├── Repository
+│   │   │   │   │   └── ArticleRepository.php
+│   │   │   │   └── Service
+│   │   │   │       ├── ArticleCreationResult.php
+│   │   │   │       ├── ArticleRequestHandler.php
+│   │   │   │       ├── ArticleService.php
+│   │   │   │       └── ArticleUpdateResult.php
+│   │   │   ├── Category
+│   │   │   │   ├── Controller
+│   │   │   │   │   └── CategoryController.php
+│   │   │   │   ├── Dto
+│   │   │   │   │   ├── CreateCategoryDto.php
+│   │   │   │   │   └── UpdateCategoryDto.php
+│   │   │   │   ├── Entity
+│   │   │   │   │   └── Category.php
+│   │   │   │   ├── Factory
+│   │   │   │   │   └── CategoryFactory.php
+│   │   │   │   ├── Repository
+│   │   │   │   │   └── CategoryRepository.php
+│   │   │   │   └── Service
+│   │   │   │       ├── CategoryCreationResult.php
+│   │   │   │       ├── CategoryRequestHandler.php
+│   │   │   │       ├── CategoryService.php
+│   │   │   │       └── CategoryUpdateResult.php
+│   │   │   ├── DataFixtures
+│   │   │   │   └── ArticleFixtures.php
+│   │   │   ├── Kernel.php
+│   │   │   ├── Project
+│   │   │   │   ├── Controller
+│   │   │   │   │   └── ProjectController.php
+│   │   │   │   ├── Dto
+│   │   │   │   │   ├── CreateProjectDto.php
+│   │   │   │   │   └── UpdateProjectDto.php
+│   │   │   │   ├── Entity
+│   │   │   │   │   └── Project.php
+│   │   │   │   ├── Factory
+│   │   │   │   │   └── ProjectFactory.php
+│   │   │   │   ├── Repository
+│   │   │   │   │   └── ProjectRepository.php
+│   │   │   │   └── Service
+│   │   │   │       ├── ProjectCreationResult.php
+│   │   │   │       ├── ProjectRequestHandler.php
+│   │   │   │       ├── ProjectService.php
+│   │   │   │       └── ProjectUpdateResult.php
+│   │   │   └── Tag
+│   │   │       ├── Controller
+│   │   │       │   └── TagController.php
+│   │   │       ├── Dto
+│   │   │       │   ├── CreateTagDto.php
+│   │   │       │   └── UpdateTagDto.php
+│   │   │       ├── Entity
+│   │   │       │   └── Tag.php
+│   │   │       ├── Factory
+│   │   │       │   └── TagFactory.php
+│   │   │       ├── Repository
+│   │   │       │   └── TagRepository.php
+│   │   │       └── Service
+│   │   │           ├── TagCreationResult.php
+│   │   │           ├── TagRequestHandler.php
+│   │   │           ├── TagService.php
+│   │   │           └── TagUpdateResult.php
+│   │   ├── symfony.lock
+│   │   └── templates
+│   └── frontend
+│       ├── assets
+│       │   └── css
+│       │       ├── custom-color.css
+│       │       └── main.css
+│       ├── components
+│       │   ├── MenuAdmin.vue
+│       │   ├── MenuMobileAdmin.vue
+│       │   └── TiptapEditor.vue
+│       ├── composables
+│       ├── layouts
+│       │   ├── admin.vue
+│       │   └── default.vue
+│       ├── nuxt.config.ts
+│       ├── package.json
+│       ├── package-lock.json
+│       ├── pages
+│       │   ├── admin
+│       │   │   ├── articles
+│       │   │   │   └── index.vue
+│       │   │   ├── categories
+│       │   │   │   └── index.vue
+│       │   │   ├── index.vue
+│       │   │   ├── projects
+│       │   │   │   └── index.vue
+│       │   │   └── tags
+│       │   │       └── index.vue
+│       │   └── index.vue
+│       ├── plugins
+│       ├── public
+│       │   ├── favicon.ico
+│       │   ├── images
+│       │   │   └── usercard.jpeg
+│       │   └── robots.txt
+│       ├── README.md
+│       ├── tsconfig.json
+│       └── types
+│           └── Article.ts
+├── README.md
+├── scripts
+└── test.txt
+
+64 directories, 91 files
