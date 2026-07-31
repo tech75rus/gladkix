@@ -1,0 +1,28 @@
+{
+    # Глобальные настройки для dev
+    auto_https off          # Без SSL локально
+    admin off
+}
+
+# Site block: слушаем порт 80 внутри контейнера
+:80 {
+    root * /app/public
+
+    # Сжатие
+    encode zstd br gzip
+
+    # Логи в stdout (видно через docker compose logs)
+    log {
+        output stdout
+        format console
+    }
+
+    # Health check (для мониторинга)
+    handle /health {
+        respond "OK" 200
+    }
+
+    handle {
+        php_server 
+    }
+}

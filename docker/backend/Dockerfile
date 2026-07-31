@@ -15,3 +15,18 @@ RUN adduser --system --uid 1000 --group backend && \
     mkdir -p /data/caddy && chown -R backend:backend /data
 
 USER backend
+
+
+# RUN install-php-extensions \
+#     zip \
+#     pdo_pgsql \
+#     intl \
+#     opcache \
+#     curl \
+#     fileinfo \
+#     pcntl \
+#     mbstring \
+#     xml \
+#     redis \
+#     imagick \
+#     sodium

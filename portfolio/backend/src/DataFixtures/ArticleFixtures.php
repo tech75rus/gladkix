@@ -41,7 +41,8 @@ class ArticleFixtures extends Fixture
         $article = new Article();
 
         // Генерируем заголовок
-        $title = $this->faker->realText(70);
+        // $title = $this->faker->realText(70);
+        $title = $this->faker->unique()->sentence(6, true);
         $article->setTitle($title);
 
         // Генерируем slug из заголовка
