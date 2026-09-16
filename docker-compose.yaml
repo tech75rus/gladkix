@@ -15,8 +15,8 @@ services:
       - db
     environment:
       DATABASE_URL: "postgresql://gladkix:secret_password_123@db:5432/gladkix_db?serverVersion=16&charset=utf8"
-      APP_ENV: "${APP_ENV:-prod}"
-      APP_DEBUG: "${APP_DEBUG:-0}"
+      APP_ENV: "dev"
+      APP_DEBUG: "1"
     networks:
       - gladkix_network
 

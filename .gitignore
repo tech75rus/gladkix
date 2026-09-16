@@ -1,6 +1,10 @@
 # Environment
 .env
-.env.local
+.env.prod
+.env.dev
+portfolio/backend/.env.prod
+portfolio/backend/.env.dev
+portfolio/frontend/.env
 
 # Logs
 logs/
