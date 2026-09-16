@@ -15,3 +15,9 @@ exec-backend:
 
 exec-db:
 	docker compose exec db sh
+
+init-dev:
+	@bash scripts/env-init.sh dev
+
+init-prod:
+	@bash scripts/env-init.sh prod
