@@ -30,12 +30,12 @@ class ArticleCreationResult
         return new self(false, null, 'Validation failed', ['validation_error' => $message]);
     }
 
-    public static function duplicateName(string $name, Article $existingCategory): self
+    public static function duplicateName(string $title, Article $existingArticle): self
     {
         return new self(false, null, 'Статья с таким названием уже существует', [
-            'field' => 'name',
-            'value' => $name,
-            'existing_category_id' => $existingCategory->getId()
+            'field' => 'title',
+            'value' => $title,
+            'existing_article_id' => $existingArticle->getId()
         ]);
     }
 
