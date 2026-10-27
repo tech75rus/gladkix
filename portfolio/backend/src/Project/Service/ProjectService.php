@@ -60,7 +60,7 @@ class ProjectService
 
         // Проверка уникальности заголовка (если меняется)
         if ($dto->title !== null && $dto->title !== $project->getTitle()) {
-            $existingProject = $this->projectRepository->findOneBy(['name' => $dto->title]);
+            $existingProject = $this->projectRepository->findOneBy(['title' => $dto->title]);
             if ($existingProject && $existingProject->getId() !== $project->getId()) {
                 return ProjectUpdateResult::duplicateName($dto->title);
             }
