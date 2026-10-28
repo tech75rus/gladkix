@@ -30,12 +30,12 @@ class ProjectCreationResult
         return new self(false, null, 'Validation failed', ['validation_error' => $message]);
     }
 
-    public static function duplicateName(string $name, Project $existingCategory): self
+    public static function duplicateName(string $title, Project $existingProject): self
     {
         return new self(false, null, 'Проект с таким названием уже существует', [
-            'field' => 'name',
-            'value' => $name,
-            'existing_category_id' => $existingCategory->getId()
+            'field' => 'title',
+            'value' => $title,
+            'existing_project_id' => $existingProject->getId()
         ]);
     }
 
