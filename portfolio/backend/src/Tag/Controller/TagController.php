@@ -40,7 +40,7 @@ class TagController extends AbstractController
             return $this->json([
                 'success' => true,
                 'message' => 'Тэг успешно создан',
-                'category' => $this->serializeTag($result->getTag())
+                'tag' => $this->serializeTag($result->getTag())
             ], Response::HTTP_CREATED);
         }
 
