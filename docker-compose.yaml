@@ -17,6 +17,7 @@ services:
       DATABASE_URL: "postgresql://gladkix:secret_password_123@db:5432/gladkix_db?serverVersion=16&charset=utf8"
       APP_ENV: "dev"
       APP_DEBUG: "1"
+      DEFAULT_URI: "http://localhost"
     networks:
       - gladkix_network
 
