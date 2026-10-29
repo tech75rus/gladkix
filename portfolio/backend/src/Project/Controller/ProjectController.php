@@ -40,8 +40,8 @@ class ProjectController extends AbstractController
         if ($result->isSuccess()) {
             return $this->json([
                 'success' => true,
-                'message' => 'Категория успешно создана',
-                'category' => $this->serializeProject($result->getProject())
+                'message' => 'Проект успешно создан',
+                'project' => $this->serializeProject($result->getProject())
             ], Response::HTTP_CREATED);
         }
 
@@ -99,8 +99,8 @@ class ProjectController extends AbstractController
         if ($result->isSuccess()) {
             return $this->json([
                 'success' => true,
-                'message' => 'Категория успешно обновлена',
-                'category' => $this->serializeProject($result->getProject())
+                'message' => 'Проект успешно обновлен',
+                'project' => $this->serializeProject($result->getProject())
             ], Response::HTTP_CREATED);
         }
 
@@ -236,7 +236,7 @@ class ProjectController extends AbstractController
         }
 
         $statusCode = match($result->getError()) {
-            'Category not found' => Response::HTTP_NOT_FOUND,
+            'Project not found' => Response::HTTP_NOT_FOUND,
             'Проект с таким названием уже существует' => Response::HTTP_CONFLICT,
             'Validation failed' => Response::HTTP_BAD_REQUEST,
             default => Response::HTTP_BAD_REQUEST
