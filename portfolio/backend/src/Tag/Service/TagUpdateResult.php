@@ -31,7 +31,7 @@ class TagUpdateResult
 
     public static function duplicateName(string $name): self
     {
-        return new self(false, null, 'Проект с таким названием уже существует', [
+        return new self(false, null, 'Тег с таким названием уже существует', [
             'field' => 'name',
             'value' => $name
         ]);
