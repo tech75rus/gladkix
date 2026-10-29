@@ -30,12 +30,12 @@ class TagCreationResult
         return new self(false, null, 'Validation failed', ['validation_error' => $message]);
     }
 
-    public static function duplicateName(string $name, Tag $existingCategory): self
+    public static function duplicateName(string $name, Tag $existingTag): self
     {
         return new self(false, null, 'Тег с таким названием уже существует', [
             'field' => 'name',
             'value' => $name,
-            'existing_category_id' => $existingCategory->getId()
+            'existing_tag_id' => $existingTag->getId()
         ]);
     }
 
