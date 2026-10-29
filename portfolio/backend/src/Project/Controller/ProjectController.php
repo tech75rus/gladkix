@@ -101,7 +101,7 @@ class ProjectController extends AbstractController
                 'success' => true,
                 'message' => 'Проект успешно обновлен',
                 'project' => $this->serializeProject($result->getProject())
-            ], Response::HTTP_CREATED);
+            ], Response::HTTP_OK);
         }
 
         return $this->handleErrorResult($result);
