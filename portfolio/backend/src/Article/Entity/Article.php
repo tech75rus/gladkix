@@ -103,7 +103,7 @@ class Article
         nullable: true,
         options: ['comment' => 'Дата и время последнего обновления статьи']
     )]
-    private ?\DateTimeImmutable $updateAt = null;
+    private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'Articles')]
     private ?Category $category = null;
@@ -281,13 +281,13 @@ class Article
 
     public function getUpdatedAt(): ?\DateTimeImmutable
     {
-        return $this->updateAt;
+        return $this->updatedAt;
     }
 
     #[ORM\PreUpdate]
     public function setUpdatedAt(): void
     {
-        $this->updateAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
     }
 
     public function getCategory(): ?Category

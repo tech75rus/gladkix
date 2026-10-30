@@ -98,7 +98,7 @@ class Category
         nullable: true,
         options: ['comment' => 'Дата и время последнего обновления категории']
     )]
-    private ?\DateTimeImmutable $updateAt = null;
+    private ?\DateTimeImmutable $updatedAt = null;
 
     /**
      * @var Collection<int, Article>
@@ -264,13 +264,13 @@ class Category
 
     public function getUpdatedAt(): ?\DateTimeImmutable
     {
-        return $this->updateAt;
+        return $this->updatedAt;
     }
 
     #[ORM\PreUpdate]
     public function setUpdatedAt(): void
     {
-        $this->updateAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
     }
 
     /**
