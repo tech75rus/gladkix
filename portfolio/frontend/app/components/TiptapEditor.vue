@@ -102,13 +102,6 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 
-// Импорты из Tiptap
-// useEditor - хук для создания экземпляра редактора
-// EditorContent - компонент для отображения области редактирования
-import { useEditor, EditorContent } from '@tiptap/vue-3'
-// StarterKit - основной набор расширений Tiptap
-import StarterKit from '@tiptap/starter-kit'
-
 const htmlContent = ref('')
 
 // Получаем экземпляр toast для показа уведомлений
@@ -116,40 +109,6 @@ const toast = useToast()
 
 // Инициализация редактора Tiptap
 // useEditor() - создает и настраивает экземпляр редактора
-const editor = useEditor({
-  // content - начальное содержимое редактора в формате HTML
-  content: `
-    <h2>Добро пожаловать в редактор!</h2>
-    <p>Это <strong>простой пример</strong> интеграции <em>Tiptap</em> с <strong>PrimeVue</strong>.</p>
-    <p>Попробуйте выделить текст и нажать кнопки форматирования.</p>
-  `,
-  
-  // extensions - подключаемые расширения (функциональность)
-  extensions: [
-    // StarterKit - основной набор: абзацы, заголовки, жирный, курсив, списки и т.д.
-    StarterKit,
-  ],
-
-  // onUpdate - функция, вызываемая при любом изменении содержимого
-  onUpdate: ({ editor }) => {
-    // editor.getHTML() - получает текущее содержимое в формате HTML
-    // htmlContent.value - сохраняем HTML в нашу реактивную переменную
-    htmlContent.value = editor.getHTML()
-    
-    // Выводим в консоль для отладки
-    console.log('Контент обновлен:', htmlContent.value)
-  },
-
-  // onFocus - функция, вызываемая когда редактор получает фокус
-  onFocus: () => {
-    console.log('Редактор получил фокус')
-  },
-
-  // onBlur - функция, вызываемая когда редактор теряет фокус  
-  onBlur: () => {
-    console.log('Редактор потерял фокус')
-  },
-})
 
 // Функция для показа предпросмотра
 const showPreview = () => {
