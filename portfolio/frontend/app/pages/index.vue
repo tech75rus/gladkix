@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-    <h1>Мой проект с Tiptap</h1>
 
     <Splitter style="height: 300px">
         <SplitterPanel class="flex items-center justify-center"> Panel 1 </SplitterPanel>
@@ -26,8 +25,6 @@
           </div>
       </template>
     </Card>
-
-    <TiptapEditor />
 
     <!-- Демонстрация, что остальные компоненты работают -->
     <div class="demo-section">
