@@ -2,65 +2,10 @@
       <div>
     <!-- Статистика -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-      <Card class="bg-rose-50 border border-rose-300">
-        <template #content>
-          <div class="flex justify-between items-center">
-            <div>
-              <div class="text-2xl font-bold text-rose-400">{{ stats.articles.total }}</div>
-              <div class="text-primary-600">Статей</div>
-            </div>
-            <Icon name="ph:file-bold" size="32px" class="text-rose-400"></Icon>
-          </div>
-          <div class="mt-2 text-sm text-surface-500">
-            {{ stats.articles.published }} опубликовано
-          </div>
-        </template>
-      </Card>
-
-      <Card class="bg-lime-50 border border-lime-300">
-        <template #content>
-          <div class="flex justify-between items-center">
-            <div>
-              <div class="text-2xl font-bold text-lime-400">{{ stats.projects.total }}</div>
-              <div class="text-surface-600">Проектов</div>
-            </div>
-            <Icon name="ph:briefcase-bold" size="32px" class="text-lime-400"></Icon>
-          </div>
-          <div class="mt-2 text-sm text-surface-500">
-            {{ stats.projects.completed }} завершено
-          </div>
-        </template>
-      </Card>
-
-      <Card class="bg-violet-50 border border-violet-300">
-        <template #content>
-          <div class="flex justify-between items-center">
-            <div>
-              <div class="text-2xl font-bold text-violet-400">{{ stats.categories }}</div>
-              <div class="text-surface-600">Категорий</div>
-            </div>
-            <Icon name="ph:folder-bold" size="32px" class="text-violet-400"></Icon>
-          </div>
-          <div class="mt-2 text-sm text-surface-500">
-            {{ stats.categoriesVisible }} активно
-          </div>
-        </template>
-      </Card>
-
-      <Card class="bg-amber-50 border border-amber-300">
-        <template #content>
-          <div class="flex justify-between items-center">
-            <div>
-              <div class="text-2xl font-bold text-amber-500">{{ stats.tags }}</div>
-              <div class="text-surface-600">Тегов</div>
-            </div>
-            <Icon name="ph:tag-bold" size="32px" class="text-amber-500"></Icon>
-          </div>
-          <div class="mt-2 text-sm text-surface-500">
-            Используется в проектах
-          </div>
-        </template>
-      </Card>
+      <StatCard title="Статей" :count="16" subtitle="Опубликовано: 12" icon="ph:file-text-bold" color="rose" />
+      <StatCard title="Проектов" :count="8" subtitle="Завершено: 5" icon="ph:briefcase-bold" color="lime" />
+      <StatCard title="Категорий" :count="12" subtitle="Активно: 8" icon="ph:folder-bold" color="violet" />
+      <StatCard title="Тегов" :count="24" subtitle="Использовано: 18" icon="ph:tag-bold" color="amber" />
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -161,22 +106,6 @@
 </template>
 
 <script setup>
-
-// Mock данные для статистики
-const stats = reactive({
-  articles: {
-    total: 15,
-    published: 12
-  },
-  projects: {
-    total: 8,
-    completed: 5
-  },
-  categories: 6,
-  categoriesVisible: 4,
-  tags: 24
-})
-
 // Последние статьи с реальными изображениями
 const recentArticles = ref([
   {
